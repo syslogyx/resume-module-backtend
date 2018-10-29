@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="C:\Users\neha\Desktop\jquery.validate.min.js" ></script>
+<script>
+$(function(){
+   $("#registration").validate({
+    
+    rules: {
+      
+      firstname: "required",
+    },
+    
+    messages: {
+      firstname: "Please enter your firstname",
+	  
+    },
+    submitHandler: function(form) {
+      form.submit();
+    }
+});
+});
+ 
+</script>
+</head>
+<body>
+
+<form style="font-size:110%"  name="registration" id="registration" method="" action="" >
+
+firstname:
+<input type="type" name="firstname"  id="firstname" > 
+
+<button type="submit">Register</button>
+</form>
+
+
+
+</body>
+</html>
