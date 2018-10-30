@@ -15,9 +15,8 @@
     header: page-header;
     footer: page-footer;
     margin-top: 100px;
-    margin-bottom: 110px;
+    margin-bottom: 150px;
 }
-
 
 html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video {
 border:0;
@@ -430,11 +429,11 @@ section:last-child {
   
     <div class="mainDetails" style="display:inline-block;">          
         
-        <div style="width: 70%; float: left;">            
-            <h1 class="set-title-color" style="font-size: 25px;vertical-align: middle;"><strong>{{ $candidateDetails['name'] }}</strong></h1> 
+        <div style="width: 75%; float: left;padding-top: 15px">            
+            <h1 class="set-title-color" style="font-size: 25px;"><strong>{{ $candidateDetails['name'] }}</strong></h1> 
         </div>
        
-        <div id="contactDetails" class="" style="width: 30%;float: right;">
+        <div id="contactDetails" class="" style="width: 25%;float: right;">
             <ul style="text-align: left;">
                 <li><img src="{{ public_path('/imgs/email_ic.png') }}" width="15px" height="10px"> <a href="mailto:{{ $candidateDetails['email'] }}" target="_blank"> {{ $candidateDetails['email'] }} </a></li>
                 <li><img src="{{ public_path('/imgs/phone_ic.png') }}" width="15px" height="15px"> {{ $candidateDetails['mobile_no'] }} </li>
@@ -597,7 +596,7 @@ section:last-child {
 </div>
 <htmlpagefooter name="page-footer" class="page-break">
 <img src="{{ public_path('/imgs/Footer_.png') }}">
-<div style="text-align: center;margin-top: 5px;">Page No. {PAGENO}</div>
+<div style="text-align: center;margin-top: 5px;">Page no. {PAGENO}</div>
 </htmlpagefooter>
 </body>
 </html>

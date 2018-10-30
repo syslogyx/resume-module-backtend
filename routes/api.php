@@ -30,6 +30,7 @@ $api->version("v1", function($api) {
     // test api  
     $api->get("hello", "App\Http\Controllers\HomeController@index");
 
+    //Home controller API
     $api->get("users/{user_id}/roles/{role_name}", "App\Http\Controllers\HomeController@attachUserRole");
 
     $api->get("users/{user_id}/roles", "App\Http\Controllers\HomeController@getUserRole");
@@ -41,6 +42,7 @@ $api->version("v1", function($api) {
     $api->get("permissions", "App\Http\Controllers\HomeController@getAllPremissions");
 
     $api->get("roles", "App\Http\Controllers\HomeController@getAllRoles");
+    
     $api->get("selected/roles", "App\Http\Controllers\HomeController@getSelectedRoles");
     
     $api->post("create/permission", "App\Http\Controllers\HomeController@createPermissions");
@@ -65,19 +67,28 @@ $api->version("v1", function($api) {
     $api->get("user/{id}/view", "App\Http\Controllers\UserController@view");
     $api->post("user/filter", "App\Http\Controllers\UserController@filterUsers");
 
+    // qualification's api
+    $api->get("qualification_details", "App\Http\Controllers\QualificationCtrl@index");
+    $api->post("qualification", "App\Http\Controllers\QualificationCtrl@create");
+    $api->put("qualification/{id}/update", "App\Http\Controllers\QualificationCtrl@update");
 
     //  document's api 
     $api->post("document/upload", "App\Http\Controllers\DocumentController@upload");
 
    // change password api
     $api->get("change_password", "App\Http\Controllers\ChangePasswordController@index");
-
     $api->post("changePassword", "App\Http\Controllers\ChangePasswordController@create");
+
 
     // fund particulars's api
     $api->get("add_particular", "App\Http\Controllers\FundParticularController@index");
 
     $api->get('generate_pdf/{id}', 'App\Http\Controllers\PdfGenerateController@generatePdf');
+
+    // candidate's api
+    $api->get("candidate_details", "App\Http\Controllers\CandidateCtrl@index");
+    $api->post("create_candidate", "App\Http\Controllers\CandidateCtrl@create");
+    $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
 
 });
 
