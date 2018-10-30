@@ -30,17 +30,9 @@ class CandidateCtrl extends BaseController
     }
 
 	function create(Request $request) {
-      $type=$request->type;
-      // print_r($type);
-      // die();
-      if($type =='data'){
+      // $type=$request->type;
+      // if($type =='data'){
         $posted_data = Input::all();
-        
-        //$file = "";
-        // $posted_data_r = $posted_data["model"];
-        // if ($request->hasFile('file')) {
-        //   $file = $request->file('file');
-        // }
 
         DB::beginTransaction();
         try {
@@ -135,13 +127,13 @@ class CandidateCtrl extends BaseController
             throw $e;
         } 
       }
-      else{
+      // else{
 
-         //   $file = $request->file('file');
-         // $posted_data['file_name'] =time().'.'.$file->getClientOriginalExtension();
+      //    //   $file = $request->file('file');
+      //    // $posted_data['file_name'] =time().'.'.$file->getClientOriginalExtension();
       
-      }
-    } 
+      // }
+    
 
     function viewCandiadte($id) {
         $model = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
