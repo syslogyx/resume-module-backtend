@@ -79,10 +79,17 @@ $api->version("v1", function($api) {
     $api->get("change_password", "App\Http\Controllers\ChangePasswordController@index");
     $api->post("changePassword", "App\Http\Controllers\ChangePasswordController@create");
 
+
+    // fund particulars's api
+    $api->get("add_particular", "App\Http\Controllers\FundParticularController@index");
+
+    $api->get('generate_pdf/{id}', 'App\Http\Controllers\PdfGenerateController@generatePdf');
+
     // candidate's api
     $api->get("candidate_details", "App\Http\Controllers\CandidateCtrl@index");
     $api->post("create_candidate", "App\Http\Controllers\CandidateCtrl@create");
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
+
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {

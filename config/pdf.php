@@ -8,8 +8,10 @@ return [
 	'keywords'              => '',
 	'creator'               => 'Laravel Pdf',
 	'display_mode'          => 'fullpage',
-	'tempDir'               => base_path('../temp/')
-
+	'tempDir'               => base_path('../temp/'),
+	'margin_left'          => 0.1,
+	'margin_right'         => 0.1,
+	'margin_bottom'         => 0,
 	//FOR LIVE SERVER
 	// 'tempDir'               => "C:\\Inetpub\\vhosts\\syslogyx.com\\finapi.syslogyx.com\\uploads"
 ];
