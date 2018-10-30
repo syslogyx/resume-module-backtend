@@ -77,6 +77,8 @@ $api->version("v1", function($api) {
     // fund particulars's api
     $api->get("add_particular", "App\Http\Controllers\FundParticularController@index");
 
+    $api->get('generate_pdf', 'App\Http\Controllers\PdfGenerateController@generatePdf');
+
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {
