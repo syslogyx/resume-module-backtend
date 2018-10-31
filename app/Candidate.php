@@ -39,7 +39,7 @@ class Candidate extends Model
         'permanent_address' => 'required',
         'date_of_birth' => 'nullable',
         'pan_number' => 'required|unique:candidate_details,pan_number,',
-        'passport' => 'required',
+        'passport' => 'nullable',
         'objective' => 'required',
         'summary' => 'required',
         'status' => 'nullable',
