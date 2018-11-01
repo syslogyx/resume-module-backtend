@@ -23,8 +23,8 @@ class CreateCandidate extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('pan_number')->nullable();
             $table->string('passport')->nullable();
-            $table->string('objective')->nullable();
-            $table->string('summary')->nullable();
+            $table->text('objective')->nullable();
+            $table->text('summary')->nullable();
             $table->string('status')->nullable();
             $table->string('timestamp')->nullable();                         
             $table->string('total_experience')->nullable();

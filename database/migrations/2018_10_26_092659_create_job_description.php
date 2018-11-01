@@ -16,9 +16,9 @@ class CreateJobDescription extends Migration
     {
         Schema::create('job_description', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title')->nullable();
-            $table->string('sub_title')->nullable();
-            $table->string('description')->nullable();
+            $table->text('title')->nullable();
+            $table->text('sub_title')->nullable();
+            $table->text('description')->nullable();
             $table->integer('no_of_requiremet')->nullable();
             $table->string('experience')->nullable();
             $table->string('skills_required')->nullable();

@@ -435,11 +435,11 @@ h1{
   
     <div class="" style="display:inline-block;">          
         <section style="border-top:0px; margin-left: 50px">
-            <div style="width: 70%; float: left;padding-top: 25px">            
+            <div style="width: 65%; float: left;padding-top: 25px">            
                 <h1 class="set-title-color" style="font-size: 25px;"><strong>{{ $candidateDetails['name'] }}</strong></h1> 
             </div>
            
-            <div id="contactDetails" class="" style="width: 30%;float: right;text-align: left">
+            <div id="contactDetails" class="" style="width: 35%;float: right;text-align: left">
                 <ul style="text-align: left;">
                     <li>
                         <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
@@ -536,7 +536,7 @@ h1{
                     <ul  class="keySkills">
                         @foreach($candidateDetails['candidate_qualification'] as $key => $qualification)    
                             <li>
-                                {{ @$qualification['qualification']['name'] }} with {{ $qualification['percentage'] }} from {{ $qualification['college'] }}, {{ $qualification['university'] }} ({{ $qualification['start_year'] .' - '. $qualification['end_year'] }})
+                                {{ @$qualification['qualification']['name'] }} with {{ $qualification['percentage'] }}% from {{ $qualification['college'] }}, {{ $qualification['university'] }} ({{ $qualification['start_year'] .' - '. $qualification['end_year'] }})
                             </li>                        
                         @endforeach
                     </ul>
@@ -563,13 +563,13 @@ h1{
 
         <section>
             <div class="sectionTitle set-title-color">
-                <h1>Technical Skills (with relevant exp.)</h1>
+                <h1>Technical Skills</h1>
             </div>
             <div class="sectionContent">
                 <article>  
                     <ul class="keySkills">
                     @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill) 
-                        <li><strong>{{ $skill['technology_name'] }} -</strong>  {{ $skill['technology_experience'] .' yrs.' }} </li>
+                        <li><strong>{{ $skill['technology_name'] }} </strong>  </li>
                     @endforeach
                     </ul>
                 </article>
@@ -614,7 +614,7 @@ h1{
     </div>
 </div>
 <htmlpagefooter name="page-footer" style="bottom: 0px">
-<div style="text-align: center;">{PAGENO}</div>
+<div style="text-align: center;color:#cac5c5">{PAGENO}</div>
 <img src="{{ public_path('/imgs/Footer_.png') }}">
 </htmlpagefooter>
 </body>

@@ -21,7 +21,7 @@ class CreateCandidateIndustrialExperience extends Migration
             $table->string('project_name')->nullable();  
             $table->string('role_in_project')->nullable();  
             $table->string('language_or_tools')->nullable();  
-            $table->string('project_description')->nullable(); 
+            $table->text('project_description')->nullable(); 
             $table->string('timestamp')->nullable(); 
             $table->timestamps();
         });
