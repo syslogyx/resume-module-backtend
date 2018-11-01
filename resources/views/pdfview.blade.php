@@ -26,6 +26,9 @@ margin:0;
 padding:0;
 vertical-align:baseline;
 }
+html,body,section{
+margin:0 20px 0 20px !important;
+}
 
 article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
 display:block;
@@ -38,7 +41,7 @@ html, body {background: transparent; font-family: 'Lato', helvetica, arial, sans
 p {
     font-size:14px;
     line-height: 1.4em;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     color: #444;
 }
 
@@ -58,9 +61,9 @@ span{
 
 .mainDetails {
     /*padding: 25px 35px;*/
-    /*border-bottom: 2px solid black;*/
-    border-bottom: 2px solid #356aac;
+    border-bottom: 2px solid black;
     background: white;
+    margin:5px;
 }
 
 #name h1 {
@@ -172,19 +175,19 @@ section:last-child {
 
 .subDetails {
     font-size: 0.8em;
-    font-style: italic;
+    /*font-style: italic;*/
     margin-bottom: 3px;
 }
 
 .industrial-labels{
     font-size: 0.8em;
-    font-style: italic;
+    /*font-style: italic;*/
     margin-bottom: 5px;
 }
 
 .education-labels{
     font-size: 0.8em;
-    font-style: italic;
+    /*font-style: italic;*/
     margin-bottom: 5px;
 }
 
@@ -413,6 +416,9 @@ section:last-child {
 .set-title-color{
     color: #356aac;
 }
+h1{
+    font-weight: normal !important;
+}
 
 </style>
 
@@ -427,43 +433,58 @@ section:last-child {
 <div id="cv" class="instaFade">
         
   
-    <div class="mainDetails" style="display:inline-block;">          
-        
-        <div style="width: 75%; float: left;padding-top: 15px">            
-            <h1 class="set-title-color" style="font-size: 25px;"><strong>{{ $candidateDetails['name'] }}</strong></h1> 
-        </div>
-       
-        <div id="contactDetails" class="" style="width: 25%;float: right;">
-            <ul style="text-align: left;">
-                <li><img src="{{ public_path('/imgs/email_ic.png') }}" width="15px" height="10px"> <a href="mailto:{{ $candidateDetails['email'] }}" target="_blank"> {{ $candidateDetails['email'] }} </a></li>
-                <li><img src="{{ public_path('/imgs/phone_ic.png') }}" width="15px" height="15px"> {{ $candidateDetails['mobile_no'] }} </li>
-                <li><img src="{{ public_path('/imgs/location_ic.png') }}" width="15px" height="17px">   <a style="word-wrap: break-word;"> {{ $candidateDetails['permanent_address'] }} </a></li>
-            </ul>
-        </div>
+    <div class="" style="display:inline-block;">          
+        <section style="border-top:0px; margin-left: 50px">
+            <div style="width: 70%; float: left;padding-top: 25px">            
+                <h1 class="set-title-color" style="font-size: 25px;"><strong>{{ $candidateDetails['name'] }}</strong></h1> 
+            </div>
+           
+            <div id="contactDetails" class="" style="width: 30%;float: right;text-align: left">
+                <ul style="text-align: left;">
+                    <li>
+                        <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
+                    </li>
+                    <li>
+                        <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}                       
+                    </li>
+                    <li style="display: inline-block;">                       
+                        <div style="float:left;width:20px">
+                            <img src="{{ public_path('/imgs/location_ic.png') }}">
+                        </div>
+                        <div style="float:left;width:80%;margin-left: 2%;">
+                             <a style="word-wrap: break-word;">{{ $candidateDetails['permanent_address'] }}</a> 
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <br>
+            <div class="clear"></div>
+        </section>
     </div>
-    
+    <section style="border-top:1px solid black; margin-left: 60px; margin-right: 60px;"></section>
     <div id="mainArea" class="quickFade delayFive">
-        <section>
+        <section style="border-top:0px">
                 <div class="sectionTitle set-title-color">
                     <h1>Objective</h1>
                 </div>
-                &nbsp;
                 <div class="sectionContent">
                     <article>
                         <p>{{ $candidateDetails['objective'] }}</p>
-                    </article>                    
+                    </article>  
+                    <br>                  
                 </div>
             <div class="clear"></div>
         </section>
+
         <section>
                 <div class="sectionTitle set-title-color">
                     <h1>Summary</h1>
                 </div>
-                &nbsp;
                 <div class="sectionContent">
                     <article>
                         <p>{{ $candidateDetails['summary'] }}</p>
-                    </article>                   
+                    </article>
+                    <br>                   
                 </div>
             <div class="clear"></div>
         </section>
@@ -472,7 +493,6 @@ section:last-child {
             <div class="sectionTitle set-title-color">
                 <h1>Personal Details</h1>
             </div>
-            &nbsp;
             <div class="sectionContent">
                 <article> 
                     <div style="display: inline-block;">
@@ -510,17 +530,17 @@ section:last-child {
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Educational Details</h1>
-                </br>
             </div>
-            &nbsp;
             <div class="sectionContent">
-                @foreach($candidateDetails['candidate_qualification'] as $key => $qualification)                  
+                <article>
                     <ul  class="keySkills">
-                        <li>
-                            {{ @$qualification['qualification']['name'] }} with {{ $qualification['percentage'] }} from {{ $qualification['college'] }}, {{ $qualification['university'] }} ({{ $qualification['start_year'] .' - '. $qualification['end_year'] }})
-                        </li>                        
+                        @foreach($candidateDetails['candidate_qualification'] as $key => $qualification)    
+                            <li>
+                                {{ @$qualification['qualification']['name'] }} with {{ $qualification['percentage'] }} from {{ $qualification['college'] }}, {{ $qualification['university'] }} ({{ $qualification['start_year'] .' - '. $qualification['end_year'] }})
+                            </li>                        
+                        @endforeach
                     </ul>
-                @endforeach
+                </article>              
             </div>
             <div class="clear"></div>
         </section>
@@ -529,13 +549,14 @@ section:last-child {
             <div class="sectionTitle set-title-color">
                 <h1>Other Achievements</h1>
             </div>
-            &nbsp;
             <div class="sectionContent">
-                <ul class="keySkills">
-                @foreach($candidateDetails['candidate_achievements'] as $key => $achive)                    
-                    <li>{{ $achive['achivement'] }}</li>
-                @endforeach
-                </ul>
+                <article>
+                    <ul class="keySkills">
+                    @foreach($candidateDetails['candidate_achievements'] as $key => $achive)                    
+                        <li>{{ $achive['achivement'] }}</li>
+                    @endforeach
+                    </ul>
+                </article>
             </div>
             <div class="clear"></div>
         </section>
@@ -544,13 +565,14 @@ section:last-child {
             <div class="sectionTitle set-title-color">
                 <h1>Technical Skills (with relevant exp.)</h1>
             </div>
-            &nbsp;
             <div class="sectionContent">
-                <ul class="keySkills">
-                @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill) 
-                    <li><strong>{{ $skill['technology_name'] }} -</strong>  {{ $skill['technology_experience'] .' yrs.' }} </li>
-                @endforeach
-                </ul>
+                <article>  
+                    <ul class="keySkills">
+                    @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill) 
+                        <li><strong>{{ $skill['technology_name'] }} -</strong>  {{ $skill['technology_experience'] .' yrs.' }} </li>
+                    @endforeach
+                    </ul>
+                </article>
             </div>
             <div class="clear"></div>            
         </section>
@@ -559,30 +581,27 @@ section:last-child {
             <div class="sectionTitle set-title-color">
                 <h1>Industrial Experience</h1>
             </div>
-            &nbsp;
-            @foreach($candidateDetails['candidate_ind_exp'] as $key => $indExp) 
                 <div class="sectionContent">
-                   <!--  <h2>Project Details</h2> -->
                     <article>   
-                        <ul style="list-style-type: none">
-                            <li class="subDetails"><b>Project Title: </b> {{ $indExp['project_name'] }}</li>
-                            <li class="subDetails"><b>Company Name: </b> {{ $indExp['company_name'] }}</li>
-                            <li class="subDetails"><b>Role: </b> {{ $indExp['role_in_project'] }}</li>
-                            <li class="subDetails"><b>Languages/ Tools Used: </b> {{ $indExp['language_or_tools'] }}</li>  
-                            <li class="subDetails"><b>Project Description: </b> </li><p> {{ $indExp['project_description'] }} </p> 
-                        </ul>                         
-                                         
+                        <ul  style="list-style-type: none">
+                            @foreach($candidateDetails['candidate_ind_exp'] as $key => $indExp) 
+                                <li class="subDetails"><b>Project Title: </b> {{ $indExp['project_name'] }}</li>
+                                <li class="subDetails"><b>Company Name: </b> {{ $indExp['company_name'] }}</li>
+                                <li class="subDetails"><b>Role: </b> {{ $indExp['role_in_project'] }}</li>
+                                <li class="subDetails"><b>Languages/ Tools Used: </b> {{ $indExp['language_or_tools'] }}</li>  
+                                <li class="subDetails"><b>Project Description: </b> </li><p> {{ $indExp['project_description'] }} </p> 
+                                <br>
+                            @endforeach
+                        </ul>       
                 </article>
-                <div class="clear"></div>
             </div>
-            @endforeach
+            <div class="clear"></div>
         </section>
       
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Hobbies</h1>
             </div>
-            &nbsp;
             <div class="sectionContent">
                 <ul class="keySkills">
                     @foreach($candidateDetails['candidate_hobbies'] as $key => $hobbie)                    
@@ -594,9 +613,9 @@ section:last-child {
         </section>
     </div>
 </div>
-<htmlpagefooter name="page-footer" class="page-break">
+<htmlpagefooter name="page-footer" style="bottom: 0px">
+<div style="text-align: center;">{PAGENO}</div>
 <img src="{{ public_path('/imgs/Footer_.png') }}">
-<div style="text-align: center;margin-top: 5px;">Page no. {PAGENO}</div>
 </htmlpagefooter>
 </body>
 </html>
