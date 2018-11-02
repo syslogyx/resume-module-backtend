@@ -49,8 +49,8 @@ class JobController extends BaseController
             if ($objectJd->validate($posted_data)) {
                 $posted_data["status"] = "Active";
                 $model = JobDescription::create($posted_data);
-                $posted_data["job_code"] = $model->job_code.$model->id;
-                $model->update($posted_data);
+                $model->job_code = $model->job_code.$model->id;
+                $model->save();
                 DB::commit();
                 if($model)
                     return $this->dispatchResponse(200, "Job Description Created Successfully...!!", $model);
@@ -65,24 +65,23 @@ class JobController extends BaseController
     }
 
 
-    // function update($id) {
-    //     $posted_data = Input::all();
-
-    //     try {
-    //         DB::beginTransaction();
-    //         $model = JobDescription::find((int) $id);
-
-    //         if ($model->validate($posted_data)) {
-    //             DB::commit();
-    //             if ($model->update($posted_data))
-    //                 return $this->dispatchResponse(200, "Job Description Updated Successfully...!!", $model);
-    //         } else {
-    //             DB::rollback();
-    //             return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
-    //         }
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-    //         throw $e;
-    //     }
-    // }
+    function update($id) {
+        $posted_data = Input::all();
+        try {
+            DB::beginTransaction();
+            $model = JobDescription::find((int) $id);
+            if ($model->validate($posted_data)) {                         
+                if ($model->update($posted_data)){
+                    DB::commit();
+                    return $this->dispatchResponse(200, "Job Description Updated Successfully...!!", $model);
+                }
+            } else {
+                DB::rollback();
+                return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
 }

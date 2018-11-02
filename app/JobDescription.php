@@ -46,17 +46,18 @@ class JobDescription extends Model
         'notice_period' => 'nullable',
         'ctc' => 'nullable',
         'status' => 'nullable',
-        'job_code' => 'required|unique:job_description,job_code',
+        'job_code' => 'required|unique:job_description,job_code,',
 
 
     );
     private $errors;
 
     public function validate($data) {
+
         if ($this->id){
             $this->rules['job_code'] .= $this->id;
-
         }
+
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
