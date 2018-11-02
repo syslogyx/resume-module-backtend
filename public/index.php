@@ -3,7 +3,7 @@ ob_start();
 error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 //FOR LIVE SERVER
-//header('Access-Control-Allow-Origin: http://fin.syslogyx.com');
+//header('Access-Control-Allow-Origin: https://fin.syslogyx.com');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: x-requested-with, Content-Type, origin, authorization, accept, client-security-token');

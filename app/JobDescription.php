@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Validator;
 
-class Candidate extends Model
+class JobDescription extends Model
 {
   	//use Notifiable;
 
@@ -46,7 +46,7 @@ class Candidate extends Model
         'notice_period' => 'nullable',
         'ctc' => 'nullable',
         'status' => 'nullable',
-        'job_code' => 'required|unique:candidate_details,pan_number',
+        'job_code' => 'required|unique:job_description,job_code',
 
 
     );

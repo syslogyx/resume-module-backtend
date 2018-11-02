@@ -58,11 +58,11 @@ return [
         
         // 'mysql' => [
         //     'driver' => 'mysql',
-        //     'host' => env('DB_HOST', '115.124.122.143'),
+        //     'host' => env('DB_HOST', 'recruitmentapi.syslogyx.com'),
         //     'port' => env('DB_PORT', '3306'),
-        //     'database' => env('DB_DATABASE', 'finsys'),
-        //     'username' => env('DB_USERNAME', 'finsys'),
-        //     'password' => env('DB_PASSWORD', 'dhLs10!1'),
+        //     'database' => env('DB_DATABASE', 'recapiadmin'),
+        //     'username' => env('DB_USERNAME', 'recapiadmin'),
+        //     'password' => env('DB_PASSWORD', 'K4qgt9*3'),
         //     'unix_socket' => env('DB_SOCKET', ''),
         //     'charset' => 'utf8mb4',
         //     'collation' => 'utf8mb4_unicode_ci',

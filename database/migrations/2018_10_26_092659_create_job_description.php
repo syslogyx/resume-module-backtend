@@ -18,12 +18,12 @@ class CreateJobDescription extends Migration
             $table->increments('id');
             $table->text('title')->nullable();
             $table->text('sub_title')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->integer('no_of_requiremet')->nullable();
             $table->string('experience')->nullable();
-            $table->string('skills_required')->nullable();
-            $table->string('additional_skills')->nullable();
-            $table->string('roles_and_responsibility')->nullable();
+            $table->longText('skills_required')->nullable();
+            $table->longText('additional_skills')->nullable();
+            $table->longText('roles_and_responsibility')->nullable();
             $table->string('job_location')->nullable();
             $table->string('job_type')->nullable();
             $table->string('ctc')->nullable();

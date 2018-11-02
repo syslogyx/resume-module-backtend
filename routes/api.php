@@ -90,6 +90,10 @@ $api->version("v1", function($api) {
     $api->post("create_candidate", "App\Http\Controllers\CandidateCtrl@create");
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
 
+    // Job Description's api
+    $api->get("job_description", "App\Http\Controllers\JobController@index");
+    $api->get("jobInfoByID/{id}/view", "App\Http\Controllers\JobController@viewJob");
+
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {
