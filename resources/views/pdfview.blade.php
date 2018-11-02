@@ -462,7 +462,7 @@ h1{
         </section>
     </div>
     <section style="border-top:1px solid black; margin-left: 60px; margin-right: 60px;"></section>
-    <div id="mainArea" class="quickFade delayFive">
+    <div id="mainArea" class="quickFade delayFive" style="margin-left: 15px; margin-right: 15px;">
         <section style="border-top:0px">
                 <div class="sectionTitle set-title-color">
                     <h1>Objective</h1>
