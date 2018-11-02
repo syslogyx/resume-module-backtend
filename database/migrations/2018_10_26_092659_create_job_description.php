@@ -29,7 +29,7 @@ class CreateJobDescription extends Migration
             $table->string('ctc')->nullable();
             $table->string('notice_period')->nullable();
             $table->string('job_code')->nullable();
-            $table->integer('status')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

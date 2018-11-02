@@ -93,6 +93,8 @@ $api->version("v1", function($api) {
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
     $api->get("jobInfoByID/{id}/view", "App\Http\Controllers\JobController@viewJob");
+    $api->post("job/create", "App\Http\Controllers\JobController@create");
+    // $api->post("/job/update/", "App\Http\Controllers\JobController@update");
 
 });
 
