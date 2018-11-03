@@ -9,6 +9,9 @@ use App\JobDescription;
 
 class JobController extends BaseController
 {
+    /*
+    *  Function to get list of Job list
+    */
     function index(Request $request) {
         $page = $request->page;
         $limit = $request->limit;
@@ -29,6 +32,9 @@ class JobController extends BaseController
         }
     }
 
+    /*
+    *  Function to get Job details by Id
+    */
     function viewJob($id) {
         $model = JobDescription::find((int) $id);
 
@@ -39,6 +45,9 @@ class JobController extends BaseController
         }
     }
 
+    /*
+    *  Function to Create Job descrption
+    */
     function create(){
         $posted_data = Input::all();
         DB::beginTransaction();
@@ -64,7 +73,9 @@ class JobController extends BaseController
         }  
     }
 
-
+    /*
+    *  Function to update Job descrption
+    */
     function update($id) {
         $posted_data = Input::all();
         try {
@@ -84,4 +95,19 @@ class JobController extends BaseController
             throw $e;
         }
     }
+
+    /*
+    *  Function to change status of Job descrption
+    */
+    // function changeStatus($id){
+    //     // $model = JobDescription::find((int) $id);
+    //     $posted_data = Input::all();
+    //     $model = JobDescription::find((int) $id);
+    //     return $model;
+        
+            
+        
+    // }
+
+    
 }
