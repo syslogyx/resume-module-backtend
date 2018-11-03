@@ -105,8 +105,6 @@ class JobController extends BaseController
     //     $model = JobDescription::find((int) $id);
     //     return $model;
         
-            
-        
     // }
 
     
