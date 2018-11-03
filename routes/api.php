@@ -89,13 +89,15 @@ $api->version("v1", function($api) {
     $api->get("candidate_details", "App\Http\Controllers\CandidateCtrl@index");
     $api->post("create_candidate", "App\Http\Controllers\CandidateCtrl@create");
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
+    $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
+    $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
     $api->get("jobInfoByID/{id}/view", "App\Http\Controllers\JobController@viewJob");
     $api->post("job/create", "App\Http\Controllers\JobController@create");
-    $api->post("job/update/{id}", "App\Http\Controllers\JobController@update");
-    // $api->post("job/changestatus/{id}", "App\Http\Controllers\JobController@changeStatus");
+    $api->post("/job/update/{id}", "App\Http\Controllers\JobController@update");
+    $api->post("/job/changestatus/{id}", "App\Http\Controllers\JobController@updateStatus");
 
 });
 

@@ -35,7 +35,7 @@ class CandidateDocument extends Model
     	'file_name' => 'required',
         'candidate_id' => 'required',
         'path' => 'required',
-        'timestamp' => 'required'
+        'timestamp' => 'required',
     );
     private $errors;
 

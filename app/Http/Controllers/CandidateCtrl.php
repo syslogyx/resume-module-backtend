@@ -12,6 +12,9 @@ use App\CandidateAchivements;
 use App\CandidateIndustrialExperiance;
 use App\CandidateTechnicalSkill;
 use App\CandidateHobbies;
+use App\CandidateDocument;
+// use Illuminate\Contracts\Routing\ResponseFactory;
+use Response;
 
 class CandidateCtrl extends BaseController
 {
@@ -94,10 +97,10 @@ class CandidateCtrl extends BaseController
 
                        $row3["candidate_id"] = $model->id;
                        $row3["timestamp"]=$currentTimestamp;
-                       $row3["technology_experience"]=$row3["relevanceMonthExperience"].'.'.$row3["relevanceYearExperience"];
+                       $row3["technology_experience"]=$row3["relevanceYearExperience"].'.'.$row3["relevanceMonthExperience"];
 
-                       unset ($row3["relevanceMonthExperience"]);
                        unset ($row3["relevanceYearExperience"]);
+                       unset ($row3["relevanceMonthExperience"]);
                       
                     }
 
@@ -143,6 +146,39 @@ class CandidateCtrl extends BaseController
         }else{
             return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
         }
+    }
+
+      public function uploadResume(Request $request)
+    {
+        
+         $object = new CandidateDocument();
+         $image = $request->file('file_name');
+          // return $request;
+         $posted_data['file_name'] =time().'.'.$image->getClientOriginalExtension();
+         $posted_data['candidate_id']=$request['candidate_id'];
+         $posted_data['timestamp']=$request['timestamp'];
+         $destinationPath = public_path('/doc');
+         $posted_data['path']=$destinationPath;
+       
+        
+        if ($object->validate($posted_data)) {
+            $image->move($destinationPath, $posted_data['file_name']);
+            $model = CandidateDocument::create($posted_data);
+            return response()->json(['status_code' => 200, 'message' => 'Resume uploaded successfully', 'data' => $model]);
+           
+       } else {
+           throw new \Dingo\Api\Exception\StoreResourceFailedException('Resume not uploaded.',$object->errors());
+       }
+
+
+
+    }
+
+    public function getDownload($id){
+        $data= CandidateDocument::where('candidate_id',$id)->latest()->first();
+        $file = public_path()."/doc/".$data['file_name'];
+        // $headers = array('Content-Type: application/pdf',);
+        return Response::download($file, $data['file_name']);
     }
    
 }

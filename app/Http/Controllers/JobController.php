@@ -10,7 +10,7 @@ use App\JobDescription;
 class JobController extends BaseController
 {
     /*
-    *  Function to get list of Job list
+    *  Function to fetch job descrption list
     */
     function index(Request $request) {
         $page = $request->page;
@@ -33,7 +33,7 @@ class JobController extends BaseController
     }
 
     /*
-    *  Function to get Job details by Id
+    *  Function to Get job descrption by id
     */
     function viewJob($id) {
         $model = JobDescription::find((int) $id);
@@ -46,7 +46,7 @@ class JobController extends BaseController
     }
 
     /*
-    *  Function to Create Job descrption
+    *  Function to create job descrption
     */
     function create(){
         $posted_data = Input::all();
@@ -58,6 +58,7 @@ class JobController extends BaseController
             if ($objectJd->validate($posted_data)) {
                 $posted_data["status"] = "Active";
                 $model = JobDescription::create($posted_data);
+                // $posted_data["job_code"] = $posted_data["job_code"].$model->id;
                 $model->job_code = $model->job_code.$model->id;
                 $model->save();
                 DB::commit();
@@ -74,7 +75,7 @@ class JobController extends BaseController
     }
 
     /*
-    *  Function to update Job descrption
+    *  Function to update job descrption by id
     */
     function update($id) {
         $posted_data = Input::all();
@@ -97,15 +98,27 @@ class JobController extends BaseController
     }
 
     /*
-    *  Function to change status of Job descrption
+    *   Function to update job descrption status by id
     */
-    // function changeStatus($id){
-    //     // $model = JobDescription::find((int) $id);
-    //     $posted_data = Input::all();
-    //     $model = JobDescription::find((int) $id);
-    //     return $model;
-        
-    // }
-
+    function updateStatus($id){
+        $posted_data = Input::all();
+        //get jd by id
+        $model = JobDescription::find((int) $id);
+        if ($model){
+            try{
+                DB::beginTransaction();
+                if ($model->update($posted_data)) {
+                    DB::commit();
+                    return $this->dispatchResponse(200, "Status Updated Successfully...!!", $model);
+                } else {
+                    DB::rollback();
+                    return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+                }
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            }
+        }
+    }
     
 }

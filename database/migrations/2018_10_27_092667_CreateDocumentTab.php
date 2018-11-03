@@ -19,6 +19,7 @@ class CreateDocumentTab extends Migration
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
             $table->string('path')->nullable();
+            $table->string('timestamp')->nullable();
             $table->timestamps();
         });
     }
