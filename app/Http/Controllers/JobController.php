@@ -56,7 +56,7 @@ class JobController extends BaseController
             $objectJd = new JobDescription();
             $posted_data["job_code"] = 'SYS';
             if ($objectJd->validate($posted_data)) {
-                $posted_data["status"] = "Active";
+                $posted_data["status"] = 1;
                 $model = JobDescription::create($posted_data);
                 // $posted_data["job_code"] = $posted_data["job_code"].$model->id;
                 $model->job_code = $model->job_code.$model->id;
