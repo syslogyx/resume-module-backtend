@@ -99,6 +99,15 @@ $api->version("v1", function($api) {
     $api->post("/job/update/{id}", "App\Http\Controllers\JobController@update");
     $api->post("/job/changestatus/{id}", "App\Http\Controllers\JobController@updateStatus");
 
+    // Basic Screen Questions api
+    $api->get("basic_screening_questions", "App\Http\Controllers\BasicScreeningQuestionsController@index");
+    $api->post("questions/add", "App\Http\Controllers\BasicScreeningQuestionsController@create");
+    $api->get("questionInfoByID/{id}/view", "App\Http\Controllers\BasicScreeningQuestionsController@view");
+    $api->put("questions/{id}/update", "App\Http\Controllers\BasicScreeningQuestionsController@update");
+
+    // streams api
+    $api->get("streams", "App\Http\Controllers\StreamsController@index");
+
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {

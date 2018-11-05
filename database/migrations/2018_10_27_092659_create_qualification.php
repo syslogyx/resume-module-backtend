@@ -18,7 +18,7 @@ class CreateQualification extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('alias')->nullable();
-             $table->integer('status')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
 

@@ -28,7 +28,7 @@ class JobController extends BaseController
 
         } else {
             
-            return $this->dispatchResponse(200, "No Records Found!!", $candidatejobDescriptionDataData);
+            return $this->dispatchResponse(200, "No Records Found!!", $jobDescriptionData);
         }
     }
 
