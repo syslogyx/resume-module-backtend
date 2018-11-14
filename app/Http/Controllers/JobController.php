@@ -120,5 +120,14 @@ class JobController extends BaseController
             }
         }
     }
+
+    public function fetchActiveJd(){
+        $jdData = JobDescription::where('status','=',1)->get();
+        if($jdData->first()){
+            return $this->dispatchResponse(200, "Data", $jdData);
+        } else {            
+            return $this->dispatchResponse(200, "No Records Found!!", $jdData);
+        }
+    }
     
 }

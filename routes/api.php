@@ -66,6 +66,7 @@ $api->version("v1", function($api) {
     $api->put("user/{id}/update", "App\Http\Controllers\UserController@update");
     $api->get("user/{id}/view", "App\Http\Controllers\UserController@view");
     $api->post("user/filter", "App\Http\Controllers\UserController@filterUsers");
+    $api->get("check_token/{token}", "App\Http\Controllers\UserController@checkTokenExit");
 
     // qualification's api
     $api->get("qualification_details", "App\Http\Controllers\QualificationCtrl@index");
@@ -98,6 +99,7 @@ $api->version("v1", function($api) {
     $api->post("job/create", "App\Http\Controllers\JobController@create");
     $api->post("/job/update/{id}", "App\Http\Controllers\JobController@update");
     $api->post("/job/changestatus/{id}", "App\Http\Controllers\JobController@updateStatus");
+    $api->get("/getAllActiveJd", "App\Http\Controllers\JobController@fetchActiveJd");
 
     // Basic Screen Questions api
     $api->get("basic_screening_questions", "App\Http\Controllers\BasicScreeningQuestionsController@index");
@@ -107,6 +109,9 @@ $api->version("v1", function($api) {
 
     // streams api
     $api->get("streams", "App\Http\Controllers\StreamsController@index");
+
+    // Basic screening test Api
+    $api->post("result/add", "App\Http\Controllers\BasicScreeningResultController@create");
 
 });
 

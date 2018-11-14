@@ -9,7 +9,10 @@ use App\Qualification;
 
 class QualificationCtrl extends BaseController
 {
-     function index(Request $request) {
+    /**
+    *	To fetch list of qualifications
+    **/
+    function index(Request $request) {
 
         $qualifiactionData = Qualification::paginate(50);
 

@@ -12,7 +12,6 @@ return array(
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'Mailgun' => array($vendorDir . '/mailgun/mailgun-php/src'),
     'Maatwebsite\\Excel\\' => array($vendorDir . '/maatwebsite/excel/src'),
-    'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
     'Felixkiss\\UniqueWithValidator\\' => array($vendorDir . '/felixkiss/uniquewith-validator/src'),
     'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),

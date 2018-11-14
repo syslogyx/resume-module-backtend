@@ -7,6 +7,9 @@ use Storage;
 
 class PdfGenerateController extends Controller
 {
+	/**	
+	** to generate pdf 
+	**/
 	public function generatePdf($id) {
 		$json = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
         if ($json){

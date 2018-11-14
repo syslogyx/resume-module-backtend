@@ -23,26 +23,22 @@ class DocumentController extends BaseController {
             // $posted_data["file_name"] = $file_name;
             // $posted_data["path"] =  $storage_path;
 
-
             $seperator = Config::get("constants.dir_seperator");
             $storage_path = $seperator .'uploads'.$seperator . date('Y') . $seperator . date('m');
             $file_name = str_random(12) . time() . "." . $file->getClientOriginalExtension();
             $path = Storage::putFileAs($storage_path, $request->file('file'), $file_name);
-<<<<<<< HEAD
 
             $posted_data["file_name"] = $file_name;
             $posted_data["path"] =  str_replace($seperator, "/", $storage_path);
-          
-=======
+
             //$path = $request->file;
             //$file
 
-
-    $posted_data["file_name"] = $file_name;
+            $posted_data["file_name"] = $file_name;
             //$posted_data["file_name"] = $request->file->store("");
             $posted_data["path"] =  $storage_path;
             $document = new Document();
->>>>>>> fbfd55465d6faf71fa8f2acdd50109abbcf2d396
+
 
 
             $document = new Document();

@@ -10,6 +10,7 @@ use App\User;
 
 class UserController extends BaseController
 {
+    
     function index(Request $request) {
         $page = $request->page;
         $limit = $request->limit;
@@ -25,6 +26,7 @@ class UserController extends BaseController
             return $this->dispatchResponse(404, "No Records Found!!", $user);
         }
     }
+
     function selectedUser(Request $request) {
         $page = $request->page;
         $limit = $request->limit;
@@ -154,5 +156,7 @@ class UserController extends BaseController
         }
 
     }
+
+
 
 }

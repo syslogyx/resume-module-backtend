@@ -9,7 +9,10 @@ use App\Stream;
 
 class StreamsController extends BaseController
 {
-     function index(Request $request) {
+    /**
+    *	To fetch list of Stream
+    **/
+    function index(Request $request) {
 
         $streamData = Stream::paginate(50);
 
