@@ -142,6 +142,8 @@ class ComposerStaticInit02ffad472eee600b6ef2499c3fe1c47c
         array (
             'Mpdf\\' => 5,
             'Monolog\\' => 8,
+            'Mnvx\\Unoconv\\' => 13,
+            'Mnvx\\UnoconvLaravel\\' => 20,
         ),
         'L' => 
         array (
@@ -370,6 +372,14 @@ class ComposerStaticInit02ffad472eee600b6ef2499c3fe1c47c
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Mnvx\\Unoconv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mnvx/unoconv/src',
+        ),
+        'Mnvx\\UnoconvLaravel\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mnvx/unoconv-laravel/src',
         ),
         'League\\Fractal\\' => 
         array (
@@ -2927,6 +2937,13 @@ class ComposerStaticInit02ffad472eee600b6ef2499c3fe1c47c
         'Mailgun\\Model\\Webhook\\ShowResponse' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Model/Webhook/ShowResponse.php',
         'Mailgun\\Model\\Webhook\\UpdateResponse' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Model/Webhook/UpdateResponse.php',
         'Mailgun\\RequestBuilder' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/RequestBuilder.php',
+        'Mnvx\\UnoconvLaravel\\Facades\\Converter' => __DIR__ . '/..' . '/mnvx/unoconv-laravel/src/Facades/Converter.php',
+        'Mnvx\\UnoconvLaravel\\UnoconvLaravelServiceProvider' => __DIR__ . '/..' . '/mnvx/unoconv-laravel/src/UnoconvLaravelServiceProvider.php',
+        'Mnvx\\Unoconv\\Converter' => __DIR__ . '/..' . '/mnvx/unoconv/src/Converter.php',
+        'Mnvx\\Unoconv\\ConverterInterface' => __DIR__ . '/..' . '/mnvx/unoconv/src/ConverterInterface.php',
+        'Mnvx\\Unoconv\\Format' => __DIR__ . '/..' . '/mnvx/unoconv/src/Format.php',
+        'Mnvx\\Unoconv\\UnoconvException' => __DIR__ . '/..' . '/mnvx/unoconv/src/UnoconvException.php',
+        'Mnvx\\Unoconv\\UnoconvParameters' => __DIR__ . '/..' . '/mnvx/unoconv/src/UnoconvParameters.php',
         'Mockery' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryTestCase' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryTestCase.php',

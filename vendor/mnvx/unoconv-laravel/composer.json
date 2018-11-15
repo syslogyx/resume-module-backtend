@@ -1,0 +1,27 @@
+{
+    "name": "mnvx/unoconv-laravel",
+    "type": "library",
+    "description": "Laravel Unoconv for Laravel 5",
+    "keywords": [
+        "Mnvx",
+        "UnoconvLaravel"
+    ],
+    "homepage": "https://github.com/Mnvx/UnoconvLaravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matiushenkov Nikolay",
+            "homepage": "https://github.com/mnvx"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "illuminate/support": "~5.1",
+        "mnvx/unoconv": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mnvx\\UnoconvLaravel\\": "src"
+        }
+    }
+}

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use DateTime;
 use App\BasicScreeningResults;
+use App\Candidate;
 
 class BasicScreeningResultController extends BaseController
 {
@@ -16,12 +17,16 @@ class BasicScreeningResultController extends BaseController
     function create(){
         $posted_data = Input::all();  
         $candidateId = $posted_data['result_data'][0]['candidate_id']; 
+        $status = $posted_data['result_data'][0]['status']; 
         DB::beginTransaction();
         try { 
             $objectResult = new BasicScreeningResults();
 		    
             if ($objectResult->validate($posted_data['result_data'])) {
                 $model = DB::table('basic_screening_result')->insert($posted_data['result_data']);
+                $candidateData = Candidate::find((int) $candidateId);
+                $candidateData->status = $status;
+				$candidateData->save();
                 DB::commit();	       
                 if($model){
 	              return $this->dispatchResponse(200, "Data saved Successfully...!!", $model);

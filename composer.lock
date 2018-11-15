@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "053b5ee647843765b78810e7ef2abeec",
+    "content-hash": "882ead055dc13cad170f189886fbd5c1",
     "packages": [
         {
             "name": "bogardo/mailgun",
@@ -2126,6 +2126,85 @@
                 "mathematics"
             ],
             "time": "2018-10-13T23:28:42+00:00"
+        },
+        {
+            "name": "mnvx/unoconv",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mnvx/unoconv.git",
+                "reference": "a88c610606b7884b122bcaf8c4874a72362fde79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mnvx/unoconv/zipball/a88c610606b7884b122bcaf8c4874a72362fde79",
+                "reference": "a88c610606b7884b122bcaf8c4874a72362fde79",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0",
+                "psr/log": "^1.0",
+                "symfony/process": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mnvx\\Unoconv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Unoconv wrapper for PHP",
+            "homepage": "https://github.com/mnvx/unoconv",
+            "keywords": [
+                "unoconv"
+            ],
+            "time": "2017-01-15T20:35:16+00:00"
+        },
+        {
+            "name": "mnvx/unoconv-laravel",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mnvx/unoconv-laravel.git",
+                "reference": "53d64bd33b6d3535b44c8644e88630ecae5b47d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mnvx/unoconv-laravel/zipball/53d64bd33b6d3535b44c8644e88630ecae5b47d6",
+                "reference": "53d64bd33b6d3535b44c8644e88630ecae5b47d6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.1",
+                "mnvx/unoconv": "^1.0",
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mnvx\\UnoconvLaravel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matiushenkov Nikolay",
+                    "homepage": "https://github.com/mnvx"
+                }
+            ],
+            "description": "Laravel Unoconv for Laravel 5",
+            "homepage": "https://github.com/Mnvx/UnoconvLaravel",
+            "keywords": [
+                "Mnvx",
+                "UnoconvLaravel"
+            ],
+            "time": "2017-01-15T21:52:48+00:00"
         },
         {
             "name": "monolog/monolog",

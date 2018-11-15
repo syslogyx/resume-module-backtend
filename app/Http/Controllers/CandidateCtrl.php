@@ -14,6 +14,11 @@ use App\CandidateTechnicalSkill;
 use App\CandidateHobbies;
 use App\CandidateDocument;
 use App\User;
+
+// use Illuminate\Support\Facades\App;
+// use Mnvx\Unoconv\ConverterInterface;
+// use Mnvx\Unoconv\Format;
+// use Mnvx\Unoconv\UnoconvParameters;
 // use Illuminate\Contracts\Routing\ResponseFactory;
 use Response;
 
@@ -181,11 +186,17 @@ class CandidateCtrl extends BaseController
   * To save uploaded resume file in db
   */
   public function uploadResume(Request $request){
-      
-        // return $request;
       $object = new CandidateDocument();
       $image = $request->file('file_name');
       $ext = $image->getClientOriginalExtension();
+      // if($ext != 'pdf'){
+      //   $ext = 'docx';
+      // $converter = App::make(ConverterInterface::class);
+      // $parameters = (new UnoconvParameters())
+      //     ->setInputStream(time().'.'.$ext)
+      //     ->setOutputFormat(Format::FORMAT_TEXT_PDF);
+      // echo $converter->convert($parameters);
+      //}
       if($ext == 'doc'){
         $ext = 'docx';
       }
