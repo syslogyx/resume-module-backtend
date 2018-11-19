@@ -66,7 +66,8 @@ $api->version("v1", function($api) {
     $api->put("user/{id}/update", "App\Http\Controllers\UserController@update");
     $api->get("user/{id}/view", "App\Http\Controllers\UserController@view");
     $api->post("user/filter", "App\Http\Controllers\UserController@filterUsers");
-    $api->get("check_token/{token}", "App\Http\Controllers\UserController@checkTokenExit");
+    // $api->get("check_token/{token}", "App\Http\Controllers\UserController@checkTokenExit");
+    $api->get("user/getUsersByInterviewerRoleId", "App\Http\Controllers\UserController@getUsersByInterviewerRoleId");
 
     // qualification's api
     $api->get("qualification_details", "App\Http\Controllers\QualificationCtrl@index");
@@ -92,6 +93,7 @@ $api->version("v1", function($api) {
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
     $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
+    $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
@@ -112,6 +114,8 @@ $api->version("v1", function($api) {
 
     // Basic screening test Api
     $api->post("result/add", "App\Http\Controllers\BasicScreeningResultController@create");
+    // Basic screening test Api
+    $api->post("assignInterviewer", "App\Http\Controllers\CandidateUserAssocController@assignInterviewerToCandidate");
 
 });
 

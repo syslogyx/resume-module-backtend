@@ -157,6 +157,18 @@ class UserController extends BaseController
 
     }
 
+    /**
+    *   To fetch list of user having role interviewer
+    **/
+    function getUsersByInterviewerRoleId(){
+        $userData = User::where('role_id','=',4)->get();
+        if($userData->first()){
+            return $this->dispatchResponse(200, "Data", $userData);
+        } else {            
+            return $this->dispatchResponse(200, "No Records Found!!", $userData);
+        }
+    }
+
 
 
 }

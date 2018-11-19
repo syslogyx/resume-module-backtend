@@ -18,6 +18,9 @@ class BasicScreeningResultController extends BaseController
         $posted_data = Input::all();  
         $candidateId = $posted_data['result_data'][0]['candidate_id']; 
         $status = $posted_data['result_data'][0]['status']; 
+        if($status == 'Pass'){
+            $status = 'Clear';
+        }
         DB::beginTransaction();
         try { 
             $objectResult = new BasicScreeningResults();

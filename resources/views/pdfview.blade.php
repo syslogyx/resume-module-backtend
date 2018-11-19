@@ -511,10 +511,10 @@ h1{
                     </div>
                     <br>
                     <div style="display: inline-block;">
-                        <div style="float:left;width:33.333%">
+                        <!-- <div style="float:left;width:33.333%">
                             <span class="subDetails"><b>Current CTC: </b></span>
                             <span>{{$candidateDetails['ctc'] }} Lac</span> 
-                        </div>
+                        </div> -->
                         <div style="float:left;width:33.333%">
                             <span class="subDetails"><strong>Total Experience: </strong></span> 
                             <span>{{ $candidateDetails['total_experience'] }} yrs</span> 

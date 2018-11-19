@@ -97,4 +97,8 @@ class Candidate extends Model
         return $this->hasMany('App\CandidateDocument');    
     }
 
+    public function job_description() {
+        return $this->belongsTo('App\JobDescription','job_description_id');    
+    }
+
 }

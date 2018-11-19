@@ -13,6 +13,7 @@ use App\CandidateIndustrialExperiance;
 use App\CandidateTechnicalSkill;
 use App\CandidateHobbies;
 use App\CandidateDocument;
+use App\JobDescription;
 use App\User;
 
 // use Illuminate\Support\Facades\App;
@@ -31,10 +32,10 @@ class CandidateCtrl extends BaseController
       $page = $request->page;
       $limit = $request->limit;
       if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
-          $candidateData = Candidate::paginate(50);
+          $candidateData = Candidate::with('job_description')->paginate(50);
       }
       else{
-          $candidateData = Candidate::paginate($limit);
+          $candidateData = Candidate::with('job_description')->paginate($limit);
       }
 
       if ($candidateData->first()) {
@@ -46,6 +47,40 @@ class CandidateCtrl extends BaseController
           return $this->dispatchResponse(200, "No Records Found!!", $candidateData);
       }
   }
+
+
+  /*
+  *
+  */
+  function filterCandidates(Request $request){
+        $page = $request->page;
+        $limit = $request->limit;
+        $posted_data = Input::all();
+        // return $request;
+        $query = Candidate::with('job_description');
+        
+        if(Input::get()=="" || Input::get()==null ){
+            $query->get();
+        }
+
+        if(Input::get("job_description_id")){
+            $query->where("job_description_id",Input::get("job_description_id"));
+        }        
+
+        if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
+            $candidateData = $query->paginate($limit);
+        }
+        else{
+            $candidateData = $query->paginate(50);
+        }
+
+        if ($candidateData->first()) {
+            return $this->dispatchResponse(200, "",$candidateData);
+        }else{
+            return $this->dispatchResponse(200, "No Records Found!!",null);
+        }
+
+    }
 
   /*
   * To save data of candidate details and its relevent details
