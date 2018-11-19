@@ -50,7 +50,7 @@ class CandidateCtrl extends BaseController
 
 
   /*
-  *
+  * API to fetch data according applied filter.
   */
   function filterCandidates(Request $request){
         $page = $request->page;
@@ -80,7 +80,7 @@ class CandidateCtrl extends BaseController
             return $this->dispatchResponse(200, "No Records Found!!",null);
         }
 
-    }
+  }
 
   /*
   * To save data of candidate details and its relevent details

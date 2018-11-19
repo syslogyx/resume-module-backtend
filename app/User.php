@@ -65,5 +65,9 @@ class User extends Authenticatable
     public function role() {
         return $this->belongsTo('App\Role','role_id');    
     }
+
+    // public function candidate_user_assoc() {
+    //     return $this->belongsToMany('App\CandidateUserAssoc','user_id');    
+    // }
 }
 

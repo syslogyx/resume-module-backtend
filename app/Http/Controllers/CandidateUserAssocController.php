@@ -7,11 +7,48 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App\CandidateUserAssoc;
 use App\Candidate;
+use App\User;
 use DateTime;
 
 class CandidateUserAssocController extends BaseController
 {
-    //
+    /**
+    * API to fetch data according applied filter.
+    **/
+    function filterUserAssoc(Request $request){
+
+        $page = $request->page;
+        $limit = $request->limit;
+        $posted_data = Input::all();
+        $query = CandidateUserAssoc::with('users','candidates');
+        //return $posted_data;
+        if(Input::get()=="" || Input::get()==null ){
+            $query->get();
+        }
+
+        if(Input::get("user_id")){
+            $query->where("user_id",Input::get("user_id"));
+        } 
+
+        if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
+            $candidateDetails = $query->paginate($limit);
+        }
+        else{
+            $candidateDetails = $query->paginate(50);
+        }
+
+        if ($candidateDetails->first()) {
+            return $this->dispatchResponse(200, "",$candidateDetails);
+        }else{
+            return $this->dispatchResponse(200, "No Records Found!!",null);
+        }
+
+    }
+
+
+    /**
+    *   Function used to assign interviewer to a candidate
+    **/
     public function assignInterviewerToCandidate(){
     	$posted_data = Input::all();
     	$data = [];

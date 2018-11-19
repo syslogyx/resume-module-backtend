@@ -117,6 +117,9 @@ $api->version("v1", function($api) {
     // Basic screening test Api
     $api->post("assignInterviewer", "App\Http\Controllers\CandidateUserAssocController@assignInterviewerToCandidate");
 
+    // CandidateUser Assoc
+    $api->post("interview/filter", "App\Http\Controllers\CandidateUserAssocController@filterUserAssoc");
+
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {

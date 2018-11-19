@@ -45,12 +45,12 @@ class CandidateUserAssoc extends Model
     public function errors() {
         return $this->errors;
     }
-    
+
     public function users() {
-        return $this->hasMany('App\User');    
+        return $this->belongsTo('App\User','user_id');    
     }
 
-    // public function candidates() {
-    //     return $this->belongsTo('App\Candidate');    
-    // }
+    public function candidates() {
+        return $this->belongsTo('App\Candidate','candidate_id');
+    }
 }
