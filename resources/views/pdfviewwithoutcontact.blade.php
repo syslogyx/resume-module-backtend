@@ -439,10 +439,10 @@ h1{
                 <h1 class="set-title-color" style="font-size: 25px;"><strong>{{ $candidateDetails['name'] }}</strong></h1> 
             </div>
            
-            <div id="contactDetails" class="" style="width: 35%;float: right;text-align: left">
+            <div id="contactDetails" class="" style="display:none;width: 35%;float: right;text-align: left">
                 <ul style="text-align: left;">
                     <li>
-                        <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a style="margin-top:-2px" href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
+                        <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
                     </li>
                     <li>
                         <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}                       
@@ -508,10 +508,6 @@ h1{
                             <span class="subDetails"><b>Passport No.: </b></span>
                             <span>{{$candidateDetails['passport'] }}</span>
                         </div>
-  			<div style="float:left;width:33.333%">
-                            <span class="subDetails"><strong>Total Experience: </strong></span> 
-                            <span>{{ $candidateDetails['total_experience'] }} yrs</span> 
-                        </div>
                     </div>
                     <br>
                     <div style="display: inline-block;">
@@ -519,7 +515,10 @@ h1{
                             <span class="subDetails"><b>Current CTC: </b></span>
                             <span>{{$candidateDetails['ctc'] }} Lac</span> 
                         </div>
-                      
+                        <div style="float:left;width:33.333%">
+                            <span class="subDetails"><strong>Total Experience: </strong></span> 
+                            <span>{{ $candidateDetails['total_experience'] }} yrs</span> 
+                        </div>
                         
                     </div>
                 </article>

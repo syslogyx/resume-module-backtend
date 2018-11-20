@@ -24,4 +24,19 @@ class PdfGenerateController extends Controller
 		
 		
 	}
+	public function generatePdfWithoutContact($id) {
+		$json = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
+        if ($json){
+            view()->share('candidateDetails',$json);
+			$pdf = PDF::loadView('pdfviewwithoutcontact');
+			$ext = '.pdf';
+			$fileName = 'CV_Without_Contact_'.$json['name'].$ext;
+			$pdf->download($fileName);
+        }else{
+            return $this->dispatchResponse(400, "Something went wrong.", $json->errors());
+        }
+		
+		
+	}
+	
 }

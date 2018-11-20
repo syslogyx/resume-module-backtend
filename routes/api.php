@@ -86,6 +86,7 @@ $api->version("v1", function($api) {
     $api->get("add_particular", "App\Http\Controllers\FundParticularController@index");
 
     $api->get('generate_pdf/{id}', 'App\Http\Controllers\PdfGenerateController@generatePdf');
+    $api->get('generate_pdf_without_contact/{id}', 'App\Http\Controllers\PdfGenerateController@generatePdfWithoutContact');
 
     // candidate's api
     $api->get("candidate_details", "App\Http\Controllers\CandidateCtrl@index");
