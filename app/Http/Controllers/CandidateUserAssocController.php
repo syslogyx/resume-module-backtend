@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use App\CandidateUserAssoc;
 use App\Candidate;
 use App\User;
+use App\TechnicalInterviewResult;
 use DateTime;
 
 class CandidateUserAssocController extends BaseController
@@ -21,6 +22,7 @@ class CandidateUserAssocController extends BaseController
         $limit = $request->limit;
         $posted_data = Input::all();
         $query = CandidateUserAssoc::with('users','candidates');
+        // $query = CandidateUserAssoc::with('users','candidates','technical_result');
         //return $posted_data;
         if(Input::get()=="" || Input::get()==null ){
             $query->get();
@@ -29,6 +31,10 @@ class CandidateUserAssocController extends BaseController
         if(Input::get("user_id")){
             $query->where("user_id",Input::get("user_id"));
         } 
+
+        // if(Input::get("candidate_id")){
+        //     $query->where("candidate_id",Input::get("candidate_id"));
+        // } 
 
         if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
             $candidateDetails = $query->paginate($limit);
@@ -72,8 +78,8 @@ class CandidateUserAssocController extends BaseController
             if ($object->validate($datas)) {
                 $model = CandidateUserAssoc::insert($datas);
                 $candidateData = Candidate::find((int) $posted_data['candidate_id']);
-                $candidateData->status = 'Schedule';
-                $candidateData->save();
+                // $candidateData->status = 'Schedule';
+                // $candidateData->save();
                DB::commit();	       
                 if($model){
 	              return $this->dispatchResponse(200, "Interview scheduled Successfully...!!", $model);

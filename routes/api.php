@@ -115,11 +115,15 @@ $api->version("v1", function($api) {
 
     // Basic screening test Api
     $api->post("result/add", "App\Http\Controllers\BasicScreeningResultController@create");
+    
     // Basic screening test Api
     $api->post("assignInterviewer", "App\Http\Controllers\CandidateUserAssocController@assignInterviewerToCandidate");
 
     // CandidateUser Assoc
     $api->post("interview/filter", "App\Http\Controllers\CandidateUserAssocController@filterUserAssoc");
+
+    //candidate feedback api
+    $api->post("tech_feedback/add", "App\Http\Controllers\TechnicalInterviewResultController@create");
 
 });
 
