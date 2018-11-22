@@ -66,8 +66,13 @@ class User extends Authenticatable
         return $this->belongsTo('App\Role','role_id');    
     }
 
-    // public function candidate_user_assoc() {
-    //     return $this->belongsToMany('App\CandidateUserAssoc','user_id');    
-    // }
+    public function candidate_user_assoc() {
+        return $this->belongsToMany('App\CandidateUserAssoc','user_id');    
+    }
+
+    public function candidate_technical_result() {
+        // return $this->hasMany('App\TechnicalInterviewResult','user_id')->where('candidate_id','=', 10); 
+        return $this->hasMany('App\TechnicalInterviewResult','user_id'); 
+    }
 }
 

@@ -28,7 +28,8 @@ class JobController extends BaseController
 
         } else {
             
-            return $this->dispatchResponse(200, "No Records Found!!", $jobDescriptionData);
+            // return $this->dispatchResponse(200, "No Records Found!!", $jobDescriptionData);
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
     }
 

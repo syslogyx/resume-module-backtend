@@ -21,19 +21,31 @@ class CandidateUserAssocController extends BaseController
         $page = $request->page;
         $limit = $request->limit;
         $posted_data = Input::all();
-        $query = CandidateUserAssoc::with('users','candidates');
-        // $query = CandidateUserAssoc::with('users','candidates','technical_result');
-        //return $posted_data;
-        if(Input::get()=="" || Input::get()==null ){
-            $query->get();
-        }
+        $id=$posted_data['user_id'];
 
         if(Input::get("user_id")){
-            $query->where("user_id",Input::get("user_id"));
-        } 
+          $query = CandidateUserAssoc::with('users','candidates')->with(array('candidates.candidate_technical_result'=>function($que) use ($id){
+                    $que->where('user_id',$id)->get();
+                }))->where("user_id",$id); 
+        }else{
+              $query = CandidateUserAssoc::with('users','candidates')->with('candidates.candidate_technical_result');
+        }
 
-        // if(Input::get("candidate_id")){
-        //     $query->where("candidate_id",Input::get("candidate_id"));
+      
+            //     $que->where('user_id',$id)->get();
+            // })'users.candidate_technical_result');
+        // $query = CandidateUserAssoc::with('users','candidates')->with(array('candidates.candidate_technical_result'=>function($que) use ($id){
+            //     $que->where('user_id',$id)->get();
+            // }));
+
+        //return $posted_data;
+        // if(Input::get()=="" || Input::get()==null){
+        //     $query->get();
+        // }
+
+        // if(Input::get("user_id")){
+            
+        //     $query->where("user_id",Input::get("user_id"));
         // } 
 
         if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
@@ -46,7 +58,8 @@ class CandidateUserAssocController extends BaseController
         if ($candidateDetails->first()) {
             return $this->dispatchResponse(200, "",$candidateDetails);
         }else{
-            return $this->dispatchResponse(200, "No Records Found!!",null);
+            // return $this->dispatchResponse(404, "No Records Found!!",$candidateDetails);
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
 
     }
@@ -78,8 +91,8 @@ class CandidateUserAssocController extends BaseController
             if ($object->validate($datas)) {
                 $model = CandidateUserAssoc::insert($datas);
                 $candidateData = Candidate::find((int) $posted_data['candidate_id']);
-                // $candidateData->status = 'Schedule';
-                // $candidateData->save();
+                $candidateData->status = 'Schedule';
+                $candidateData->save();
                DB::commit();	       
                 if($model){
 	              return $this->dispatchResponse(200, "Interview scheduled Successfully...!!", $model);

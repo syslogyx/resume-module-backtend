@@ -97,12 +97,16 @@ class Candidate extends Model
         return $this->hasMany('App\CandidateDocument');    
     }
 
+    public function candidate_technical_result() {
+        return $this->hasMany('App\TechnicalInterviewResult','candidate_id'); 
+    }
+
     public function job_description() {
         return $this->belongsTo('App\JobDescription','job_description_id');    
     }
 
-    // public function candidate_user_assoc() {
-    //     return $this->belongsToMany('App\CandidateUserAssoc','candidate_id');    
-    // }
+    public function candidate_user_assoc() {
+        return $this->belongsToMany('App\CandidateUserAssoc','candidate_id');    
+    }
 
 }

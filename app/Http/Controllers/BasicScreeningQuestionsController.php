@@ -29,7 +29,8 @@ class BasicScreeningQuestionsController extends BaseController
 
         } else {
             
-            return $this->dispatchResponse(200, "No Records Found!!", $questionsData);
+            // return $this->dispatchResponse(200, "No Records Found!!", $questionsData);
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
     }
 

@@ -54,7 +54,5 @@ class CandidateUserAssoc extends Model
         return $this->belongsTo('App\Candidate','candidate_id');
     }
 
-    public function technical_result() {
-        return $this->belongsTo('App\TechnicalInterviewResult','candidate_id');
-    }
+   
 }

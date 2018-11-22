@@ -77,7 +77,8 @@ class CandidateCtrl extends BaseController
         if ($candidateData->first()) {
             return $this->dispatchResponse(200, "",$candidateData);
         }else{
-            return $this->dispatchResponse(200, "No Records Found!!",null);
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+            // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
         }
 
   }
