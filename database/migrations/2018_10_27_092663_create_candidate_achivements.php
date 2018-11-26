@@ -17,6 +17,7 @@ class CreateCandidateAchivements extends Migration
             $table->increments('id');
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
+            $table->string('achievement_type')->nullable();  
             $table->string('achivement')->nullable();  
             $table->string('timestamp')->nullable();
             $table->timestamps();

@@ -15,7 +15,7 @@ class Candidate extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'mobile_no','corresponding_address','permanent_address','date_of_birth','pan_number','passport','objective','summary','status','total_experience','ctc','expired_on','job_description_id','unique_token','timestamp'
+        'first_name','middle_name','last_name','email','opprtunity_for','gender','marital_status','mobile_no','corresponding_address','permanent_address','date_of_birth','pan_number','passport','objective','summary','status','total_experience','ctc','expired_on','job_description_id','unique_token','timestamp','indian_languages','foreign_languages'
     ];
 
     /**
@@ -32,8 +32,15 @@ class Candidate extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     private $rules = array(
-        'name' => 'required',
+        'first_name' => 'required',
+        'middle_name' => 'required',
+        'last_name' => 'required',
         'email' => 'required|unique:candidate_details,email,',
+        'opprtunity_for' => 'required',
+        'gender' => 'required',
+        'marital_status' => 'required',
+        'indian_languages' => 'required',
+        'foreign_languages' => 'required',
         'mobile_no' => 'required|unique:candidate_details,mobile_no',
         'corresponding_address' => 'required',
         'permanent_address' => 'required',

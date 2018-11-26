@@ -15,7 +15,7 @@ class CandidateAchivements extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'achivement','timestamp'
+        'candidate_id', 'achievement_type','achivement','timestamp'
     ];
 
     /**
@@ -33,6 +33,7 @@ class CandidateAchivements extends Model
 
     private $rules = array(
         'candidate_id' => 'required',
+        'achievement_type' => 'required',
         'achivement' => 'required',
         'timestamp' => 'required'
     );
