@@ -197,7 +197,6 @@ class CandidateCtrl extends BaseController
   */
   function viewCandiadte($id) {
       $model = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
-
       if ($model){
           return $this->dispatchResponse(200, "Records Found...!!", $model);
       }else{
