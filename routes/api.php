@@ -95,6 +95,7 @@ $api->version("v1", function($api) {
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
     $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
+    $api->put("candidate/{id}/update", "App\Http\Controllers\CandidateCtrl@update");
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");

@@ -24,9 +24,9 @@ class BasicScreeningResultController extends BaseController
         DB::beginTransaction();
         try { 
             $objectResult = new BasicScreeningResults();
-		    
+		    // return $posted_data['result_data'];
             if ($objectResult->validate($posted_data['result_data'])) {
-                $model = DB::table('basic_screening_result')->insert($posted_data['result_data']);
+                $model = BasicScreeningResults::insert($posted_data['result_data']);
                 $candidateData = Candidate::find((int) $candidateId);
                 $candidateData->status = $status;
 				$candidateData->save();

@@ -22,12 +22,12 @@ class TechnicalInterviewResultController extends BaseController
             $object = new TechnicalInterviewResult();
             if ($object->validate($posted_data)) {
                 $model = TechnicalInterviewResult::create($posted_data);
-                // $candidateData = Candidate::find((int) $posted_data['candidate_id']);
-                // $candidateData->status = $posted_data['status'];
-                // $candidateData->save();
+                $candidateData = Candidate::find((int) $posted_data['candidate_id']);
+                $candidateData->status = $posted_data['status'];
+                $candidateData->save();
                 DB::commit();
                 if($model)
-                    return $this->dispatchResponse(200, "Question Created Successfully...!!", $model);
+                    return $this->dispatchResponse(200, "Saved Successfully...!!", $model);
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400, "Something went wrong.", $object->errors());

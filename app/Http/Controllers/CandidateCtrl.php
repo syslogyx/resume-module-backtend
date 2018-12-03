@@ -63,15 +63,24 @@ class CandidateCtrl extends BaseController
             $query->get();
         }
 
-        if(Input::get("job_description_id")){
-            $query->where("job_description_id",Input::get("job_description_id"));
-        }        
+        if(isset($posted_data["job_description_id"])){
+            $query->where("job_description_id",$posted_data["job_description_id"]);
+        }
+        
+        if(isset($posted_data["total_experience"])){
+            $query->where("total_experience",$posted_data["total_experience"]);
+        }  
+
+        if(isset($posted_data["from_ctc"]) && isset($posted_data["to_ctc"])){
+          $query->where('ctc', '>=', $posted_data["from_ctc"]);
+          $query->where('ctc', '<=', $posted_data["to_ctc"]);        
+        }
 
         if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
-            $candidateData = $query->paginate($limit);
+            $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);
         }
         else{
-            $candidateData = $query->paginate(50);
+            $candidateData = $query->orderBy('created_at', 'DESC')->paginate(50);
         }
 
         if ($candidateData->first()) {
@@ -89,10 +98,10 @@ class CandidateCtrl extends BaseController
 	function create(Request $request) {
     // $type=$request->type;
     // if($type =='data'){
-    $posted_data = Input::all();
-
-    DB::beginTransaction();
     try {
+      $posted_data = Input::all();
+
+      DB::beginTransaction();
         
         $objectCandidate = new Candidate();
 
@@ -139,6 +148,9 @@ class CandidateCtrl extends BaseController
                 foreach ($posted_data["industryExperiance"] as &$row2) {
                    $row2["candidate_id"] = $model->id;
                    $row2["timestamp"]=$currentTimestamp;
+                   unset ($row2["languages"]);
+                   unset ($row2["tools"]);
+                   unset ($row2["project_descriptions"]);
                    
                 }
                 //to store data in candidate 'industrial_experience' table
@@ -204,18 +216,15 @@ class CandidateCtrl extends BaseController
       }
   }
 
-  function checkTokenExit($token){
-       
-        $uniqueToken = User::where('unique_token','=',$token)->pluck('unique_token');
-        if(count($uniqueToken)>0){
-            return $uniqueToken=$uniqueToken[0];
-
-        }else{
-            $uniqueToken=User::where('name','Admin')->pluck('unique_token');
-            return $uniqueToken[0];
-        }
-      
-    }
+  function checkTokenExit($token){       
+    $uniqueToken = User::where('unique_token','=',$token)->pluck('unique_token');
+    if(count($uniqueToken)>0){
+        return $uniqueToken=$uniqueToken[0];
+    }else{
+        $uniqueToken=User::where('name','Admin')->pluck('unique_token');
+        return $uniqueToken[0];
+    }      
+  }
 
   /*
   * To save uploaded resume file in db
@@ -258,6 +267,102 @@ class CandidateCtrl extends BaseController
       $file = public_path('/doc/').$data['file_name'];
       $headers = array('Content-Type: application/pdf','Content-Type: application/msword');
       return Response::download($file, $data['file_name'],$headers);
+  }
+
+  public function update($id){
+    try {
+      $posted_data = Input::all();
+        //DB::beginTransaction();
+        $model = Candidate::find((int) $id);
+        // return $posted_data;
+        $currentTimestamp = $posted_data['timestamp'];
+          if ($model->validate($posted_data)) {                         
+              if ($model->update($posted_data)){
+                // to check data existing in candidate table or not if exist then store to another tables
+                if($model->id != null){
+
+                   $candidate_education = new CandidateQualification();
+                  //to delete previous data and store new data in candidate 'educationl_details' table
+                  CandidateQualification::where('timestamp', '=', $currentTimestamp)->delete();
+                  foreach ($posted_data["educationalDetails"] as &$row) {
+                       unset ($row["qualificationName"]);
+                       
+                       $row["candidate_id"] = $model->id;
+                       $row["timestamp"]=$currentTimestamp;
+                  }
+                    //to store data in candidate 'educationl_details' table
+                    CandidateQualification::insert($posted_data["educationalDetails"]);
+
+                    $candidate_achivements = new CandidateAchivements();
+                    //to delete previous data and store new data in candidate 'other_achievements' table
+                    CandidateAchivements::where('timestamp', '=', $currentTimestamp)->delete();
+
+                    foreach ($posted_data["achivementDetails"] as &$row1) {
+                       $row1["candidate_id"] = $model->id;
+                       $row1["timestamp"]=$currentTimestamp;
+                      
+                    }
+                    //to store data in candidate 'other_achievements' table
+                    CandidateAchivements::insert($posted_data["achivementDetails"]);
+                    
+                    $candidate_industrial_experiance = new CandidateIndustrialExperiance();
+                    //to delete previous data and store new data in candidate 'industrial_experience' table
+                    CandidateIndustrialExperiance::where('timestamp', '=', $currentTimestamp)->delete();
+
+                    foreach ($posted_data["industryExperiance"] as &$row2) {
+                       $row2["candidate_id"] = $model->id;
+                       $row2["timestamp"]=$currentTimestamp;
+                       unset ($row2["languages"]);
+                       unset ($row2["tools"]);
+                       unset ($row2["project_descriptions"]);
+                    }
+                    //to store data in candidate 'industrial_experience' table
+                    CandidateIndustrialExperiance::insert($posted_data["industryExperiance"]);
+
+                    $candidate_technical_skill= new CandidateTechnicalSkill();
+                    //to delete previous data and store new data in candidate 'educationl_details' table
+                    CandidateTechnicalSkill::where('timestamp', '=', $currentTimestamp)->delete();
+
+                    foreach ($posted_data["technicalSkill"] as &$row3) {
+
+                       $row3["candidate_id"] = $model->id;
+                       $row3["timestamp"]=$currentTimestamp;
+                       $row3["technology_experience"]=$row3["relevanceYearExperience"].'.'.$row3["relevanceMonthExperience"];
+
+                       unset ($row3["relevanceYearExperience"]);
+                       unset ($row3["relevanceMonthExperience"]);
+                      
+                    }
+                    //to store data in candidate 'technical_skills' table
+                    CandidateTechnicalSkill::insert($posted_data["technicalSkill"]);
+
+                    $candidate_hobbies= new CandidateHobbies();
+                    //to delete previous data and store new data in candidate 'educationl_details' table
+                    CandidateHobbies::where('timestamp', '=', $currentTimestamp)->delete();
+
+                    foreach ($posted_data["hobbyDetails"] as &$row4) {
+
+                       $row4["candidate_id"] = $model->id;
+                       $row4["timestamp"]=$currentTimestamp;
+                       
+                    }
+                    //to store data in candidate 'hobbies' table
+                    CandidateHobbies::insert($posted_data["hobbyDetails"]);
+                }
+
+                DB::commit();
+                return $this->dispatchResponse(200, "Candidate Details Updated Successfully...!!", $model);
+
+              }
+          } else {
+              DB::rollback();
+              return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+          }
+
+    } catch (\Exception $e) {
+       // DB::rollback();
+        throw $e;
+    }
   }
    
 }

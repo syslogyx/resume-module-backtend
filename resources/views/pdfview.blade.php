@@ -435,11 +435,14 @@ h1{
   
     <div class="" style="display:inline-block;">          
         <section style="border-top:0px; margin-left: 50px">
-            <div style="width: 65%; float: left;padding-top: 25px">            
-                <h1 class="set-title-color" style="font-size: 25px;"><strong>{{ $candidateDetails['name'] }}</strong></h1> 
+            <div style="width: 50%; float: left;">            
+                <h1 class="set-title-color" style="font-size: 16px;"><strong>{{ $candidateDetails['first_name'] }}<br>
+                {{ $candidateDetails['middle_name'] }}<br>
+                {{ $candidateDetails['last_name'] }}<br>
+                </strong></h1> 
             </div>
            
-            <div id="contactDetails" class="" style="width: 35%;float: right;text-align: left">
+            <div id="contactDetails" class="" style="width: 50%;float: right;text-align: left">
                 <ul style="text-align: left;">
                     <li>
                         <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a style="margin-top:-2px" href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
@@ -463,7 +466,7 @@ h1{
     </div>
     <section style="border-top:1px solid black; margin-left: 60px; margin-right: 60px;"></section>
     <div id="mainArea" class="quickFade delayFive" style="margin-left: 15px; margin-right: 15px;">
-        <section style="border-top:0px">
+        <section style="border-top:0px;display: none">
                 <div class="sectionTitle set-title-color">
                     <h1>Objective</h1>
                 </div>
@@ -476,13 +479,24 @@ h1{
             <div class="clear"></div>
         </section>
 
-        <section>
+        <section style="border-top:0px">
+                <article>
+                    <span class="subDetails"><b>Job Title: </b></span>
+                    <span>{{ $candidateDetails['job_description']['title'] }}</span>
+                </article>  
+                <br> 
                 <div class="sectionTitle set-title-color">
                     <h1>Summary</h1>
                 </div>
                 <div class="sectionContent">
                     <article>
-                        <p>{{ $candidateDetails['summary'] }}</p>
+                        <ul  class="keySkills">
+                            @foreach(json_decode(@$candidateDetails['summary']) as $sum)   
+                                <li>
+                                    {{ @$sum }}
+                                </li>                        
+                            @endforeach
+                        </ul>
                     </article>
                     <br>                   
                 </div>
@@ -508,7 +522,7 @@ h1{
                             <span class="subDetails"><b>Passport No.: </b></span>
                             <span>{{$candidateDetails['passport'] }}</span>
                         </div>
-  			<div style="float:left;width:33.333%">
+  			           <div style="float:left;width:33.333%">
                             <span class="subDetails"><strong>Total Experience: </strong></span> 
                             <span>{{ $candidateDetails['total_experience'] }} yrs</span> 
                         </div>
@@ -519,8 +533,6 @@ h1{
                             <span class="subDetails"><b>Current CTC: </b></span>
                             <span>{{$candidateDetails['ctc'] }} Lac</span> 
                         </div>
-                      
-                        
                     </div>
                 </article>
                 <br>
@@ -570,7 +582,7 @@ h1{
                 <article>  
                     <ul class="keySkills">
                     @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill) 
-                        <li><strong>{{ $skill['technology_name'] }} </strong>  </li>
+                        <li>{{ $skill['technology_name'] }} </li>
                     @endforeach
                     </ul>
                 </article>
@@ -589,8 +601,31 @@ h1{
                                 <li class="subDetails"><b>Project Title: </b> {{ $indExp['project_name'] }}</li>
                                 <li class="subDetails"><b>Company Name: </b> {{ $indExp['company_name'] }}</li>
                                 <li class="subDetails"><b>Role: </b> {{ $indExp['role_in_project'] }}</li>
-                                <li class="subDetails"><b>Languages/ Tools Used: </b> {{ $indExp['language_or_tools'] }}</li>  
-                                <li class="subDetails"><b>Project Description: </b> </li><p> {{ $indExp['project_description'] }} </p> 
+                                <li class="subDetails"><b>Languages Used: </b> 
+                                </li>
+                                    <ul  class="keySkills">
+                                        @foreach(@$indExp['languages'] as $lang)   
+                                            <li>
+                                                {{ @$lang }}
+                                            </li>                        
+                                        @endforeach
+                                    </ul>
+                                <li class="subDetails"><b>Tools Used: </b> </li>  
+                                    <ul  class="keySkills">
+                                        @foreach(@$indExp['tools'] as $tool)   
+                                            <li>
+                                                {{ @$tool }}
+                                            </li>                        
+                                        @endforeach
+                                    </ul>
+                                <li class="subDetails"><b>Project Description: </b> </li>
+                                    <ul  class="keySkills">
+                                        @foreach(json_decode(@$indExp['project_description']) as $proj_des)   
+                                            <li>
+                                                {{ @$proj_des }}
+                                            </li>                        
+                                        @endforeach
+                                    </ul>
                                 <br>
                             @endforeach
                         </ul>       

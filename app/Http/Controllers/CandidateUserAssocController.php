@@ -22,7 +22,7 @@ class CandidateUserAssocController extends BaseController
         $limit = $request->limit;
         $posted_data = Input::all();
         $id=$posted_data['user_id'];
-
+        
         if(Input::get("user_id")){
           $query = CandidateUserAssoc::with('users','candidates')->with(array('candidates.candidate_technical_result'=>function($que) use ($id){
                     $que->where('user_id',$id)->get();

@@ -13,24 +13,70 @@ class PdfGenerateController extends Controller
 	public function generatePdf($id) {
 		$json = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
         if ($json){
+
+        	for ($i=0; $i < count($json['candidate_ind_exp']); $i++) { 
+
+        		$languageToolsUsedArray = json_decode($json['candidate_ind_exp'][$i]['language_or_tools']);
+
+        		$languagesArray = $languageToolsUsedArray[0];
+                $toolsArray = $languageToolsUsedArray[1];
+
+                $langStringSplit1 = explode("[",$languagesArray);
+                $langStringSplit2 = explode("]",$langStringSplit1[1]);
+                $finalLanguagesArray = explode(",",$langStringSplit2[0]);
+
+
+                $toolStringSplit1 = explode("[",$languagesArray);
+                $toolStringSplit2 = explode("]",$toolStringSplit1[1]);
+                $finalToolsArray = explode(",",$toolStringSplit2[0]);
+
+                $json['candidate_ind_exp'][$i]['languages'] = $finalLanguagesArray;
+                $json['candidate_ind_exp'][$i]['tools'] = $finalToolsArray;
+        	}
+
             view()->share('candidateDetails',$json);
 			$pdf = PDF::loadView('pdfview');
 			$ext = '.pdf';
-			$fileName = 'CV_'.$json['name'].$ext;
+			$candidate_name = $json['first_name'].$json['middle_name'].$json['last_name'];
+			$jdTitle = $json['job_description']['title'];
+			$jdExperience = $json['job_description']['experience'];
+			$fileName = 'CV_'.$candidate_name.'_'.$jdTitle.'_'.$jdExperience.$ext;
 			$pdf->download($fileName);
         }else{
             return $this->dispatchResponse(400, "Something went wrong.", $json->errors());
         }
-		
-		
 	}
+
 	public function generatePdfWithoutContact($id) {
 		$json = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
         if ($json){
+        	
+        	for ($i=0; $i < count($json['candidate_ind_exp']); $i++) { 
+
+        		$languageToolsUsedArray = json_decode($json['candidate_ind_exp'][$i]['language_or_tools']);
+
+        		$languagesArray = $languageToolsUsedArray[0];
+                $toolsArray = $languageToolsUsedArray[1];
+
+                $langStringSplit1 = explode("[",$languagesArray);
+                $langStringSplit2 = explode("]",$langStringSplit1[1]);
+                $finalLanguagesArray = explode(",",$langStringSplit2[0]);
+
+
+                $toolStringSplit1 = explode("[",$languagesArray);
+                $toolStringSplit2 = explode("]",$toolStringSplit1[1]);
+                $finalToolsArray = explode(",",$toolStringSplit2[0]);
+
+                $json['candidate_ind_exp'][$i]['languages'] = $finalLanguagesArray;
+                $json['candidate_ind_exp'][$i]['tools'] = $finalToolsArray;
+        	}
             view()->share('candidateDetails',$json);
 			$pdf = PDF::loadView('pdfviewwithoutcontact');
 			$ext = '.pdf';
-			$fileName = 'CV_Without_Contact_'.$json['name'].$ext;
+			$candidate_name = $json['first_name'].$json['middle_name'].$json['last_name'];
+			$jdTitle = $json['job_description']['title'];
+			$jdExperience = $json['job_description']['experience'];
+			$fileName = 'CV_Without_Contact_'.$candidate_name.'_'.$jdTitle.'_'.$jdExperience.$ext;
 			$pdf->download($fileName);
         }else{
             return $this->dispatchResponse(400, "Something went wrong.", $json->errors());

@@ -15,7 +15,7 @@ class BasicScreeningResults extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id','question_id', 'answer','status','refereral_token'
+        'candidate_id','question_id', 'answer','status','refereral_token','remark','duration_of_interview','observation'
     ];
 
     /**
@@ -32,14 +32,17 @@ class BasicScreeningResults extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     private $rules = array(
-    	'candidate_id.*' => 'required',
-    	'question_id.*' => 'required',
+        'candidate_id.*' => 'required',
+        'question_id.*' => 'required',
         'refereral_token.*' => 'required',
         'answer.*' => 'nullable',
-        'status.*' => 'nullable',
-        'timestamp' => 'nullable',
-
+        'remark.*' => 'nullable',
+        'duration_of_interview.*' => 'required',
+        'observation.*' => 'required',
+        'status.*' => 'required',
+        'timestamp' => 'nullable'
     );
+
     private $errors;
 
     public function validate($data) {
@@ -56,7 +59,6 @@ class BasicScreeningResults extends Model
         return $this->errors;
     }
 
-    
     public function candidates() {
         return $this->belongsTo('App\Candidate');
     }

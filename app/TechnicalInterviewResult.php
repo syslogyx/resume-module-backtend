@@ -13,7 +13,7 @@ class TechnicalInterviewResult extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'user_id','technical_round','feedback','status'
+        'candidate_id', 'user_id','technical_round','feedback','status','duration_of_interview','observation'
     ];
     
     protected $table = 'technical_interview_result';
@@ -25,6 +25,8 @@ class TechnicalInterviewResult extends Model
         'technical_round' => 'required',
         'feedback' => 'required',
         'status' => 'required',
+        'duration_of_interview' => 'required',
+        'observation' => 'required',
         'timestamp' => 'nullable'
     );
     private $errors;

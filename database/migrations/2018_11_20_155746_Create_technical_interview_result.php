@@ -20,6 +20,8 @@ class CreateTechnicalInterviewResult extends Migration
             $table->string('technical_round')->nullable();
             $table->string('feedback')->nullable();
             $table->string('status')->nullable();
+            $table->string('duration_of_interview')->nullable();
+            $table->text('observation')->nullable();
             $table->timestamps();
         });
         Schema::table('technical_interview_result', function($table) {

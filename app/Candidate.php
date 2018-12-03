@@ -41,7 +41,7 @@ class Candidate extends Model
         'marital_status' => 'required',
         'indian_languages' => 'required',
         'foreign_languages' => 'required',
-        'mobile_no' => 'required|unique:candidate_details,mobile_no',
+        'mobile_no' => 'required|unique:candidate_details,mobile_no,',
         'corresponding_address' => 'required',
         'permanent_address' => 'required',
         'date_of_birth' => 'nullable',
@@ -55,9 +55,7 @@ class Candidate extends Model
         'job_description_id' => 'required',
         'expired_on' => 'nullable',
         'unique_token' => 'nullable',
-        'timestamp' => 'nullable',
-
-
+        'timestamp' => 'nullable'
     );
     private $errors;
 
@@ -66,7 +64,6 @@ class Candidate extends Model
             $this->rules['email'] .= $this->id;
             $this->rules['mobile_no'] .= $this->id;
             $this->rules['pan_number'] .= $this->id;
-
         }
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
