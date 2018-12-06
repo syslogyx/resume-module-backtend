@@ -15,7 +15,7 @@ class Candidate extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name','middle_name','last_name','email','opprtunity_for','gender','marital_status','mobile_no','corresponding_address','permanent_address','date_of_birth','pan_number','passport','objective','summary','status','total_experience','ctc','expired_on','job_description_id','unique_token','timestamp','indian_languages','foreign_languages'
+        'first_name','middle_name','last_name','email','opprtunity_for','gender','marital_status','mobile_no','corresponding_address','permanent_address','date_of_birth','pan_number','passport','objective','summary','status','total_experience','ctc','expired_on','job_description_id','unique_token','timestamp','indian_languages','foreign_languages','currency_unit'
     ];
 
     /**
@@ -41,6 +41,7 @@ class Candidate extends Model
         'marital_status' => 'required',
         'indian_languages' => 'required',
         'foreign_languages' => 'required',
+        'currency_unit' => 'nullable',
         'mobile_no' => 'required|unique:candidate_details,mobile_no,',
         'corresponding_address' => 'required',
         'permanent_address' => 'required',

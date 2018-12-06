@@ -21,14 +21,23 @@ class CandidateUserAssoc extends Model
     protected $casts = [
         'schedule_time' => 'date:hh:mm'
     ];
+    // private $rules = array(
+    //     'candidate_id.*' => 'required',
+    //     'user_id.*' => 'required',
+    //     'technical_round.*' => 'required',
+    //     'schedule_date.*' => 'required',
+    //     'schedule_time.*' => 'required',
+    //     'mode_of_interview.*' => 'required',
+    //     'timestamp.*' => 'nullable'
+    // );
     private $rules = array(
-        'candidate_id.*' => 'required',
-        'user_id.*' => 'required',
-        'technical_round.*' => 'required',
-        'schedule_date.*' => 'required',
-        'schedule_time.*' => 'required',
-        'mode_of_interview.*' => 'required',
-        'timestamp.*' => 'nullable'
+        'candidate_id' => 'required',
+        'user_id' => 'required',
+        'technical_round' => 'required',
+        'schedule_date' => 'required',
+        'schedule_time' => 'required',
+        'mode_of_interview' => 'required',
+        'timestamp' => 'nullable'
     );
     private $errors;
 

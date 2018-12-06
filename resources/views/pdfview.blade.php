@@ -531,7 +531,7 @@ h1{
                     <div style="display: inline-block;">
                         <div style="display: none;float:left;width:33.333%">
                             <span class="subDetails"><b>Current CTC: </b></span>
-                            <span>{{$candidateDetails['ctc'] }} Lac</span> 
+                            <span>{{$candidateDetails['ctc'] }} {{$candidateDetails['currency_unit']}}</span> 
                         </div>
                     </div>
                 </article>

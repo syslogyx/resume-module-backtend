@@ -70,26 +70,27 @@ class CandidateUserAssocController extends BaseController
     **/
     public function assignInterviewerToCandidate(){
     	$posted_data = Input::all();
-    	$data = [];
-        if($posted_data['users_list'] != null){
-        	foreach ($posted_data['users_list'] as $key => $value) {
-                $data["user_id"] = $value;
-                $data["candidate_id"] = $posted_data['candidate_id'];
-                $data["technical_round"] = $posted_data['technical_round'];
-                $data["schedule_date"] = $posted_data['schedule_date'];
-                $scheduledTime = preg_replace('/\s*:\s*/', ':', $posted_data['schedule_time']);                    
-                $data["schedule_time"] = date("H:i", strtotime($scheduledTime));
-                $data["mode_of_interview"] = $posted_data['mode_of_interview'];
-                $data["created_at"] = new DateTime();
-                $data["updated_at"] =  new DateTime();
-                $datas[] = $data;            
-        	}
-        }
+        //provision for multiple interviewers
+        // $data = [];
+        // if($posted_data['users_list'] != null){
+        // 	foreach ($posted_data['users_list'] as $key => $value) {
+        //         $data["user_id"] = $value;
+        //         $data["candidate_id"] = $posted_data['candidate_id'];
+        //         $data["technical_round"] = $posted_data['technical_round'];
+        //         $data["schedule_date"] = $posted_data['schedule_date'];
+        //         $scheduledTime = preg_replace('/\s*:\s*/', ':', $posted_data['schedule_time']);                    
+        //         $data["schedule_time"] = date("H:i", strtotime($scheduledTime));
+        //         $data["mode_of_interview"] = $posted_data['mode_of_interview'];
+        //         $data["created_at"] = new DateTime();
+        //         $data["updated_at"] =  new DateTime();
+        //         $datas[] = $data;
+        // 	}
+        // }
     	DB::beginTransaction();
         try { 
             $object = new CandidateUserAssoc();			    
-            if ($object->validate($datas)) {
-                $model = CandidateUserAssoc::insert($datas);
+            if ($object->validate($posted_data)) {
+                $model = CandidateUserAssoc::insert($posted_data);
                 $candidateData = Candidate::find((int) $posted_data['candidate_id']);
                 $candidateData->status = 'Schedule';
                 $candidateData->save();

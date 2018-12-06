@@ -24,6 +24,7 @@ class CreateCandidate extends Migration
             $table->string('marital_status')->nullable();
             $table->string('indian_languages')->nullable();
             $table->string('foreign_languages')->nullable();
+            $table->string('currency_unit')->nullable();
             $table->string('mobile_no')->nullable();
             $table->string('corresponding_address')->nullable();
             $table->string('permanent_address')->nullable();
