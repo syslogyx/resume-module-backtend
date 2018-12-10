@@ -122,4 +122,8 @@ class Candidate extends Model
         return $this->belongsTo('App\User','user_id');    
     }
 
+    public function candidate_jd_assocs() {
+        return $this->hasMany('App\CandidateJdAssoc','candidate_id');
+    }
+
 }

@@ -15,14 +15,9 @@ use App\CandidateHobbies;
 use App\CandidateDocument;
 use App\JobDescription;
 use App\CandidateUserAssoc;
+use App\CandidateJdAssoc;
 use App\TechnicalInterviewResult;
 use App\User;
-
-// use Illuminate\Support\Facades\App;
-// use Mnvx\Unoconv\ConverterInterface;
-// use Mnvx\Unoconv\Format;
-// use Mnvx\Unoconv\UnoconvParameters;
-// use Illuminate\Contracts\Routing\ResponseFactory;
 use Response;
 
 class CandidateCtrl extends BaseController
@@ -55,42 +50,42 @@ class CandidateCtrl extends BaseController
   * API to fetch data according applied filter.
   */
   function filterCandidates(Request $request){
-        $page = $request->page;
-        $limit = $request->limit;
-        $posted_data = Input::all();
-        // return $request;
-        $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users');
-        
-        if(Input::get()=="" || Input::get()==null ){
-            $query->get();
-        }
+      $page = $request->page;
+      $limit = $request->limit;
+      $posted_data = Input::all();
+      // return $request;
+      $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users');
+      
+      if(Input::get()=="" || Input::get()==null ){
+          $query->get();
+      }
 
-        if(isset($posted_data["job_description_id"])){
-            $query->where("job_description_id",$posted_data["job_description_id"]);
-        }
-        
-        if(isset($posted_data["total_experience"])){
-            $query->where("total_experience",$posted_data["total_experience"]);
-        }  
+      if(isset($posted_data["job_description_id"])){
+          $query->where("job_description_id",$posted_data["job_description_id"]);
+      }
+      
+      if(isset($posted_data["total_experience"])){
+          $query->where("total_experience",$posted_data["total_experience"]);
+      }  
 
-        if(isset($posted_data["from_ctc"]) && isset($posted_data["to_ctc"])){
-          $query->where('ctc', '>=', $posted_data["from_ctc"]);
-          $query->where('ctc', '<=', $posted_data["to_ctc"]);        
-        }
+      if(isset($posted_data["from_ctc"]) && isset($posted_data["to_ctc"])){
+        $query->where('ctc', '>=', $posted_data["from_ctc"]);
+        $query->where('ctc', '<=', $posted_data["to_ctc"]);        
+      }
 
-        if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
-            $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);
-        }
-        else{
-            $candidateData = $query->orderBy('created_at', 'DESC')->paginate(50);
-        }
+      if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
+          $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);
+      }
+      else{
+          $candidateData = $query->orderBy('created_at', 'DESC')->paginate(50);
+      }
 
-        if ($candidateData->first()) {
-            return $this->dispatchResponse(200, "",$candidateData);
-        }else{
-            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
-            // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
-        }
+      if ($candidateData->first()) {
+          return $this->dispatchResponse(200, "",$candidateData);
+      }else{
+          return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+          // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
+      }
 
   }
 
@@ -124,8 +119,10 @@ class CandidateCtrl extends BaseController
             $model = Candidate::create($posted_data);
             
             //to check data existing in candidate table or not if exist then store to another tables
+            $candidateJdData = [];
             if($model->id != null){
-
+                $candidateJdData['job_description_id'] = $model->job_description_id;
+                $candidateJdData['candidate_id'] = $model->id;
                 $candidate_education = new CandidateQualification();
                
                 foreach ($posted_data["educationalDetails"] as &$row) {
@@ -183,6 +180,9 @@ class CandidateCtrl extends BaseController
                 }
                 //to store data in candidate 'hobbies' table
                 CandidateHobbies::insert($posted_data["hobbyDetails"]);
+
+                $candidate_jd_assoc = new CandidateJdAssoc();
+                CandidateJdAssoc::create($candidateJdData);
             }
             DB::commit();
             if($model){              
@@ -281,20 +281,25 @@ class CandidateCtrl extends BaseController
           if ($model->validate($posted_data)) {                         
               if ($model->update($posted_data)){
                 // to check data existing in candidate table or not if exist then store to another tables
+                $candidateJdData = [];
                 if($model->id != null){
+                  $candidateJdData['job_description_id'] = $model->job_description_id;
+                  $candidateJdData['candidate_id'] = $model->id;
+                  CandidateJdAssoc::create($candidateJdData);
+                  
+                  $candidate_education = new CandidateQualification();
 
-                   $candidate_education = new CandidateQualification();
-                  //to delete previous data and store new data in candidate 'educationl_details' table
-                  CandidateQualification::where('timestamp', '=', $currentTimestamp)->delete();
-                  foreach ($posted_data["educationalDetails"] as &$row) {
-                       unset ($row["qualificationName"]);
-                       
-                       $row["candidate_id"] = $model->id;
-                       $row["timestamp"]=$currentTimestamp;
-                  }
+                    //to delete previous data and store new data in candidate 'educationl_details' table
+                    CandidateQualification::where('timestamp', '=', $currentTimestamp)->delete();
+                    foreach ($posted_data["educationalDetails"] as &$row) {
+                         unset ($row["qualificationName"]);
+                         
+                         $row["candidate_id"] = $model->id;
+                         $row["timestamp"]=$currentTimestamp;
+                    }
+
                     //to store data in candidate 'educationl_details' table
                     CandidateQualification::insert($posted_data["educationalDetails"]);
-
                     $candidate_achivements = new CandidateAchivements();
                     //to delete previous data and store new data in candidate 'other_achievements' table
                     CandidateAchivements::where('timestamp', '=', $currentTimestamp)->delete();
@@ -390,35 +395,43 @@ class CandidateCtrl extends BaseController
         }
   }
 
-  // public function getJDListByCandidateId($candidateId){
-  //   $model = Candidate::find((int) $candidateId);
-  //   $jdId = $model['job_description_id'];
-  //   $jdData = JobDescription::where('id','!=',$jdId)->get();
-  //     if($jdData){
-  //         return $this->dispatchResponse(200, "Data", $jdData);
-  //     } else {            
-  //         return $this->dispatchResponse(200, "No Records Found!!", $jdData);
-  //     }
-  // }
+  public function getJDListByCandidateId($candidateId){
+    $oldJdIdArray = CandidateJdAssoc::distinct()->select('job_description_id')->where('candidate_id', '=', $candidateId)->get()->pluck('job_description_id')->toArray();
+    $getAllJdIdArray = JobDescription::get()->pluck('id')->toArray();
+    $ids = array_merge(array_diff($oldJdIdArray, $getAllJdIdArray), array_diff($getAllJdIdArray, $oldJdIdArray));
+    $newJdList = JobDescription::whereIn('id', $ids)->get();
+      if($newJdList){
+          return $this->dispatchResponse(200, "Data", $newJdList);
+      } else {            
+          return $this->dispatchResponse(400, "No Records Found!!", $newJdList);
+      }
+  }
 
-  // public function changeCandidateJd($candidateId){
-  //   $model = Candidate::find((int) $candidateId);
-  //   if ($model){
-  //         try{
-  //             DB::beginTransaction();
-  //             if ($model->update($posted_data)) {
-  //                 DB::commit();
-  //                 return $this->dispatchResponse(200, "Job Descrption Updated Successfully...!!", $model);
-  //             } else {
-  //                 DB::rollback();
-  //                 return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
-  //             }
-  //         } catch (\Exception $e) {
-  //             DB::rollback();
-  //             throw $e;
-  //         }
-  //     }
-
-  // }
+  public function changeCandidateJd($candidateId){
+    $posted_data = Input::all();
+    $model = Candidate::find((int) $candidateId);
+    $posted_data['status'] = 'Clear';
+    if ($model){
+        try{
+            DB::beginTransaction();
+            if ($model->update($posted_data)) {
+              $candidateJdData = [];
+              if($model->id != null){
+                $candidateJdData['job_description_id'] = $model->job_description_id;
+                $candidateJdData['candidate_id'] = $model->id;
+                CandidateJdAssoc::create($candidateJdData);
+              }
+                DB::commit();
+                return $this->dispatchResponse(200, "Job Descrption Updated Successfully...!!", $model);
+            } else {
+                DB::rollback();
+                return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+  }
    
 }
