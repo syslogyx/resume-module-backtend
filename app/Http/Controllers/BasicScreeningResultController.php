@@ -21,11 +21,17 @@ class BasicScreeningResultController extends BaseController
         if($status == 'Pass'){
             $status = 'Clear';
         }
+        foreach ($posted_data['result_data'] as $key => $value) {
+            $posted_data['result_data'][$key]["created_at"] = new DateTime();
+            $posted_data['result_data'][$key]["updated_at"] =  new DateTime();
+           
+        }       
         DB::beginTransaction();
         try { 
             $objectResult = new BasicScreeningResults();
 		    // return $posted_data['result_data'];
             if ($objectResult->validate($posted_data['result_data'])) {
+
                 $model = BasicScreeningResults::insert($posted_data['result_data']);
                 $candidateData = Candidate::find((int) $candidateId);
                 $candidateData->status = $status;

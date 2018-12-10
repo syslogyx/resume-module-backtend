@@ -45,4 +45,7 @@ class TechnicalInterviewResult extends Model
         return $this->errors;
     }
 
+    public function users() {
+        return $this->belongsTo('App\User','user_id');    
+    }
 }

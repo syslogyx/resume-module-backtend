@@ -13,7 +13,7 @@ class CandidateUserAssoc extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'user_id','technical_round','schedule_date','schedule_time','mode_of_interview','timestamp'
+        'candidate_id', 'user_id','technical_round','schedule_date','schedule_time','mode_of_interview'
     ];
     
     protected $table = 'candidate_user_assoc';
@@ -59,8 +59,12 @@ class CandidateUserAssoc extends Model
         return $this->belongsTo('App\User','user_id');    
     }
 
-    public function candidates() {
+    public function all_candidates() {
         return $this->belongsTo('App\Candidate','candidate_id');
+    }
+
+    public function candidates() {
+        return $this->belongsToMany('App\Candidate','candidate_id');
     }
 
    

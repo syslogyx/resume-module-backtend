@@ -23,7 +23,7 @@ class CreateScreeningResult extends Migration
             $table->longText('remark')->nullable();
             $table->string('status')->nullable();            
             $table->string('refereral_token')->nullable();
-            $table->string('duration_of_interview')->nullable();
+            $table->float('duration_of_interview')->nullable();
             $table->text('observation')->nullable();
             $table->timestamps();
         });

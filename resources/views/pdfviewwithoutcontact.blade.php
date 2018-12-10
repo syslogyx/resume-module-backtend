@@ -437,8 +437,12 @@ h1{
         <section style="border-top:0px; margin-left: 50px">
             <div style="width: 65%; float: left;padding-bottom: 25px">            
                 <h1 class="set-title-color" style="font-size: 16px;"><strong>{{ $candidateDetails['first_name'] }}<br>
-                {{ $candidateDetails['middle_name'] }}<br>
-                {{ $candidateDetails['last_name'] }}<br>
+                @if($candidateDetails['middle_name'] =='')
+                    {{ $candidateDetails['last_name'] }}        
+                @else
+                    {{ $candidateDetails['middle_name'] }}<br>
+                    {{ $candidateDetails['last_name'] }}
+                @endif
             </strong></h1> 
             </div>
            

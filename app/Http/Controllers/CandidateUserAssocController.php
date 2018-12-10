@@ -24,11 +24,11 @@ class CandidateUserAssocController extends BaseController
         $id=$posted_data['user_id'];
         
         if(Input::get("user_id")){
-          $query = CandidateUserAssoc::with('users','candidates')->with(array('candidates.candidate_technical_result'=>function($que) use ($id){
+          $query = CandidateUserAssoc::with('users','all_candidates')->with(array('all_candidates.candidate_technical_result'=>function($que) use ($id){
                     $que->where('user_id',$id)->get();
                 }))->where("user_id",$id); 
         }else{
-              $query = CandidateUserAssoc::with('users','candidates')->with('candidates.candidate_technical_result');
+              $query = CandidateUserAssoc::with('users','all_candidates')->with('all_candidates.candidate_technical_result');
         }
 
       
@@ -66,7 +66,7 @@ class CandidateUserAssocController extends BaseController
 
 
     /**
-    *   Function used to assign interviewer to a candidate
+    *   Function used to Schedule interview of a candidate
     **/
     public function assignInterviewerToCandidate(){
     	$posted_data = Input::all();
@@ -88,7 +88,7 @@ class CandidateUserAssocController extends BaseController
         // }
     	DB::beginTransaction();
         try { 
-            $object = new CandidateUserAssoc();			    
+            $object = new CandidateUserAssoc();        			    
             if ($object->validate($posted_data)) {
                 $model = CandidateUserAssoc::insert($posted_data);
                 $candidateData = Candidate::find((int) $posted_data['candidate_id']);
@@ -109,5 +109,30 @@ class CandidateUserAssocController extends BaseController
             throw $e;
         }  
     	
+    }
+
+
+    /**
+    *   Function used to reSchedule interview of a candidate
+    **/
+    public function rescheduleInterview($id){
+        $posted_data = Input::all();
+        try {
+            DB::beginTransaction();
+            $model = CandidateUserAssoc::find((int) $id);
+            if ($model->validate($posted_data)) {                         
+                if ($model->update($posted_data)){
+                    DB::commit();
+                    return $this->dispatchResponse(200, "Interview Rescheduled Successfully...!!", $model);
+                }
+            } else {
+                DB::rollback();
+                return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        
     }
 }

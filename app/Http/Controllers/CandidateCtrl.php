@@ -14,6 +14,8 @@ use App\CandidateTechnicalSkill;
 use App\CandidateHobbies;
 use App\CandidateDocument;
 use App\JobDescription;
+use App\CandidateUserAssoc;
+use App\TechnicalInterviewResult;
 use App\User;
 
 // use Illuminate\Support\Facades\App;
@@ -57,7 +59,7 @@ class CandidateCtrl extends BaseController
         $limit = $request->limit;
         $posted_data = Input::all();
         // return $request;
-        $query = Candidate::with('job_description');
+        $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users');
         
         if(Input::get()=="" || Input::get()==null ){
             $query->get();
@@ -364,5 +366,59 @@ class CandidateCtrl extends BaseController
         throw $e;
     }
   }
+
+  /*
+  *   Function to update job descrption status by id
+  */
+  public function updateStatus($id){
+        $posted_data = Input::all();
+        $model = Candidate::find((int) $id);
+        if ($model){
+            try{
+                DB::beginTransaction();
+                if ($model->update($posted_data)) {
+                    DB::commit();
+                    return $this->dispatchResponse(200, "Status Updated Successfully...!!", $model);
+                } else {
+                    DB::rollback();
+                    return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+                }
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            }
+        }
+  }
+
+  public function getJDListByCandidateId($candidateId){
+    $model = Candidate::find((int) $candidateId);
+    $jdId = $model['job_description_id'];
+    $jdData = JobDescription::where('id','!=',$jdId)->get();
+      if($jdData){
+          return $this->dispatchResponse(200, "Data", $jdData);
+      } else {            
+          return $this->dispatchResponse(200, "No Records Found!!", $jdData);
+      }
+  }
+
+  // public function changeCandidateJd($candidateId){
+  //   $model = Candidate::find((int) $candidateId);
+  //   if ($model){
+  //         try{
+  //             DB::beginTransaction();
+  //             if ($model->update($posted_data)) {
+  //                 DB::commit();
+  //                 return $this->dispatchResponse(200, "Job Descrption Updated Successfully...!!", $model);
+  //             } else {
+  //                 DB::rollback();
+  //                 return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+  //             }
+  //         } catch (\Exception $e) {
+  //             DB::rollback();
+  //             throw $e;
+  //         }
+  //     }
+
+  // }
    
 }

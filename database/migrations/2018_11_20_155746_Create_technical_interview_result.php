@@ -20,7 +20,7 @@ class CreateTechnicalInterviewResult extends Migration
             $table->string('technical_round')->nullable();
             $table->string('feedback')->nullable();
             $table->string('status')->nullable();
-            $table->string('duration_of_interview')->nullable();
+            $table->float('duration_of_interview')->nullable();
             $table->text('observation')->nullable();
             $table->timestamps();
         });
