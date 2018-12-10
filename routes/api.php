@@ -98,7 +98,7 @@ $api->version("v1", function($api) {
     $api->put("candidate/{id}/update", "App\Http\Controllers\CandidateCtrl@update");
     $api->post("candidate/changestatus/{id}", "App\Http\Controllers\CandidateCtrl@updateStatus");
     // $api->post("candidate/changeJobDescription/{id}", "App\Http\Controllers\CandidateCtrl@changeCandidateJd");
-    $api->get("candidate/getJDListByCandidateId/{id}", "App\Http\Controllers\CandidateCtrl@getJDListByCandidateId");
+    // $api->get("candidate/getJDListByCandidateId/{id}", "App\Http\Controllers\CandidateCtrl@getJDListByCandidateId");
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");

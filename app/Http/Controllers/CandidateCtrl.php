@@ -390,16 +390,16 @@ class CandidateCtrl extends BaseController
         }
   }
 
-  public function getJDListByCandidateId($candidateId){
-    $model = Candidate::find((int) $candidateId);
-    $jdId = $model['job_description_id'];
-    $jdData = JobDescription::where('id','!=',$jdId)->get();
-      if($jdData){
-          return $this->dispatchResponse(200, "Data", $jdData);
-      } else {            
-          return $this->dispatchResponse(200, "No Records Found!!", $jdData);
-      }
-  }
+  // public function getJDListByCandidateId($candidateId){
+  //   $model = Candidate::find((int) $candidateId);
+  //   $jdId = $model['job_description_id'];
+  //   $jdData = JobDescription::where('id','!=',$jdId)->get();
+  //     if($jdData){
+  //         return $this->dispatchResponse(200, "Data", $jdData);
+  //     } else {            
+  //         return $this->dispatchResponse(200, "No Records Found!!", $jdData);
+  //     }
+  // }
 
   // public function changeCandidateJd($candidateId){
   //   $model = Candidate::find((int) $candidateId);
