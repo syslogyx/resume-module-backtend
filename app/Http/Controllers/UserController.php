@@ -72,12 +72,16 @@ class UserController extends BaseController
 
     function update($id) {
         $posted_data = Input::all();
-
         try {
             DB::beginTransaction();
             $model = User::find((int) $id);
 
             if ($model->validate($posted_data)) {
+                if($posted_data['password'] == '') {
+                    unset($posted_data['password']);
+                }else{
+                    $posted_data['password']=Hash::check('plain-text', $posted_data['password'])?$posted_data['password']:Hash::make($posted_data['password']);
+                }
                 DB::commit();
                 if ($model->update($posted_data))
                     return $this->dispatchResponse(200, "User Updated Successfully...!!", $model);
@@ -170,5 +174,38 @@ class UserController extends BaseController
     }
 
 
+    function changePassword() {
+        $posted_data = Input::all();
+        DB::beginTransaction();
+        try {
+            $newPassword = trim($posted_data["new_password"]);
+            $posted_data["new_password"] = Hash::make($newPassword);
+             
+            $user_data = User::find((int)$posted_data["user_id"]);
+            if($posted_data["old_password"] != NULL){
+                if(Hash::check($posted_data["old_password"], $user_data->password)){
+                    $user_data->password = $posted_data["new_password"];
+                    $user_data->update();
+                    DB::commit();
+                    if($user_data)
+                        return $this->dispatchResponse(200, "Password changed successfully...!!", $user_data);
+                }
+                else{
+                    DB::rollback();
+                    return $this->dispatchResponse(400, "Old password is not matched.", $user_data->errors());
+                }
+            }
+            else{  
+                $user_data->password = $posted_data["new_password"];
+                $user_data->update();
+                DB::commit();
+                if($user_data)
+                   return $this->dispatchResponse(200, "Password changed successfully...!!", $user_data);
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }        
+    }
 
 }

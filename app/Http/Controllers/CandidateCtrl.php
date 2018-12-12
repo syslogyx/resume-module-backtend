@@ -107,12 +107,12 @@ class CandidateCtrl extends BaseController
         $formetedDate = $now->format('Y-m-d');
         $currentTimestamp = time();
 
-        $expireDate = date('Y-m-d', strtotime('+6 month'));
+        // $expireDate = date('Y-m-d', strtotime('+6 month'));
         
         if ($objectCandidate->validate($posted_data)) {
             $posted_data["status"]="Active";
             $posted_data["timestamp"]=$currentTimestamp;
-            $posted_data["expired_on"]=$expireDate;
+            // $posted_data["expired_on"]=$expireDate;
             $posted_data["unique_token"]=$this->checkTokenExit($posted_data["unique_token"]);
 
             //to store data in 'candidate_details' table 
@@ -277,8 +277,10 @@ class CandidateCtrl extends BaseController
         //DB::beginTransaction();
         $model = Candidate::find((int) $id);
         // return $posted_data;
+        // $expireDate = date('Y-m-d', strtotime('+6 month'));
         $currentTimestamp = $posted_data['timestamp'];
-          if ($model->validate($posted_data)) {                         
+          if ($model->validate($posted_data)) {   
+              // $posted_data["expired_on"]=$expireDate;                      
               if ($model->update($posted_data)){
                 // to check data existing in candidate table or not if exist then store to another tables
                 $candidateJdData = [];

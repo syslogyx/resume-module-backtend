@@ -1,3 +1,6 @@
+<?php 
+// use Config;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -433,41 +436,50 @@ h1{
 <div id="cv" class="instaFade">
         
   
-    <div class="" style="display:inline-block;">          
+    <div class="" style="display:inline-block;">       
         <section style="border-top:0px; margin-left: 50px">
-            <div style="width: 50%; float: left;">            
-                <h1 class="set-title-color" style="font-size: 16px;"><strong>{{ $candidateDetails['first_name'] }}<br>
-                @if($candidateDetails['middle_name'] =='')
-                    {{ $candidateDetails['last_name'] }}        
-                @else
-                    {{ $candidateDetails['middle_name'] }}<br>
-                    {{ $candidateDetails['last_name'] }}
-                @endif
-                </strong></h1> 
-            </div>
-           
+            @if(in_array(1, $candidateDetails['section_names']))    
+                <div style="width: 50%; float: left;margin-bottom: 20px">            
+                    <h1 class="set-title-color" style="font-size: 16px;"><strong>{{ $candidateDetails['first_name'] }}<br>
+                    @if($candidateDetails['middle_name'] =='')
+                        {{ $candidateDetails['last_name'] }}        
+                    @else
+                        {{ $candidateDetails['middle_name'] }}<br>
+                        {{ $candidateDetails['last_name'] }}
+                    @endif
+                    </strong></h1> 
+                </div>       
+            @endif
+
             <div id="contactDetails" class="" style="width: 50%;float: right;text-align: left">
                 <ul style="text-align: left;">
-                    <li>
-                        <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a style="margin-top:-2px" href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
-                    </li>
-                    <li>
-                        <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}                       
-                    </li>
-                    <li style="display: inline-block;">                       
-                        <div style="float:left;width:20px">
-                            <img src="{{ public_path('/imgs/location_ic.png') }}">
-                        </div>
-                        <div style="float:left;width:80%;margin-left: 2%;">
-                             <a style="word-wrap: break-word;">{{ $candidateDetails['permanent_address'] }}</a> 
-                        </div>
-                    </li>
+                    @if(in_array(2, $candidateDetails['section_names']))  
+                        <li>
+                            <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a style="margin-top:-2px" href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
+                        </li>
+                    @endif
+                    @if(in_array(3, $candidateDetails['section_names']))  
+                        <li>
+                            <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}                       
+                        </li>
+                    @endif
+                    @if(in_array(4, $candidateDetails['section_names'])) 
+                        <li style="display: inline-block;">                       
+                            <div style="float:left;width:20px">
+                                <img src="{{ public_path('/imgs/location_ic.png') }}">
+                            </div>
+                            <div style="float:left;width:80%;margin-left: 2%;">
+                                 <a style="word-wrap: break-word;">{{ $candidateDetails['permanent_address'] }}</a> 
+                            </div>
+                        </li>
+                    @endif
                 </ul>
             </div>
             <br>
             <div class="clear"></div>
         </section>
     </div>
+
     <section style="border-top:1px solid black; margin-left: 60px; margin-right: 60px;"></section>
     <div id="mainArea" class="quickFade delayFive" style="margin-left: 15px; margin-right: 15px;">
         <section style="border-top:0px;display: none">
@@ -477,73 +489,92 @@ h1{
                 <div class="sectionContent">
                     <article>
                         <p>{{ $candidateDetails['objective'] }}</p>
-                    </article>  
-                    <br>                  
+                    </article>           
                 </div>
             <div class="clear"></div>
         </section>
 
         <section style="border-top:0px">
-                <article>
-                    <span class="subDetails"><b>Job Title: </b></span>
-                    <span>{{ $candidateDetails['job_description']['title'] }}</span>
-                </article>  
-                <br> 
+            <article>
+                <span class="subDetails"><b>Job Title: </b></span>
+                <span>{{ $candidateDetails['job_description']['title'] }}</span>
+            </article>  
+            <br>
+            <div class="clear"></div>
+        </section>
+                 
+        @if(in_array(5, $candidateDetails['section_names'])) 
+            <section style="border-top:0px">                
+                        <div class="sectionTitle set-title-color">
+                            <h1>Summary</h1>
+                        </div>
+                        <div class="sectionContent">
+                            <article>
+                                <ul  class="keySkills">
+                                    @foreach(json_decode(@$candidateDetails['summary']) as $sum)   
+                                        <li>
+                                            {{ @$sum }}
+                                        </li>                        
+                                    @endforeach
+                                </ul>
+                            </article>          
+                        </div>
+                    <div class="clear"></div>
+            </section>
+        @endif
+
+        @if(in_array(6, $candidateDetails['section_names']) || in_array(7, $candidateDetails['section_names']) || in_array(8, $candidateDetails['section_names']) )
+            @if(!in_array(5, $candidateDetails['section_names']))
+            <section style="border-top:0px">
+            @else
+            <section>
+            @endif    
                 <div class="sectionTitle set-title-color">
-                    <h1>Summary</h1>
+                    <h1>Personal Details</h1>
                 </div>
                 <div class="sectionContent">
-                    <article>
-                        <ul  class="keySkills">
-                            @foreach(json_decode(@$candidateDetails['summary']) as $sum)   
-                                <li>
-                                    {{ @$sum }}
-                                </li>                        
-                            @endforeach
-                        </ul>
+                    <article> 
+                        <div style="display: inline-block;">
+                            @if(in_array(6, $candidateDetails['section_names']))
+                                <div style="float:left;width:33.333%">
+                                    <span class="subDetails"><b>Date of birth: </b></span>
+                                    <span>{{ date('d-m-Y', strtotime($candidateDetails['date_of_birth'])) }}</span>
+                                </div>
+                            @endif
+
+                            <div style="display:none;float:left;width:33.333%">
+                                <span class="subDetails"><b>PAN No.: </b></span>
+                                <span>{{$candidateDetails['pan_number'] }}</span>
+                            </div>
+                            
+                            @if(in_array(7, $candidateDetails['section_names']))
+                                <div style="float:left;width:33.333%">
+                                    <span class="subDetails"><b>Passport No.: </b></span>
+                                    <span>{{$candidateDetails['passport'] }}</span>
+                                </div>
+                            @endif
+
+                            @if(in_array(8, $candidateDetails['section_names']))
+          			            <div style="float:left;width:33.333%">
+                                    <span class="subDetails"><strong>Total Experience: </strong></span> 
+                                    <span>{{ $candidateDetails['total_experience'] }} yrs</span> 
+                                </div>
+                            @endif
+                        </div>
+                        <br>
+                        <div style="display: inline-block;">
+                            <div style="display: none;float:left;width:33.333%">
+                                <span class="subDetails"><b>Current CTC: </b></span>
+                                <span>{{$candidateDetails['ctc'] }} {{$candidateDetails['currency_unit']}}</span> 
+                            </div>
+                        </div>
                     </article>
-                    <br>                   
                 </div>
-            <div class="clear"></div>
-        </section>
-
-        <section>
-            <div class="sectionTitle set-title-color">
-                <h1>Personal Details</h1>
-            </div>
-            <div class="sectionContent">
-                <article> 
-                    <div style="display: inline-block;">
-                        <div style="float:left;width:33.333%">
-                            <span class="subDetails"><b>Date of birth: </b></span>
-                            <span>{{ date('d-m-Y', strtotime($candidateDetails['date_of_birth'])) }}</span>
-                        </div>
-                        <div style="display:none;float:left;width:33.333%">
-                            <span class="subDetails"><b>PAN No.: </b></span>
-                            <span>{{$candidateDetails['pan_number'] }}</span>
-                        </div>
-                        <div style="float:left;width:33.333%">
-                            <span class="subDetails"><b>Passport No.: </b></span>
-                            <span>{{$candidateDetails['passport'] }}</span>
-                        </div>
-  			           <div style="float:left;width:33.333%">
-                            <span class="subDetails"><strong>Total Experience: </strong></span> 
-                            <span>{{ $candidateDetails['total_experience'] }} yrs</span> 
-                        </div>
-                    </div>
-                    <br>
-                    <div style="display: inline-block;">
-                        <div style="display: none;float:left;width:33.333%">
-                            <span class="subDetails"><b>Current CTC: </b></span>
-                            <span>{{$candidateDetails['ctc'] }} {{$candidateDetails['currency_unit']}}</span> 
-                        </div>
-                    </div>
-                </article>
-                <br>
-            </div>
-            <div class="clear"></div>
-        </section>
-
+                <div class="clear"></div>
+            </section>
+        @endif
+        
+        @if(in_array(9, $candidateDetails['section_names']))
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Educational Details</h1>
@@ -561,7 +592,9 @@ h1{
             </div>
             <div class="clear"></div>
         </section>
-        
+        @endif
+
+        @if(in_array(10, $candidateDetails['section_names']))        
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Other Achievements</h1>
@@ -577,7 +610,9 @@ h1{
             </div>
             <div class="clear"></div>
         </section>
+        @endif
 
+        @if(in_array(11, $candidateDetails['section_names']))
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Technical Skills</h1>
@@ -593,7 +628,9 @@ h1{
             </div>
             <div class="clear"></div>            
         </section>
+        @endif
 
+        @if(in_array(12, $candidateDetails['section_names']))
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Industrial Experience</h1>
@@ -637,7 +674,9 @@ h1{
             </div>
             <div class="clear"></div>
         </section>
-      
+        @endif
+
+        @if(in_array(13, $candidateDetails['section_names']))      
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Hobbies</h1>
@@ -651,6 +690,7 @@ h1{
             </div>
             <div class="clear"></div>
         </section>
+        @endif
     </div>
 </div>
 <htmlpagefooter name="page-footer" style="bottom: 0px">

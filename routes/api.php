@@ -77,9 +77,8 @@ $api->version("v1", function($api) {
     //  document's api 
     $api->post("document/upload", "App\Http\Controllers\DocumentController@upload");
 
-   // change password api
-    $api->get("change_password", "App\Http\Controllers\ChangePasswordController@index");
-    $api->post("changePassword", "App\Http\Controllers\ChangePasswordController@create");
+    // change password api
+    $api->post("changePassword", "App\Http\Controllers\UserController@changePassword");
 
 
     // fund particulars's api
@@ -129,6 +128,8 @@ $api->version("v1", function($api) {
 
     //candidate feedback api
     $api->post("tech_feedback/add", "App\Http\Controllers\TechnicalInterviewResultController@create");
+
+    $api->get("pdf_setting","App\Http\Controllers\PdfSettingController@index");
 
 });
 

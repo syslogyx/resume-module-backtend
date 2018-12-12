@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Candidate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use PDF;
 use Storage;
 
@@ -11,7 +13,12 @@ class PdfGenerateController extends Controller
 	** to generate pdf 
 	**/
 	public function generatePdf($id) {
-		$json = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
+        $json = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
+
+        $section_names = Input::get('section_names');
+        $sectionArray = explode(",",$section_names);
+        $json['section_names'] = $sectionArray;
+        // return $json;
         if ($json){
 
         	for ($i=0; $i < count($json['candidate_ind_exp']); $i++) { 
@@ -19,14 +26,15 @@ class PdfGenerateController extends Controller
         		$languageToolsUsedArray = json_decode($json['candidate_ind_exp'][$i]['language_or_tools']);
 
         		$languagesArray = $languageToolsUsedArray[0];
+
                 $toolsArray = $languageToolsUsedArray[1];
+
 
                 $langStringSplit1 = explode("[",$languagesArray);
                 $langStringSplit2 = explode("]",$langStringSplit1[1]);
                 $finalLanguagesArray = explode(",",$langStringSplit2[0]);
 
-
-                $toolStringSplit1 = explode("[",$languagesArray);
+                $toolStringSplit1 = explode("[",$toolsArray);
                 $toolStringSplit2 = explode("]",$toolStringSplit1[1]);
                 $finalToolsArray = explode(",",$toolStringSplit2[0]);
 
@@ -39,7 +47,7 @@ class PdfGenerateController extends Controller
 			$ext = '.pdf';
 			$candidate_name = $json['first_name'].$json['middle_name'].$json['last_name'];
 			$jdTitle = $json['job_description']['title'];
-			$jdExperience = $json['job_description']['experience'];
+			$jdExperience = str_replace(' ', '_', $json['job_description']['experience']);
 			$fileName = 'CV_'.$candidate_name.'_'.$jdTitle.'_'.$jdExperience.$ext;
 			$pdf->download($fileName);
         }else{
@@ -63,7 +71,7 @@ class PdfGenerateController extends Controller
                 $finalLanguagesArray = explode(",",$langStringSplit2[0]);
 
 
-                $toolStringSplit1 = explode("[",$languagesArray);
+                $toolStringSplit1 = explode("[",$toolsArray);
                 $toolStringSplit2 = explode("]",$toolStringSplit1[1]);
                 $finalToolsArray = explode(",",$toolStringSplit2[0]);
 
