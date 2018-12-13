@@ -73,12 +73,26 @@ class CandidateCtrl extends BaseController
         $query->where('ctc', '<=', $posted_data["to_ctc"]);        
       }
 
+
+      if(isset($posted_data["from_total_experience"]) && isset($posted_data["to_total_experience"])){
+        $query->where('total_experience', '>=', $posted_data["from_total_experience"]);
+        $query->where('total_experience', '<=', $posted_data["to_total_experience"]);        
+      }
+      
+      DB::enableQueryLog();
+
+      //return $query;
+
       if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);
+
       }
       else{
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate(50);
       }
+
+      // print_r(DB::getQueryLog());
+      //     die();
 
       if ($candidateData->first()) {
           return $this->dispatchResponse(200, "",$candidateData);

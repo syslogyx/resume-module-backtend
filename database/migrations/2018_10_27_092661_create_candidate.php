@@ -39,7 +39,7 @@ class CreateCandidate extends Migration
             $table->float('ctc')->nullable();  
             $table->integer('job_description_id')->unsigned()->nullable();
             $table->foreign('job_description_id')->references('id')->on('job_description');
-            $table->date('expired_on')->nullable();
+            // $table->date('expired_on')->nullable();
             $table->string('unique_token')->nullable();          
             $table->timestamps();
         });

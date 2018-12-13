@@ -15,7 +15,7 @@ class Candidate extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name','middle_name','last_name','email','opprtunity_for','gender','marital_status','mobile_no','corresponding_address','permanent_address','date_of_birth','pan_number','passport','objective','summary','status','total_experience','ctc','expired_on','job_description_id','unique_token','timestamp','indian_languages','foreign_languages','currency_unit'
+        'first_name','middle_name','last_name','email','opprtunity_for','gender','marital_status','mobile_no','corresponding_address','permanent_address','date_of_birth','pan_number','passport','objective','summary','status','total_experience','ctc','job_description_id','unique_token','timestamp','indian_languages','foreign_languages','currency_unit'
     ];
 
     /**
@@ -54,7 +54,7 @@ class Candidate extends Model
         'total_experience' => 'nullable',
         'ctc' => 'nullable',
         'job_description_id' => 'required',
-        'expired_on' => 'nullable',
+        // 'expired_on' => 'nullable',
         'unique_token' => 'nullable',
         'timestamp' => 'nullable'
     );
