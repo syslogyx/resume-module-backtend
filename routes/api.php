@@ -93,11 +93,14 @@ $api->version("v1", function($api) {
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
     $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
+    $api->get("download_background_form/", "App\Http\Controllers\CandidateCtrl@downloadBackgroundCheckForm");
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
     $api->put("candidate/{id}/update", "App\Http\Controllers\CandidateCtrl@update");
     $api->post("candidate/changestatus/{id}", "App\Http\Controllers\CandidateCtrl@updateStatus");
     $api->post("candidate/changeJobDescription/{id}", "App\Http\Controllers\CandidateCtrl@changeCandidateJd");
     $api->get("candidate/getJDListByCandidateId/{id}", "App\Http\Controllers\CandidateCtrl@getJDListByCandidateId");
+    $api->post("candidate/getLoggedCandidateDetails","App\Http\Controllers\CandidateCtrl@getLoggedCandidateInfo");
+    $api->post("create_logins","App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
@@ -129,7 +132,7 @@ $api->version("v1", function($api) {
     //candidate feedback api
     $api->post("tech_feedback/add", "App\Http\Controllers\TechnicalInterviewResultController@create");
 
-    $api->get("pdf_setting","App\Http\Controllers\PdfSettingController@index");
+    $api->get("pdf_setting","App\Http\Controllers\PdfSettingController@getAllPdfSectionList");
 
 });
 

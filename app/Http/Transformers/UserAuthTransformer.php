@@ -14,6 +14,7 @@ class UserAuthTransformer extends TransformerAbstract {
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
+            'mobile' => $user->mobile,
             'company_name' => $user->company_name,
             'unique_token' => $user->unique_token,
             'authToken' => $user->remember_token,

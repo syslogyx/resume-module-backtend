@@ -32,7 +32,11 @@ class CreateRole extends Migration
             ),
             array(
                 "name" => "Interviewer",
+            ),
+            array(
+                "name" => "Candidate",
             )
+
         );
 
         Role::insert($data);

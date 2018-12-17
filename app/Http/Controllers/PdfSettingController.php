@@ -12,17 +12,13 @@ class PdfSettingController extends BaseController
     /**
     *	To fetch list of Stream
     **/
-    function index(Request $request) {
+    function getAllPdfSectionList(Request $request) {
 
-        $pdfSettingData = PdfSetting::paginate(50);
-
-        if ($pdfSettingData->first()) {
-
-            return $this->dispatchResponse(200, "", $pdfSettingData);
-
+        $pdfSettingData = PdfSetting::all();
+        if (count($pdfSettingData)>0) {
+            return response()->json(['status_code' => 200, 'message' => 'Pdf List', 'data' => $pdfSettingData]);
         } else {
-        	
-            return $this->dispatchResponse(200, "No Records Found!!", $pdfSettingData);
+            return response()->json(['status_code' => 404, 'message' => 'Record not found.']);
         }
     }
 }

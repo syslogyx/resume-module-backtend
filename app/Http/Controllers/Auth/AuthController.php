@@ -53,7 +53,7 @@ class AuthController extends Controller {
 
         $user = User::where('email', $email)->first();
         $user->remember_token = $token;
-
+        // return $user;
         if ($user) {
             return $this->response->item($user, new UserAuthTransformer())->setStatusCode(200);
         } else {

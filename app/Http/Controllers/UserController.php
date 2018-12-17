@@ -46,7 +46,6 @@ class UserController extends BaseController
     function create() {
         $posted_data = Input::all();
         DB::beginTransaction();
-
         try {        
             $objectUser = new User();
             if ($objectUser->validate($posted_data)) {

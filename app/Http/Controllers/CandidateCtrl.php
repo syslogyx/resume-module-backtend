@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Hash;
 use DateTime;
 use App\Candidate;
 use App\CandidateQualification;
@@ -79,9 +80,7 @@ class CandidateCtrl extends BaseController
         $query->where('total_experience', '<=', $posted_data["to_total_experience"]);        
       }
       
-      DB::enableQueryLog();
-
-      //return $query;
+      // DB::enableQueryLog();
 
       if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);
@@ -92,13 +91,13 @@ class CandidateCtrl extends BaseController
       }
 
       // print_r(DB::getQueryLog());
-      //     die();
+      // die();
 
       if ($candidateData->first()) {
-          return $this->dispatchResponse(200, "",$candidateData);
+        return $this->dispatchResponse(200, "",$candidateData);
       }else{
-          return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
-          // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
+        return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+        // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
       }
 
   }
@@ -197,6 +196,20 @@ class CandidateCtrl extends BaseController
 
                 $candidate_jd_assoc = new CandidateJdAssoc();
                 CandidateJdAssoc::create($candidateJdData);
+
+
+                $user_data["name"] = $posted_data['first_name'].' '.$posted_data['middle_name'].' '.$posted_data['last_name'];
+                $user_data["email"] = $posted_data['email'];
+                $user_data["mobile"] = $posted_data['mobile_no'];
+                $user_data["password"] = $posted_data['mobile_no'];
+                $user_data["password"] = $posted_data['mobile_no'];
+                $user_data["role_id"] = 5;
+                $user_data["company_name"] = 'Candidate';
+                $user_data["password"] = Hash::make($posted_data['mobile_no']);
+                $user_data["status"] ="Active";
+                // $user_data["unique_token"] = $posted_data['unique_token'];
+                User::create($user_data);
+
             }
             DB::commit();
             if($model){              
@@ -288,9 +301,11 @@ class CandidateCtrl extends BaseController
   public function update($id){
     try {
       $posted_data = Input::all();
+
         //DB::beginTransaction();
         $model = Candidate::find((int) $id);
-        // return $posted_data;
+        $oldEmailId = $model->email;
+        $oldMobile = $model->mobile_no;
         // $expireDate = date('Y-m-d', strtotime('+6 month'));
         $currentTimestamp = $posted_data['timestamp'];
           if ($model->validate($posted_data)) {   
@@ -371,6 +386,13 @@ class CandidateCtrl extends BaseController
                     }
                     //to store data in candidate 'hobbies' table
                     CandidateHobbies::insert($posted_data["hobbyDetails"]);
+                    
+                    $user_name = $posted_data['first_name'].' '.$posted_data['middle_name'].' '.$posted_data['last_name'];
+                    $user_email = $posted_data['email'];
+                    $user_mobile = $posted_data['mobile_no'];
+                    $user_pwd = Hash::make($posted_data['mobile_no']);
+
+                    User::where('email','=',$oldEmailId)->where('mobile','=',$oldMobile)->update(['name'=>$user_name,'email'=>$user_email,'mobile'=>$user_mobile,'password'=>$user_pwd]);
                 }
 
                 DB::commit();
@@ -449,5 +471,83 @@ class CandidateCtrl extends BaseController
         }
     }
   }
-   
+
+  public function getLoggedCandidateInfo(){
+    $posted_data = Input::all();
+      $model = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document','job_description')->where('email','=',$posted_data['email'])->where('mobile_no','=',$posted_data['mobile'])->get()->first();
+      // return $model;
+      if ($model){
+          return $this->dispatchResponse(200, "Records Found...!!", $model);
+      }else{
+          return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
+      }
+  }
+
+
+  public function createAllCandidatesLogin(){
+
+    $candidate_data = "SELECT CONCAT(first_name,' ', middle_name,' ',last_name) AS name, mobile_no,email,'Candidate' AS company_name, mobile_no AS password, '5' AS role_id, status FROM `candidate_details`";
+
+    $res_candidate = DB::select($candidate_data);  
+    $data = json_decode(json_encode($res_candidate), True);
+    
+    foreach ($data as $value) {
+      $array['name'] = $value['name'];
+      $array['mobile'] = $value['mobile_no'];
+      $array['email'] = $value['email'];
+      $array['company_name'] = $value['company_name'];
+      $array['role_id'] = $value['role_id'];
+      $array['status'] = $value['status'];
+      $array['password'] = Hash::make($value['mobile_no']);
+      $array["created_at"] = new DateTime();
+      $array["updated_at"] =  new DateTime();
+      $newArray[] = $array;
+    }
+
+    User::insert($newArray);
+
+  }
+
+  /*
+  * To get background check pdf file from db server
+  */
+  public function downloadBackgroundCheckForm(){
+      $file = public_path('/background_check_form/document.pdf');
+      $headers = array('Content-Type: application/pdf');
+      return Response::download($file, 'document.pdf',$headers);
+  }
+  
+  /*
+  * To save Filled background check pdf file form on server
+  */
+  public function uploadBackgroundCheckForm(Request $request){
+      // $object = new CandidateDocument();
+      // $image = $request->file('file_name');
+      // $ext = $image->getClientOriginalExtension();
+      // // if($ext != 'pdf'){
+      // //   $ext = 'docx';
+      // // $converter = App::make(ConverterInterface::class);
+      // // $parameters = (new UnoconvParameters())
+      // //     ->setInputStream(time().'.'.$ext)
+      // //     ->setOutputFormat(Format::FORMAT_TEXT_PDF);
+      // // echo $converter->convert($parameters);
+      // //}
+      // if($ext == 'doc'){
+      //   $ext = 'docx';
+      // }
+      // $posted_data['file_name'] =time().'.'.$ext;
+      // $posted_data['candidate_id']=$request['candidate_id'];
+      // $posted_data['timestamp']=$request['timestamp'];
+      // $destinationPath = public_path('/doc');
+      // $posted_data['path']=$destinationPath;       
+      
+      // if ($object->validate($posted_data)) {
+      //     $image->move($destinationPath, $posted_data['file_name']);
+      //     $model = CandidateDocument::create($posted_data);
+      //     return response()->json(['status_code' => 200, 'message' => 'Resume uploaded successfully', 'data' => $model]);           
+      // } else {
+      //      throw new \Dingo\Api\Exception\StoreResourceFailedException('Resume not uploaded.',$object->errors());
+      // }
+  }
+
 }
