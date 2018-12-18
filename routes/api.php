@@ -92,6 +92,7 @@ $api->version("v1", function($api) {
     $api->post("create_candidate", "App\Http\Controllers\CandidateCtrl@create");
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
+    $api->post("upload_bgform", "App\Http\Controllers\CandidateCtrl@uploadBackgroundForm");
     $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
     $api->get("download_background_form/", "App\Http\Controllers\CandidateCtrl@downloadBackgroundCheckForm");
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");

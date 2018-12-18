@@ -18,6 +18,7 @@ use App\JobDescription;
 use App\CandidateUserAssoc;
 use App\CandidateJdAssoc;
 use App\TechnicalInterviewResult;
+use App\CandidateBackgroundDocuments;
 use App\User;
 use Response;
 
@@ -520,34 +521,40 @@ class CandidateCtrl extends BaseController
   /*
   * To save Filled background check pdf file form on server
   */
-  public function uploadBackgroundCheckForm(Request $request){
-      // $object = new CandidateDocument();
-      // $image = $request->file('file_name');
-      // $ext = $image->getClientOriginalExtension();
-      // // if($ext != 'pdf'){
-      // //   $ext = 'docx';
-      // // $converter = App::make(ConverterInterface::class);
-      // // $parameters = (new UnoconvParameters())
-      // //     ->setInputStream(time().'.'.$ext)
-      // //     ->setOutputFormat(Format::FORMAT_TEXT_PDF);
-      // // echo $converter->convert($parameters);
-      // //}
+  public function uploadBackgroundForm(Request $request){
+      $object = new CandidateBackgroundDocuments();
+      $image = $request->file('file_name');
+      $ext = $image->getClientOriginalExtension();     
       // if($ext == 'doc'){
       //   $ext = 'docx';
       // }
-      // $posted_data['file_name'] =time().'.'.$ext;
-      // $posted_data['candidate_id']=$request['candidate_id'];
-      // $posted_data['timestamp']=$request['timestamp'];
-      // $destinationPath = public_path('/doc');
-      // $posted_data['path']=$destinationPath;       
+      $posted_data['file_name'] =time().'.'.$ext;
+      $isFileAlreadyPresent = true;
+      $posted_data['candidate_id']=$request['candidate_id'];
       
-      // if ($object->validate($posted_data)) {
-      //     $image->move($destinationPath, $posted_data['file_name']);
-      //     $model = CandidateDocument::create($posted_data);
-      //     return response()->json(['status_code' => 200, 'message' => 'Resume uploaded successfully', 'data' => $model]);           
-      // } else {
-      //      throw new \Dingo\Api\Exception\StoreResourceFailedException('Resume not uploaded.',$object->errors());
-      // }
+      $upladed_data = CandidateBackgroundDocuments::where('candidate_id','=',$posted_data['candidate_id'])->get();
+
+      // to check candidate form is already present or not
+      if(count($upladed_data) > 0){
+        $isFileAlreadyPresent = false;
+      }
+
+      if($isFileAlreadyPresent){
+          $posted_data['timestamp']=$request['timestamp'];
+          $destinationPath = public_path('/uploaded_backgroud_doc');
+          $posted_data['path']=$destinationPath;       
+          
+          if ($object->validate($posted_data)) {
+              $image->move($destinationPath, $posted_data['file_name']);
+              $model = CandidateBackgroundDocuments::create($posted_data);
+              return response()->json(['status_code' => 200, 'message' => 'Document uploaded successfully', 'data' => $model]);           
+          } else {
+               throw new \Dingo\Api\Exception\StoreResourceFailedException('Document not uploaded.',$object->errors());
+          }
+      }else{
+          return response()->json(['status_code' => 404, 'message' => 'Document Already uploaded']);
+      }
+      
   }
 
 }
