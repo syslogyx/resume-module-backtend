@@ -15,7 +15,7 @@ class ChangePasswordController extends BaseController
         if ($changePassword->first()) {
             return $this->dispatchResponse(200, "", $changePassword);
         } else {
-            return $this->dispatchResponse(200, "No Records Found!!", $changePassword);
+            return $this->dispatchResponse(404, "No Records Found!!", $changePassword);
         }
     }
 

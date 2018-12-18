@@ -1,0 +1,11 @@
+
+// used to insert records in candidate_jd_assoc
+
+INSERT INTO `candidate_jd_assoc` (candidate_id, job_description_id)
+SELECT  id, job_description_id FROM `candidate_details`
+
+
+// used to create logins for all candidate type role
+INSERT INTO `users` (NAME, mobile, email, company_name, PASSWORD, role_id, STATUS)
+SELECTÂ  CONCAT(first_name,' ', middle_name,' ',last_name) AS NAME, mobile_no,email,'Candidate' AS company_name, mobile_no AS PASSWORD, '4' AS role_id, STATUS
+FROM `candidate_details`

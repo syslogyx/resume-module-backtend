@@ -38,12 +38,10 @@ class CandidateCtrl extends BaseController
       }
 
       if ($candidateData->first()) {
+        return $this->dispatchResponse(200, "", $candidateData);
 
-          return $this->dispatchResponse(200, "", $candidateData);
-
-      } else {
-          
-          return $this->dispatchResponse(200, "No Records Found!!", $candidateData);
+      } else {          
+        return $this->dispatchResponse(404, "No Records Found!!", $candidateData);
       }
   }
 
@@ -442,7 +440,7 @@ class CandidateCtrl extends BaseController
       if($newJdList){
           return $this->dispatchResponse(200, "Data", $newJdList);
       } else {            
-          return $this->dispatchResponse(400, "No Records Found!!", $newJdList);
+          return $this->dispatchResponse(404, "No Records Found!!", $newJdList);
       }
   }
 
@@ -513,9 +511,17 @@ class CandidateCtrl extends BaseController
   * To get background check pdf file from db server
   */
   public function downloadBackgroundCheckForm(){
-      $file = public_path('/background_check_form/document.pdf');
+      $file = public_path('/background_check_form/BGCForm_BA_Revised_Ver7.0.pdf');
       $headers = array('Content-Type: application/pdf');
-      return Response::download($file, 'document.pdf',$headers);
+      return Response::download($file, 'BGCForm_BA_Revised_Ver7.0.pdf',$headers);
+  }
+  /*
+  * To get sample background check pdf file from db server
+  */
+  public function downloadSampleBackgroundForm(){
+      $file = public_path('/background_check_form/TCS_BGC_FORM_SAMPLE.pdf');
+      $headers = array('Content-Type: application/pdf');
+      return Response::download($file, 'TCS_BGC_FORM_SAMPLE.pdf',$headers);
   }
   
   /*
@@ -529,20 +535,24 @@ class CandidateCtrl extends BaseController
       //   $ext = 'docx';
       // }
       $posted_data['file_name'] =time().'.'.$ext;
-      $isFileAlreadyPresent = true;
+      $isFileAlreadyPresent = false;
       $posted_data['candidate_id']=$request['candidate_id'];
       
-      $upladed_data = CandidateBackgroundDocuments::where('candidate_id','=',$posted_data['candidate_id'])->get();
-
+      $upladed_data = CandidateBackgroundDocuments::where('candidate_id','=',$posted_data['candidate_id'])->where('file_type','=',$request['file_type'])->get();
+      // return count($upladed_data);
       // to check candidate form is already present or not
       if(count($upladed_data) > 0){
-        $isFileAlreadyPresent = false;
+        $isFileAlreadyPresent = true;
       }
 
-      if($isFileAlreadyPresent){
+      if(!($isFileAlreadyPresent)){
+
           $posted_data['timestamp']=$request['timestamp'];
+          $posted_data['file_type']=$request['file_type'];
           $destinationPath = public_path('/uploaded_backgroud_doc');
-          $posted_data['path']=$destinationPath;       
+          $posted_data['path']=$destinationPath; 
+
+          // return $posted_data;      
           
           if ($object->validate($posted_data)) {
               $image->move($destinationPath, $posted_data['file_name']);
@@ -552,7 +562,7 @@ class CandidateCtrl extends BaseController
                throw new \Dingo\Api\Exception\StoreResourceFailedException('Document not uploaded.',$object->errors());
           }
       }else{
-          return response()->json(['status_code' => 404, 'message' => 'Document Already uploaded']);
+          return response()->json(['status_code' => 404, 'message' => 'Document is already uploaded']);
       }
       
   }

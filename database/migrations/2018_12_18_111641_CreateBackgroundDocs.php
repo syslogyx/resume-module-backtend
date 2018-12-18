@@ -18,6 +18,7 @@ class CreateBackgroundDocs extends Migration
             $table->string('file_name');
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
+            $table->string('file_type')->nullable();
             $table->string('path')->nullable();
             $table->string('timestamp')->nullable();
             $table->timestamps();

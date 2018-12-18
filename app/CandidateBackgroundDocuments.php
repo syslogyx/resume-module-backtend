@@ -15,7 +15,7 @@ class CandidateBackgroundDocuments extends Model
      * @var array
      */
     protected $fillable = [
-        'file_name','candidate_id', 'path','timestamp'
+        'file_name','candidate_id', 'path','timestamp','file_type'
     ];
 
     /**
@@ -35,7 +35,8 @@ class CandidateBackgroundDocuments extends Model
     	'file_name' => 'required',
         'candidate_id' => 'required',
         'path' => 'required',
-        'timestamp' => 'required',
+        'file_type' => 'required',
+        'timestamp' => 'required'
     );
     private $errors;
 

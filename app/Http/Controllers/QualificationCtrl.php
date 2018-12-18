@@ -22,7 +22,7 @@ class QualificationCtrl extends BaseController
 
         } else {
         	
-            return $this->dispatchResponse(200, "No Records Found!!", $qualifiactionData);
+            return $this->dispatchResponse(404, "No Records Found!!", $qualifiactionData);
         }
     }
 }

@@ -22,7 +22,7 @@ class StreamsController extends BaseController
 
         } else {
         	
-            return $this->dispatchResponse(200, "No Records Found!!", $streamData);
+            return $this->dispatchResponse(404, "No Records Found!!", $streamData);
         }
     }
 }
