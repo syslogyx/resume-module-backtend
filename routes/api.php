@@ -135,6 +135,10 @@ $api->version("v1", function($api) {
     $api->post("tech_feedback/add", "App\Http\Controllers\TechnicalInterviewResultController@create");
 
     $api->get("pdf_setting","App\Http\Controllers\PdfSettingController@getAllPdfSectionList");
+    
+    //ZIP API
+    $api->get("pdfzip","App\Http\Controllers\PdfSettingController@generateAllPdfZipFile");
+    $api->get("generate_zip_by_creating_pdf/{id}","App\Http\Controllers\PdfSettingController@downloadZipbyPdfCreation");
 
 });
 
