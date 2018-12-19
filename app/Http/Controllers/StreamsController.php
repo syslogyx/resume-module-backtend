@@ -12,17 +12,12 @@ class StreamsController extends BaseController
     /**
     *	To fetch list of Stream
     **/
-    function index(Request $request) {
-
-        $streamData = Stream::paginate(50);
-
-        if ($streamData->first()) {
-
-            return $this->dispatchResponse(200, "", $streamData);
-
-        } else {
-        	
-            return $this->dispatchResponse(404, "No Records Found!!", $streamData);
+    function getAllStreams(Request $request) {
+        $streamData = Stream::All();
+        if ($streamData){
+          return response()->json(['status_code' => 200, 'message' => 'Stream List', 'data' => $streamData]);
+        }else{
+          return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
         }
     }
 }

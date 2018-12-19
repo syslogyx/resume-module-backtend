@@ -70,7 +70,7 @@ $api->version("v1", function($api) {
     $api->get("user/getUsersByInterviewerRoleId", "App\Http\Controllers\UserController@getUsersByInterviewerRoleId");
 
     // qualification's api
-    $api->get("qualification_details", "App\Http\Controllers\QualificationCtrl@index");
+    $api->get("qualification_details", "App\Http\Controllers\QualificationCtrl@getAllQualification");
     $api->post("qualification", "App\Http\Controllers\QualificationCtrl@create");
     $api->put("qualification/{id}/update", "App\Http\Controllers\QualificationCtrl@update");
 
@@ -119,7 +119,7 @@ $api->version("v1", function($api) {
     $api->put("questions/{id}/update", "App\Http\Controllers\BasicScreeningQuestionsController@update");
 
     // streams api
-    $api->get("streams", "App\Http\Controllers\StreamsController@index");
+    $api->get("streams", "App\Http\Controllers\StreamsController@getAllStreams");
 
     // Basic screening test Api
     $api->post("result/add", "App\Http\Controllers\BasicScreeningResultController@create");

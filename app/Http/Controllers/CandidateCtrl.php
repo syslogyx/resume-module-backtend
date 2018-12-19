@@ -38,7 +38,7 @@ class CandidateCtrl extends BaseController
       }
 
       if ($candidateData->first()) {
-        return $this->dispatchResponse(200, "", $candidateData);
+        return $this->dispatchResponse(200, "Candidate List", $candidateData);
 
       } else {          
         return $this->dispatchResponse(404, "No Records Found!!", $candidateData);

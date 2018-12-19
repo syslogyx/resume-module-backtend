@@ -10,7 +10,7 @@ use App\BasicScreeningQuestions;
 
 class BasicScreeningQuestionsController extends BaseController
 {
-     /*
+    /*
     *  Function to fetch question list
     */
     function index(Request $request) {
@@ -25,7 +25,7 @@ class BasicScreeningQuestionsController extends BaseController
 
         if ($questionsData->first()) {
 
-            return $this->dispatchResponse(200, "", $questionsData);
+            return $this->dispatchResponse(200, "Questions List", $questionsData);
 
         } else {
             return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);

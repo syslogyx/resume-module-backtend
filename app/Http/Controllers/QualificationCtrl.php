@@ -12,17 +12,12 @@ class QualificationCtrl extends BaseController
     /**
     *	To fetch list of qualifications
     **/
-    function index(Request $request) {
-
-        $qualifiactionData = Qualification::paginate(50);
-
-        if ($qualifiactionData->first()) {
-
-            return $this->dispatchResponse(200, "", $qualifiactionData);
-
-        } else {
-        	
-            return $this->dispatchResponse(404, "No Records Found!!", $qualifiactionData);
+    function getAllQualification(Request $request) {
+        $qualifiactionData = Qualification::All();
+        if ($qualifiactionData){
+          return response()->json(['status_code' => 200, 'message' => 'Qualification List', 'data' => $qualifiactionData]);
+        }else{
+          return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
         }
     }
 }
