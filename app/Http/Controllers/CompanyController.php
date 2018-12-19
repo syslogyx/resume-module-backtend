@@ -44,11 +44,9 @@ class CompanyController extends BaseController
     function create(){
         $posted_data = Input::all();
         DB::beginTransaction();
-
         try {        
             $objectCompany = new Company();
             $posted_data["status"] = 1;
-            
             if ($objectCompany->validate($posted_data)) {
                 $model = Company::create($posted_data);
                 DB::commit();
@@ -64,7 +62,7 @@ class CompanyController extends BaseController
         }  
     }
 
-    /*  Function to update company by id */
+    /* Function to update company by id */
     function update($id) {
         $posted_data = Input::all();
         try {
@@ -85,7 +83,7 @@ class CompanyController extends BaseController
         }
     }
 
-    /*  Function to chasnge job status by id */
+    /* Function to chasnge job status by id */
     function changeStatus($id){
         $posted_data = Input::all();
         $model = Company::find((int) $id);
