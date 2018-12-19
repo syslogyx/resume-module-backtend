@@ -140,6 +140,13 @@ $api->version("v1", function($api) {
     $api->get("pdfzip","App\Http\Controllers\PdfSettingController@generateAllPdfZipFile");
     $api->get("generate_zip_by_creating_pdf/{id}","App\Http\Controllers\PdfSettingController@downloadZipbyPdfCreation");
 
+    // Company api
+    $api->get("company_table", "App\Http\Controllers\CompanyController@index");
+    $api->get("companyInfoByID/{id}/view", "App\Http\Controllers\CompanyController@viewCompany");
+    $api->post("company/create", "App\Http\Controllers\CompanyController@create");
+    $api->post("/company/update/{id}", "App\Http\Controllers\CompanyController@update");
+    $api->post("/company/changestatus/{id}", "App\Http\Controllers\CompanyController@changeStatus");
+
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {
