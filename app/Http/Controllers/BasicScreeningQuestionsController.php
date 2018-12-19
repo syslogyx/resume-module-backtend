@@ -10,7 +10,7 @@ use App\BasicScreeningQuestions;
 
 class BasicScreeningQuestionsController extends BaseController
 {
-     /*
+    /*
     *  Function to fetch question list
     */
     function index(Request $request) {
