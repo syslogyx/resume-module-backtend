@@ -15,7 +15,7 @@ class BackgroundChecklist extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'type','mandatory'
+        'name', 'type','mandatory','status'
     ];
 
     /**
@@ -35,6 +35,7 @@ class BackgroundChecklist extends Model
         'name' => 'required',
         'type' => 'required',
         'mandatory' => 'required'
+        'status' => 'required'
 
     );
     private $errors;

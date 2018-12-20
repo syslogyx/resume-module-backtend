@@ -5,17 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Validator;
 
-class CandidateBackgroundDocuments extends Model
+class CandidatesChecklistDocs extends Model
 {
-    //use Notifiable;
-
-    /**
+   /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'file_name','candidate_id', 'path','timestamp','file_type'
+        'file_name','candidate_id', 'path','timestamp','bg_checklist_id'
     ];
 
     /**
@@ -53,8 +51,4 @@ class CandidateBackgroundDocuments extends Model
         return $this->errors;
     }
 
-    // public function candidates() {
-    //     return $this->belongsTo('App\Candidate');
-    // }
 }
-

@@ -92,10 +92,8 @@ $api->version("v1", function($api) {
     $api->post("create_candidate", "App\Http\Controllers\CandidateCtrl@create");
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
-    $api->post("upload_bgdoc", "App\Http\Controllers\CandidateCtrl@uploadBackgroundForm");
     $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
-    $api->get("download_background_form/", "App\Http\Controllers\CandidateCtrl@downloadBackgroundCheckForm");
-    $api->get("download_sample_bgform/", "App\Http\Controllers\CandidateCtrl@downloadSampleBackgroundForm");
+    
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
     $api->put("candidate/{id}/update", "App\Http\Controllers\CandidateCtrl@update");
     $api->post("candidate/changestatus/{id}", "App\Http\Controllers\CandidateCtrl@updateStatus");
@@ -147,6 +145,10 @@ $api->version("v1", function($api) {
     $api->post("/company/update/{id}", "App\Http\Controllers\CompanyController@update");
     $api->post("/company/changestatus/{id}", "App\Http\Controllers\CompanyController@changeStatus");
 
+    // check list documents api
+    $api->get("download_background_form/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBackgroundCheckForm");
+    $api->post("upload_bgdoc", "App\Http\Controllers\CandidatesChecklistDocsController@uploadBackgroundForm");
+    $api->get("download_sample_bgform/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadSampleBackgroundForm");
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {
