@@ -3,10 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\BackgroundCheckList;
+use App\BackgroundChecklist;
 
-
-class create_background_checklist extends Migration
+class CreateBackgroundChecklist extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +14,7 @@ class create_background_checklist extends Migration
      */
     public function up()
     {
-        Schema::create('background_check_list', function (Blueprint $table) {
+        Schema::create('background_checklist', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('type');
@@ -135,7 +134,7 @@ class create_background_checklist extends Migration
             )
         );
 
-        BackgroundCheckList::insert($data);
+        BackgroundChecklist::insert($data);
     }
 
     /**
@@ -145,6 +144,6 @@ class create_background_checklist extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('background_check_list');
+        Schema::dropIfExists('background_checklist');
     }
 }
