@@ -30,43 +30,73 @@ class CandidatesChecklistDocsController extends BaseController
 	/*
 	* To save Filled background check pdf file form on server
 	*/
-	// public function uploadBackgroundForm(Request $request){
-	//   $object = new CandidatesChecklistDocs();
-	//   $image = $request->file('file_name');
-	//   $ext = $image->getClientOriginalExtension();     
-	//   // if($ext == 'doc'){
-	//   //   $ext = 'docx';
-	//   // }
-	//   $posted_data['file_name'] =time().'.'.$ext;
-	//   $isFileAlreadyPresent = false;
-	//   $posted_data['candidate_id']=$request['candidate_id'];
+	public function uploadBackgroundForm(Request $request){
+		// return $request;
+	  // $object = new CandidatesChecklistDocs();
+
+	$files = $request->all();
+	return $files;
+	$fArray = [];
+	$finalArray=[];
+	foreach ($request->file_name as $file) {
+
+		$fArray['name'] = $file->getClientOriginalName();
+		print_r($filename);
+		$fArray['ext'] = $file->getClientOriginalExtension();
+		print_r($extension);
+
+		array_push($finalArray, $fArray);
+	}
+	// die();
+	return $finalArray;
+
+
+
+	// $fileNameArray =[];
+	  // $files = $request->file('file_name');
+	  // return count($files);
+	  // foreach($files as $file){
+	  // return $file->getClientOriginalName();
+
+	  // 	$fname = $file->getClientOriginalName();
+	  // 	return $fname;
+	  // 	array_push($fileNameArray, $fname);
+	  // }
+	  return $fileNameArray;
+	  $ext = $image->getClientOriginalExtension();     
+	  // if($ext == 'doc'){
+	  //   $ext = 'docx';
+	  // }
+	  $posted_data['file_name'] =time().'.'.$ext;
+	  $isFileAlreadyPresent = false;
+	  $posted_data['candidate_id']=$request['candidate_id'];
 	  
-	//   $upladed_data = CandidatesChecklistDocs::where('candidate_id','=',$posted_data['candidate_id'])->where('file_type','=',$request['file_type'])->get();
-	//   // return count($upladed_data);
-	//   // to check candidate form is already present or not
-	//   if(count($upladed_data) > 0){
-	//     $isFileAlreadyPresent = true;
-	//   }
+	  $upladed_data = CandidatesChecklistDocs::where('candidate_id','=',$posted_data['candidate_id'])->where('file_type','=',$request['file_type'])->get();
+	  // return count($upladed_data);
+	  // to check candidate form is already present or not
+	  if(count($upladed_data) > 0){
+	    $isFileAlreadyPresent = true;
+	  }
 
-	//   if(!($isFileAlreadyPresent)){
+	  if(!($isFileAlreadyPresent)){
 
-	//       $posted_data['timestamp']=$request['timestamp'];
-	//       $posted_data['file_type']=$request['file_type'];
-	//       $destinationPath = public_path('/uploaded_backgroud_doc');
-	//       $posted_data['path']=$destinationPath; 
+	      $posted_data['timestamp']=$request['timestamp'];
+	      $posted_data['file_type']=$request['file_type'];
+	      $destinationPath = public_path('/uploaded_backgroud_doc');
+	      $posted_data['path']=$destinationPath; 
 
-	//       // return $posted_data;      
+	      // return $posted_data;      
 	      
-	//       if ($object->validate($posted_data)) {
-	//           $image->move($destinationPath, $posted_data['file_name']);
-	//           $model = CandidatesChecklistDocs::create($posted_data);
-	//           return response()->json(['status_code' => 200, 'message' => 'Document uploaded successfully', 'data' => $model]);           
-	//       } else {
-	//            throw new \Dingo\Api\Exception\StoreResourceFailedException('Document not uploaded.',$object->errors());
-	//       }
-	//   }else{
-	//       return response()->json(['status_code' => 404, 'message' => 'Document is already uploaded']);
-	//   }
+	      if ($object->validate($posted_data)) {
+	          $image->move($destinationPath, $posted_data['file_name']);
+	          $model = CandidatesChecklistDocs::create($posted_data);
+	          return response()->json(['status_code' => 200, 'message' => 'Document uploaded successfully', 'data' => $model]);           
+	      } else {
+	           throw new \Dingo\Api\Exception\StoreResourceFailedException('Document not uploaded.',$object->errors());
+	      }
+	  }else{
+	      return response()->json(['status_code' => 404, 'message' => 'Document is already uploaded']);
+	  }
 	  
-	// }
+	}
 }

@@ -47,7 +47,7 @@ class BackgroundChecklistController extends BaseController
         try {        
             $objectBackgroundChecklist = new BackgroundChecklist();
             $posted_data["status"] = 1;
-            $posted_data["mandatory"] = 1;
+            $posted_data["type"] = 'file';
             if ($objectBackgroundChecklist->validate($posted_data)) {
                 $model = BackgroundChecklist::create($posted_data);
                 DB::commit();
