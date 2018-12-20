@@ -26,109 +26,109 @@ class CreateBackgroundChecklist extends Migration
         $data = array(
             array(
                 "name" => "BA BGC Form(with passport size photograph)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Address Proof(Present and Permanent)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "SSC",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Intermediate(HSC/Diploma)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Graduation",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Post-graduation",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Mark sheets(consolidated / semester wise)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Provisional CertificatC",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "O.D (Original Document)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Offer letter (For all employers)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Experience Certificates(For all employers)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Salary last 3 months pay slips. (For all employers)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Recent Hike letters",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Consultancy Offer letter",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Bank statements(Complete tenure for all companies without any PF remittance)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Deputation letters (Need Client Name, Emp. code & reporting manager details)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "PF statements",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
                 "name" => "Form 16 (For all employers)",
-                "type" => "PDF",
+                "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             )

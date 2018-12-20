@@ -104,4 +104,13 @@ class BackgroundChecklistController extends BaseController
             }
         }
     }
+
+    function getAllBackgroundCheckList(){
+        $backgroundChecklistData = BackgroundChecklist::all();
+        if ($backgroundChecklistData){
+          return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
+        }else{
+          return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
+        }
+    }
 }
