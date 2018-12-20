@@ -19,7 +19,7 @@ class CreateBackgroundChecklist extends Migration
             $table->string('name');
             $table->string('type');
             $table->boolean('mandatory');
-            $table->string('status');
+            $table->integer('status');
             $table->timestamps();
         });
 

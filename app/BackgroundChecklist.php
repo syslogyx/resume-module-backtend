@@ -27,14 +27,14 @@ class BackgroundChecklist extends Model
     //     'password', 'remember_token',
     // ];
 
-    protected $table = 'background_check_list';
+    protected $table = 'background_checklist';
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     private $rules = array(
         'name' => 'required',
         'type' => 'required',
-        'mandatory' => 'required'
+        'mandatory' => 'required',
         'status' => 'required'
 
     );
