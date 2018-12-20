@@ -149,6 +149,13 @@ $api->version("v1", function($api) {
     $api->get("download_background_form/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBackgroundCheckForm");
     $api->post("upload_bgdoc", "App\Http\Controllers\CandidatesChecklistDocsController@uploadBackgroundForm");
     $api->get("download_sample_bgform/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadSampleBackgroundForm");
+
+    // Background Checklist api
+    $api->get("background_checklist", "App\Http\Controllers\BackgroundChecklistController@index");
+    $api->get("backgroundChecklistInfoByID/{id}/view", "App\Http\Controllers\CompanyController@viewCompany");
+    $api->post("background_checklist/create", "App\Http\Controllers\BackgroundChecklistController@create");
+    $api->post("/background_checklist/update/{id}", "App\Http\Controllers\BackgroundChecklistController@update");
+    $api->post("/background_checklist/changestatus/{id}", "App\Http\Controllers\BackgroundChecklistController@changeStatus");
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {
