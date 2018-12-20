@@ -13,7 +13,7 @@ class CandidatesChecklistDocs extends Model
      * @var array
      */
     protected $fillable = [
-        'file_name','candidate_id', 'path','timestamp','bg_checklist_id'
+        'file_name','candidate_id','bg_checklist_id', 'path','timestamp'
     ];
 
     /**
@@ -25,15 +25,15 @@ class CandidatesChecklistDocs extends Model
     //     'password', 'remember_token',
     // ];
 
-    protected $table = 'candidate_background_documents';
+    protected $table = 'candidate_bgchecklist_documents';
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     private $rules = array(
     	'file_name' => 'required',
         'candidate_id' => 'required',
+        'bg_checklist_id' => 'required',
         'path' => 'required',
-        'file_type' => 'required',
         'timestamp' => 'required'
     );
     private $errors;

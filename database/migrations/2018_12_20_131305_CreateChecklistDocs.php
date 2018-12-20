@@ -17,13 +17,13 @@ class CreateChecklistDocs extends Migration
             $table->increments('id');
             $table->string('file_name');
             $table->integer('candidate_id')->unsigned()->nullable();
-            $table->string('bg_checklist_id')->unsigned()->nullable();;
+            $table->integer('bg_checklist_id')->unsigned()->nullable();
             $table->string('path')->nullable();
             $table->string('timestamp')->nullable();
             $table->timestamps();
         });
 
-        Schema::table('candidate_jd_assoc', function($table) {
+        Schema::table('candidate_bgchecklist_documents', function($table) {
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
             $table->foreign('bg_checklist_id')->references('id')->on('background_check_list');
         });
