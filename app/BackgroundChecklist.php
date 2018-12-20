@@ -34,8 +34,8 @@ class BackgroundChecklist extends Model
     private $rules = array(
         'name' => 'required',
         'type' => 'required',
-        'mandatory' => 'required',
-        'status' => 'required'
+        'mandatory' => 'nullable',
+        'status' => 'nullable'
 
     );
     private $errors;

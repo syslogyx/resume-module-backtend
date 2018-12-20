@@ -106,9 +106,9 @@ $api->version("v1", function($api) {
     $api->get("job_description", "App\Http\Controllers\JobController@index");
     $api->get("jobInfoByID/{id}/view", "App\Http\Controllers\JobController@viewJob");
     $api->post("job/create", "App\Http\Controllers\JobController@create");
-    $api->post("/job/update/{id}", "App\Http\Controllers\JobController@update");
-    $api->post("/job/changestatus/{id}", "App\Http\Controllers\JobController@updateStatus");
-    $api->get("/getAllActiveJd", "App\Http\Controllers\JobController@fetchActiveJd");
+    $api->post("job/update/{id}", "App\Http\Controllers\JobController@update");
+    $api->post("job/changestatus/{id}", "App\Http\Controllers\JobController@updateStatus");
+    $api->get("getAllActiveJd", "App\Http\Controllers\JobController@fetchActiveJd");
 
     // Basic Screen Questions api
     $api->get("basic_screening_questions", "App\Http\Controllers\BasicScreeningQuestionsController@index");
@@ -142,8 +142,8 @@ $api->version("v1", function($api) {
     $api->get("company_table", "App\Http\Controllers\CompanyController@index");
     $api->get("companyInfoByID/{id}/view", "App\Http\Controllers\CompanyController@viewCompany");
     $api->post("company/create", "App\Http\Controllers\CompanyController@create");
-    $api->post("/company/update/{id}", "App\Http\Controllers\CompanyController@update");
-    $api->post("/company/changestatus/{id}", "App\Http\Controllers\CompanyController@changeStatus");
+    $api->post("company/update/{id}", "App\Http\Controllers\CompanyController@update");
+    $api->post("company/changestatus/{id}", "App\Http\Controllers\CompanyController@changeStatus");
 
     // check list documents api
     $api->get("download_background_form/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBackgroundCheckForm");
@@ -152,10 +152,10 @@ $api->version("v1", function($api) {
 
     // Background Checklist api
     $api->get("background_checklist", "App\Http\Controllers\BackgroundChecklistController@index");
-    $api->get("backgroundChecklistInfoByID/{id}/view", "App\Http\Controllers\CompanyController@viewBackgroundChecklist");
+    $api->get("backgroundChecklistInfoByID/{id}/view", "App\Http\Controllers\BackgroundChecklistController@viewBackgroundChecklist");
     $api->post("background_checklist/create", "App\Http\Controllers\BackgroundChecklistController@create");
-    $api->post("/background_checklist/update/{id}", "App\Http\Controllers\BackgroundChecklistController@update");
-    $api->post("/background_checklist/changestatus/{id}", "App\Http\Controllers\BackgroundChecklistController@changeStatus");
+    $api->post("background_checklist/update/{id}", "App\Http\Controllers\BackgroundChecklistController@update");
+    $api->post("background_checklist/changestatus/{id}", "App\Http\Controllers\BackgroundChecklistController@changeStatus");
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {
