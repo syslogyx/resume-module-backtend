@@ -17,18 +17,15 @@ class BasicScreeningQuestionsController extends BaseController
         $page = $request->page;
         $limit = $request->limit;
         if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
-            $questionsData = BasicScreeningQuestions::with('stream')->paginate(50);
+           $questionsData = BasicScreeningQuestions::with('stream')->paginate(50);
         }
         else{
-            $questionsData = BasicScreeningQuestions::with('stream')->paginate($limit);
+           $questionsData = BasicScreeningQuestions::with('stream')->paginate($limit);
         }
-
         if ($questionsData->first()) {
-
-            return $this->dispatchResponse(200, "Questions List", $questionsData);
-
+           return $this->dispatchResponse(200, "Questions List", $questionsData);
         } else {
-            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+           return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
     }
 

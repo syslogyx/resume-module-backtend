@@ -94,7 +94,7 @@ class CandidateUserAssocController extends BaseController
                 $candidateData = Candidate::find((int) $posted_data['candidate_id']);
                 $candidateData->status = 'Schedule';
                 $candidateData->save();
-               DB::commit();	       
+                DB::commit();	       
                 if($model){
 	              return $this->dispatchResponse(200, "Interview scheduled Successfully...!!", $model);
 	            }else{
