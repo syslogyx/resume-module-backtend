@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Response;
+use DateTime;
+use App\CandidatesChecklistDocs;
 
 class CandidatesChecklistDocsController extends BaseController
 {
@@ -31,72 +33,50 @@ class CandidatesChecklistDocsController extends BaseController
 	* To save Filled background check pdf file form on server
 	*/
 	public function uploadBackgroundForm(Request $request){
-		// return $request;
-	  // $object = new CandidatesChecklistDocs();
+		$object = new CandidatesChecklistDocs();
+		DB::beginTransaction();
+		try { 
+			//$files = $request->file('file_name');			
+			$fileArray = [];
+			$posted_data=[];
+			if($request->hasfile('file_name'))
+			{
+				foreach($request->file('file_name') as $file){ 
+					$fileName = $file->getClientOriginalName();	 
+					$fileExtension = $file->getClientOriginalExtension();
+					$fileArray['file_name'] = time().'.'.$fileExtension;
+					$fileArray['candidate_id']= $request['candidate_id'];
+					$fileArray['timestamp']= $request['timestamp'];
+					$fileArray['bg_checklist_id']=$request['bg_checklist_id'];
+					$destinationPath = public_path('/uploaded_backgroud_doc');
 
-	$files = $request->all();
-	return $files;
-	$fArray = [];
-	$finalArray=[];
-	foreach ($request->file_name as $file) {
-
-		$fArray['name'] = $file->getClientOriginalName();
-		print_r($filename);
-		$fArray['ext'] = $file->getClientOriginalExtension();
-		print_r($extension);
-
-		array_push($finalArray, $fArray);
-	}
-	// die();
-	return $finalArray;
-
-
-
-	// $fileNameArray =[];
-	  // $files = $request->file('file_name');
-	  // return count($files);
-	  // foreach($files as $file){
-	  // return $file->getClientOriginalName();
-
-	  // 	$fname = $file->getClientOriginalName();
-	  // 	return $fname;
-	  // 	array_push($fileNameArray, $fname);
-	  // }
-	  return $fileNameArray;
-	  $ext = $image->getClientOriginalExtension();     
-	  // if($ext == 'doc'){
-	  //   $ext = 'docx';
-	  // }
-	  $posted_data['file_name'] =time().'.'.$ext;
-	  $isFileAlreadyPresent = false;
-	  $posted_data['candidate_id']=$request['candidate_id'];
-	  
-	  $upladed_data = CandidatesChecklistDocs::where('candidate_id','=',$posted_data['candidate_id'])->where('file_type','=',$request['file_type'])->get();
-	  // return count($upladed_data);
-	  // to check candidate form is already present or not
-	  if(count($upladed_data) > 0){
-	    $isFileAlreadyPresent = true;
-	  }
-
-	  if(!($isFileAlreadyPresent)){
-
-	      $posted_data['timestamp']=$request['timestamp'];
-	      $posted_data['file_type']=$request['file_type'];
-	      $destinationPath = public_path('/uploaded_backgroud_doc');
-	      $posted_data['path']=$destinationPath; 
-
-	      // return $posted_data;      
-	      
-	      if ($object->validate($posted_data)) {
-	          $image->move($destinationPath, $posted_data['file_name']);
-	          $model = CandidatesChecklistDocs::create($posted_data);
-	          return response()->json(['status_code' => 200, 'message' => 'Document uploaded successfully', 'data' => $model]);           
-	      } else {
-	           throw new \Dingo\Api\Exception\StoreResourceFailedException('Document not uploaded.',$object->errors());
-	      }
-	  }else{
-	      return response()->json(['status_code' => 404, 'message' => 'Document is already uploaded']);
-	  }
+					$file->move($destinationPath, $fileArray['file_name']);
+					// $file->move($destinationPath, $name);  
+				    $fileArray['path']=$destinationPath; 
+				    $fileArray["created_at"] = new DateTime();
+		      		$fileArray["updated_at"] =  new DateTime();
+					array_push($posted_data, $fileArray);
+				}
+				if ($object->validate($posted_data)) {
+					$model = CandidatesChecklistDocs::insert($posted_data);
+					DB::commit();
+					if($model){
+						return response()->json(['status_code' => 200, 'message' => 'Document uploaded successfully', 'data' => $model]);  ;
+			        }else{
+			          	return response()->json(['status_code' => 401, 'message' => 'Unable to upload files.']);
+			        }
+			    } else {
+	                DB::rollback();
+	                return response()->json(['status_code' => 404, 'message' => 'Something went wrong.','error' => $object->errors()]);
+	            }
+			}else{
+				DB::rollback();
+				return response()->json(['status_code' => 404, 'message' => 'Please Select atleast one file.']);
+			}
+		} catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }  
 	  
 	}
 }

@@ -25,16 +25,16 @@ class CandidatesChecklistDocs extends Model
     //     'password', 'remember_token',
     // ];
 
-    protected $table = 'candidate_bgchecklist_documents';
+    protected $table = 'candidate_bgcheck_list_documents';
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     private $rules = array(
-    	'file_name' => 'required',
-        'candidate_id' => 'required',
-        'bg_checklist_id' => 'required',
-        'path' => 'required',
-        'timestamp' => 'required'
+    	'file_name.*' => 'required',
+        'candidate_id.*' => 'required',
+        'bg_checklist_id.*' => 'required',
+        'path.*' => 'required',
+        'timestamp.*' => 'required'
     );
     private $errors;
 
@@ -49,6 +49,10 @@ class CandidatesChecklistDocs extends Model
 
     public function errors() {
         return $this->errors;
+    }
+
+    public function background_checklist() {
+        return $this->belongsTo('App\BackgroundChecklist');    
     }
 
 }

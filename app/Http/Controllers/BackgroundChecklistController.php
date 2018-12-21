@@ -47,7 +47,7 @@ class BackgroundChecklistController extends BaseController
         try {        
             $objectBackgroundChecklist = new BackgroundChecklist();
             $posted_data["status"] = 1;
-            $posted_data["type"] = 'file';
+            // $posted_data["type"] = 'file';
             if ($objectBackgroundChecklist->validate($posted_data)) {
                 $model = BackgroundChecklist::create($posted_data);
                 DB::commit();
@@ -106,7 +106,7 @@ class BackgroundChecklistController extends BaseController
     }
 
     function getAllBackgroundCheckList(){
-        $backgroundChecklistData = BackgroundChecklist::all();
+        $backgroundChecklistData = BackgroundChecklist::with('candidate_checklist_docs')->where('status',1)->get();
         if ($backgroundChecklistData){
           return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
         }else{
