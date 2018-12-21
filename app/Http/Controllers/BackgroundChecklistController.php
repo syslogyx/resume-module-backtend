@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App\BackgroundChecklist;
+use App\CandidatesChecklistDocs;
 
 class BackgroundChecklistController extends BaseController
 {
@@ -105,8 +106,13 @@ class BackgroundChecklistController extends BaseController
         }
     }
 
-    function getAllBackgroundCheckList(){
-        $backgroundChecklistData = BackgroundChecklist::with('candidate_checklist_docs')->where('status',1)->get();
+    function getAllBackgroundCheckList(Request $request){
+        $id = $request->candidate_id;
+         // $backgroundChecklistData = BackgroundChecklist::with('background_checklist','candidate_checklist_docs')->with(array('candidate_checklist_docs'=>function($que) use ($id){
+         //            $que->where('candidate_id',$id)->get();
+         //        }))->where("candidate_id",$id);
+        // $backgroundChecklistData = BackgroundChecklist::with('candidate_checklist_docs')->get();
+        $backgroundChecklistData = BackgroundChecklist::all();
         if ($backgroundChecklistData){
           return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
         }else{

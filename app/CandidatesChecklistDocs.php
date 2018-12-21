@@ -30,7 +30,7 @@ class CandidatesChecklistDocs extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     private $rules = array(
-    	'file_name.*' => 'required',
+    	'file_name.*' => 'required|mimes:jpeg,png,jpg,bmp,pdf',
         'candidate_id.*' => 'required',
         'bg_checklist_id.*' => 'required',
         'path.*' => 'required',
@@ -51,8 +51,12 @@ class CandidatesChecklistDocs extends Model
         return $this->errors;
     }
 
-    public function background_checklist() {
-        return $this->belongsTo('App\BackgroundChecklist');    
-    }
+    // public function background_checklist() {
+    //     return $this->belongsTo('App\BackgroundChecklist');    
+    // }
+
+    // public function candidate_checklist_docs() {
+    //     return $this->hasMany('App\CandidatesChecklistDocs','bg_checklist_id'); 
+    // }
 
 }

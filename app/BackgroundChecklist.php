@@ -54,7 +54,11 @@ class BackgroundChecklist extends Model
         return $this->errors;
     }
 
-    public function candidate_checklist_docs() {
-        return $this->hasMany('App\CandidatesChecklistDocs','bg_checklist_id'); 
-    }
+    // public function background_checklist() {
+    //     return $this->hasMany('App\BackgroundChecklist');    
+    // }
+
+    // public function candidate_checklist_docs() {
+    //     return $this->belongsToMany('App\CandidatesChecklistDocs')->where('candidate_id','=',124); 
+    // }
 }

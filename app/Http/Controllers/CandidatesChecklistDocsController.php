@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Response;
 use DateTime;
 use App\CandidatesChecklistDocs;
+use App\BackgroundChecklist;
 
 class CandidatesChecklistDocsController extends BaseController
 {
@@ -36,11 +37,11 @@ class CandidatesChecklistDocsController extends BaseController
 		$object = new CandidatesChecklistDocs();
 		DB::beginTransaction();
 		try { 
-			//$files = $request->file('file_name');			
+			// $files = $request->file('file_name');			
 			$fileArray = [];
 			$posted_data=[];
-			if($request->hasfile('file_name'))
-			{
+			// if($request->hasfile('file_name'))
+			// {
 				foreach($request->file('file_name') as $file){ 
 					$fileName = $file->getClientOriginalName();	 
 					$fileExtension = $file->getClientOriginalExtension();
@@ -69,10 +70,10 @@ class CandidatesChecklistDocsController extends BaseController
 	                DB::rollback();
 	                return response()->json(['status_code' => 404, 'message' => 'Something went wrong.','error' => $object->errors()]);
 	            }
-			}else{
-				DB::rollback();
-				return response()->json(['status_code' => 404, 'message' => 'Please Select atleast one file.']);
-			}
+			// }else{
+			// 	DB::rollback();
+			// 	return response()->json(['status_code' => 404, 'message' => 'Please Select atleast one file.']);
+			// }
 		} catch (\Exception $e) {
             DB::rollback();
             throw $e;
