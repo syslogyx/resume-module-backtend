@@ -43,9 +43,9 @@ class CandidatesChecklistDocsController extends BaseController
 			// if($request->hasfile('file_name'))
 			// {
 				foreach($request->file('file_name') as $file){ 
-					$fileName = $file->getClientOriginalName();	 
-					$fileExtension = $file->getClientOriginalExtension();
-					$fileArray['file_name'] = time().'.'.$fileExtension;
+					$fileArray['file_name'] = $file->getClientOriginalName();	 
+					// $fileExtension = $file->getClientOriginalExtension();
+					// $fileArray['file_name'] = time().'.'.$fileExtension;
 					$fileArray['candidate_id']= $request['candidate_id'];
 					$fileArray['timestamp']= $request['timestamp'];
 					$fileArray['bg_checklist_id']=$request['bg_checklist_id'];
