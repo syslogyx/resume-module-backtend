@@ -25,13 +25,13 @@ class CreateBackgroundChecklist extends Migration
 
         $data = array(
             array(
-                "name" => "BA BGC Form(with passport size photograph)",
+                "name" => "BA BGC Form (with passport size photograph)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
-                "name" => "Address Proof(Present and Permanent)",
+                "name" => "Address Proof (Present and Permanent)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
@@ -43,7 +43,7 @@ class CreateBackgroundChecklist extends Migration
                 "status" => 1
             ),
             array(
-                "name" => "Intermediate(HSC/Diploma)",
+                "name" => "Intermediate (HSC/ Diploma)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
@@ -61,13 +61,13 @@ class CreateBackgroundChecklist extends Migration
                 "status" => 1
             ),
             array(
-                "name" => "Mark sheets(consolidated / semester wise)",
+                "name" => "Mark sheets (consolidated / semester wise)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
-                "name" => "Provisional CertificatC",
+                "name" => "Provisional Certificate",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
@@ -85,7 +85,7 @@ class CreateBackgroundChecklist extends Migration
                 "status" => 1
             ),
             array(
-                "name" => "Experience Certificates(For all employers)",
+                "name" => "Experience Certificates (For all employers)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
@@ -109,7 +109,7 @@ class CreateBackgroundChecklist extends Migration
                 "status" => 1
             ),
             array(
-                "name" => "Bank statements(Complete tenure for all companies without any PF remittance)",
+                "name" => "Bank statements (Complete tenure for all companies without any PF remittance)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1

@@ -42,7 +42,7 @@ class JobController extends BaseController
         if ($model){
             return $this->dispatchResponse(200, "Records Found...!!", $model);
         }else{
-            return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
+            return $this->dispatchResponse(400, 'No Records Found!!');
         }
     }
 

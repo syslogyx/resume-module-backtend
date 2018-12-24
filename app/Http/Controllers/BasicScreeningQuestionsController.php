@@ -34,11 +34,11 @@ class BasicScreeningQuestionsController extends BaseController
     *  Function to Get question by id
     */
     function view($id) {
-        $model = BasicScreeningQuestions::with('stream')->find((int) $id);
-        if ($model){
-            return $this->dispatchResponse(200, "Records Found...!!", $model);
+        $details = BasicScreeningQuestions::with('stream')->find((int) $id);
+        if ($details){
+            return response()->json(['status_code' => 200, 'message' => 'Question Details', 'data' => $details]);
         }else{
-            return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
+            return response()->json(['status_code' => 404, 'message' => 'Details not found']);
         }
     }
 

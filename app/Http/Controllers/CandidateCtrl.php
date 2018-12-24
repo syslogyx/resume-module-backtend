@@ -236,11 +236,11 @@ class CandidateCtrl extends BaseController
   * To Fetch candidate details by id
   */
   function viewCandiadte($id) {
-      $model = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
-      if ($model){
-          return $this->dispatchResponse(200, "Records Found...!!", $model);
+      $candidateDtls = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);      
+      if ($candidateDtls){
+          return response()->json(['status_code' => 200, 'message' => 'Candidate Details', 'data' => $candidateDtls]);
       }else{
-          return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
+        return response()->json(['status_code' => 404, 'message' => 'Details not found']);
       }
   }
 
