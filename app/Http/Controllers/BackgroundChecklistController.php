@@ -127,7 +127,7 @@ class BackgroundChecklistController extends BaseController
         //     $backgroundChecklistData = BackgroundChecklist::whereNotIn('id', $unique_bg_checklist_ids)
         //             ->get();
         // }
-        $backgroundChecklistData = BackgroundChecklist::all();
+        $backgroundChecklistData = BackgroundChecklist::where('status',1)->get();
 
         foreach($backgroundChecklistData as $row) {
             $row['displayFlag'] = 'True';
