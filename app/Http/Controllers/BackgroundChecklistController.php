@@ -106,17 +106,47 @@ class BackgroundChecklistController extends BaseController
         }
     }
 
+    /* Function to get all background checklist of candiadate id */
     function getAllBackgroundCheckList(Request $request){
         $id = $request->candidate_id;
-         // $backgroundChecklistData = BackgroundChecklist::with('background_checklist','candidate_checklist_docs')->with(array('candidate_checklist_docs'=>function($que) use ($id){
-         //            $que->where('candidate_id',$id)->get();
-         //        }))->where("candidate_id",$id);
-        // $backgroundChecklistData = BackgroundChecklist::with('candidate_checklist_docs')->get();
+        $unique_bg_checklist_ids_array =[];
+
+        $candidateUploadedBgChecklistIDArray = CandidatesChecklistDocs::where('candidate_id',$id)->pluck('bg_checklist_id')->toArray();
+        
+        $unique_bg_checklist_ids=array_unique($candidateUploadedBgChecklistIDArray);
+
+        foreach ($unique_bg_checklist_ids as $key => $value) {
+           array_push($unique_bg_checklist_ids_array, $value);
+        }
+
+        $uniqueBgChecklistIDCount = count($unique_bg_checklist_ids_array);
+
+        // if(count($unique_bg_checklist_ids) <= 0){
+        //     $backgroundChecklistData = BackgroundChecklist::all();
+        // }else{
+        //     $backgroundChecklistData = BackgroundChecklist::whereNotIn('id', $unique_bg_checklist_ids)
+        //             ->get();
+        // }
         $backgroundChecklistData = BackgroundChecklist::all();
+
+        foreach($backgroundChecklistData as $row) {
+            $row['displayFlag'] = 'True';
+        }
+
+        if($uniqueBgChecklistIDCount > 0){
+            for($i=0;$i<$uniqueBgChecklistIDCount;$i++){
+                foreach($backgroundChecklistData as $row) {
+                    if($row['id'] == $unique_bg_checklist_ids_array[$i]){
+                        $row['displayFlag'] = 'False';
+                    }
+                } 
+            }
+        }
+        
         if ($backgroundChecklistData){
-          return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
+            return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
         }else{
-          return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
+            return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
         }
     }
 }
