@@ -9,6 +9,8 @@ use Response;
 use DateTime;
 use App\CandidatesChecklistDocs;
 use App\BackgroundChecklist;
+use ZipArchive;
+use Carbon;
 
 class CandidatesChecklistDocsController extends BaseController
 {
@@ -80,4 +82,37 @@ class CandidatesChecklistDocsController extends BaseController
         }  
 	  
 	}
+
+	public function downloadDocsInZipFile(Request $request){
+        $candidateId = $request->candidate_id;
+        $documentsFileNames = CandidatesChecklistDocs::where('candidate_id',$candidateId)->pluck('file_name');
+        // return $documentsFileNames;
+        $public_dir=public_path().'/uploads';
+        $filepath = public_path().'/uploaded_backgroud_doc/';
+      
+        $zipFileName = Carbon\Carbon::now().'.zip';
+   
+        $zip = new ZipArchive;
+        if ($zip->open($public_dir . '/' . $zipFileName, ZipArchive::CREATE) === TRUE)
+        {  
+            foreach($documentsFileNames as $file)
+            {
+                if (file_exists($filepath.'/'.$file) && is_file($filepath.'/'.$file)){
+                    $zip->addFile($filepath.'/'.$file,basename($filepath.'/'.$file)); 
+                }
+                // else{
+                //     return ['status'=>'file does not exist'];
+                // }
+            }
+            $zip->close();   
+        }
+        $headers = array(
+            'Content-Type' => 'application/octet-stream',
+        );
+        $filetopath=$public_dir.'/'.$zipFileName;
+        if(file_exists($filetopath)){
+            return response()->download($filetopath,$zipFileName,$headers);
+        }
+        return ['status'=>'file does not exist'];   
+    }
 }

@@ -126,4 +126,8 @@ class Candidate extends Model
         return $this->hasMany('App\CandidateJdAssoc','candidate_id');
     }
 
+    public function candidate_bg_documents() {
+        return $this->hasMany('App\CandidatesChecklistDocs');    
+    }
+
 }

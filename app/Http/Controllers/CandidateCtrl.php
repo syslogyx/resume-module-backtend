@@ -19,6 +19,7 @@ use App\CandidateUserAssoc;
 use App\CandidateJdAssoc;
 use App\TechnicalInterviewResult;
 use App\CandidateBackgroundDocuments;
+use App\CandidatesChecklistDocs;
 use App\User;
 use Response;
 
@@ -54,7 +55,7 @@ class CandidateCtrl extends BaseController
       $limit = $request->limit;
       $posted_data = Input::all();
       // return $request;
-      $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users');
+      $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');
       
       if(Input::get()=="" || Input::get()==null ){
           $query->get();
