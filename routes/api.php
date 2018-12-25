@@ -158,6 +158,9 @@ $api->version("v1", function($api) {
     $api->post("background_checklist/changestatus/{id}", "App\Http\Controllers\BackgroundChecklistController@changeStatus");
     $api->get("get_bg_checklist_with_flag", "App\Http\Controllers\BackgroundChecklistController@getAllBackgroundCheckList");
     // $api->get("get_bg_checklist_with_flag", "App\Http\Controllers\BackgroundChecklistController@getAllBackgroundCheckListWithDisplayFlag");
+
+    $api->post("download_bg_documents/", "App\Http\Controllers\BackgroundChecklistController@downloadDocsInZipFile");
+    
     
 });
 
