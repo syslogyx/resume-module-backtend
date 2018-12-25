@@ -109,6 +109,7 @@ class BackgroundChecklistController extends BaseController
     /* Function to get all background checklist of candiadate id */
     function getAllBackgroundCheckList(Request $request){
         $id = $request->candidate_id;
+        $viewType = $request->view_type;
         $unique_bg_checklist_ids_array =[];
 
         $candidateUploadedBgChecklistIDArray = CandidatesChecklistDocs::where('candidate_id',$id)->pluck('bg_checklist_id')->toArray();
@@ -121,28 +122,33 @@ class BackgroundChecklistController extends BaseController
 
         $uniqueBgChecklistIDCount = count($unique_bg_checklist_ids_array);
 
-        if($uniqueBgChecklistIDCount <= 0){
+        // if($uniqueBgChecklistIDCount <= 0){
+        //     $backgroundChecklistData = BackgroundChecklist::where('status',1)->get();
+        // }else{
+        //     $backgroundChecklistData = BackgroundChecklist::where('status',1)->whereNotIn('id', $unique_bg_checklist_ids_array)->get();
+        // $backgroundChecklistData = BackgroundChecklist::whereNotIn('id', $unique_bg_checklist_ids_array)->get();
+        // }
+
+        if($viewType == 'candidate_view'){
+
             $backgroundChecklistData = BackgroundChecklist::where('status',1)->get();
         }else{
-            $backgroundChecklistData = BackgroundChecklist::where('status',1)->whereNotIn('id', $unique_bg_checklist_ids_array)->get();
-            // $backgroundChecklistData = BackgroundChecklist::whereNotIn('id', $unique_bg_checklist_ids_array)->get();
+            $backgroundChecklistData = BackgroundChecklist::all();
         }
 
-        // $backgroundChecklistData = BackgroundChecklist::where('status',1)->get();
+        foreach($backgroundChecklistData as $row) {
+            $row['displayFlag'] = 'True';
+        }
 
-        // foreach($backgroundChecklistData as $row) {
-        //     $row['displayFlag'] = 'True';
-        // }
-
-        // if($uniqueBgChecklistIDCount > 0){
-        //     for($i=0;$i<$uniqueBgChecklistIDCount;$i++){
-        //         foreach($backgroundChecklistData as $row) {
-        //             if($row['id'] == $unique_bg_checklist_ids_array[$i]){
-        //                 $row['displayFlag'] = 'False';
-        //             }
-        //         } 
-        //     }
-        // }
+        if($uniqueBgChecklistIDCount > 0){
+            for($i=0;$i<$uniqueBgChecklistIDCount;$i++){
+                foreach($backgroundChecklistData as $row) {
+                    if($row['id'] == $unique_bg_checklist_ids_array[$i]){
+                        $row['displayFlag'] = 'False';
+                    }
+                } 
+            }
+        }
         
         if ($backgroundChecklistData){
             return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
@@ -151,11 +157,10 @@ class BackgroundChecklistController extends BaseController
         }
     }
 
-    /* Function to get all background checklist of candiadate id */
+    /* Function to get all background checklist of candiadate id 
     function getAllBackgroundCheckListWithDisplayFlag(Request $request){
         $id = $request->candidate_id;
         $viewType = $request->view_type;
-         // return $viewType;
         $unique_bg_checklist_ids_array =[];
 
         $candidateUploadedBgChecklistIDArray = CandidatesChecklistDocs::where('candidate_id',$id)->pluck('bg_checklist_id')->toArray();
@@ -194,5 +199,5 @@ class BackgroundChecklistController extends BaseController
         }else{
             return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
         }
-    }
+    } */
 }
