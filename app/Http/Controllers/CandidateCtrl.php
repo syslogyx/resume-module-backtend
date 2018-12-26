@@ -53,6 +53,7 @@ class CandidateCtrl extends BaseController
   function filterCandidates(Request $request){
       $page = $request->page;
       $limit = $request->limit;
+
       $posted_data = Input::all();
       // return $request;
       $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');
@@ -78,6 +79,10 @@ class CandidateCtrl extends BaseController
       if(isset($posted_data["from_total_experience"]) && isset($posted_data["to_total_experience"])){
         $query->where('total_experience', '>=', $posted_data["from_total_experience"]);
         $query->where('total_experience', '<=', $posted_data["to_total_experience"]);        
+      }
+
+      if(isset($posted_data['search_alphabet']) && $posted_data['search_alphabet'] != 'All'){
+        $query->where('first_name','LIKE',$posted_data['search_alphabet']."%");
       }
       
       // DB::enableQueryLog();

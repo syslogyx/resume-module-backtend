@@ -87,8 +87,8 @@ class CandidatesChecklistDocsController extends BaseController
         $candidateId = $request->candidate_id;
         $documentsFileNames = CandidatesChecklistDocs::where('candidate_id',$candidateId)->pluck('file_name');
         // return $documentsFileNames;
-        $public_dir=public_path().'/uploads';
-        $filepath = public_path().'/uploaded_backgroud_doc/';
+        $public_dir=public_path('/uploads');
+        $filepath = public_path('/uploaded_backgroud_doc');
       
         $zipFileName = Carbon\Carbon::now().'.zip';
    
