@@ -160,8 +160,8 @@ $api->version("v1", function($api) {
     // $api->get("get_bg_checklist_with_flag", "App\Http\Controllers\BackgroundChecklistController@getAllBackgroundCheckListWithDisplayFlag");
 
     $api->get("download_bg_documents", "App\Http\Controllers\CandidatesChecklistDocsController@downloadDocsInZipFile");
-
     $api->get("download_bg_doc_url", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBgDocURl");
+    // $api->get("generate_pdf_for_zip/{id}", "App\Http\Controllers\CandidatesChecklistDocsController@generatePdfToAddInZip");
     
     
 });

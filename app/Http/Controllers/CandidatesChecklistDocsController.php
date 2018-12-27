@@ -10,8 +10,11 @@ use DateTime;
 use App\CandidatesChecklistDocs;
 use App\Candidate;
 use App\BackgroundChecklist;
+use App\PdfSetting;
 use ZipArchive;
 use Carbon;
+use PDF;
+use Storage;
 
 class CandidatesChecklistDocsController extends BaseController
 {
@@ -87,8 +90,15 @@ class CandidatesChecklistDocsController extends BaseController
 	* Function to create candidate uploaded bg docs zip file
 	*/
     public function downloadDocsInZipFile(Request $request){
+
     	ob_start();
 		$candidateId = $request->candidate_id;
+		$section_names = $request->section_names;
+
+        $sectionArray = explode(",",$section_names);
+
+        $cv_filename = $this->generatePdfToAddInZip($candidateId,$sectionArray);
+
 		$candidateInfo = Candidate::where('id',$candidateId)->first();
 		
 		$zipFileNamewithSpace = $candidateInfo->first_name.'_'.$candidateInfo->middle_name.'_'.$candidateInfo->last_name;
@@ -111,6 +121,10 @@ class CandidatesChecklistDocsController extends BaseController
 	            else {
 	                return response()->json(['status_code' => 404, 'message' => 'file `{$file}` could not be added to the zip file: ','error' => $archive->getStatusString()]);
 	            }
+	        }
+
+	        if(file_exists($filepath.'/'.$cv_filename)){
+	        	$archive->addFile($filepath.'/'.$cv_filename, basename($filepath.'/'.$cv_filename));
 	        }
 
 	        if ($archive->close()) {
@@ -144,6 +158,53 @@ class CandidatesChecklistDocsController extends BaseController
 	    } else {
 	      	return response()->json(['status_code' => 407, 'message' => 'zip file could not be created:','error' => $archive->getStatusString()]);
 	    }
+	}
+
+	/*
+	* Function to create candidate PDF to add in zip file
+	*/
+	function generatePdfToAddInZip($id,$sectionArray) {
+        $json = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);
+
+        $json['section_names'] = $sectionArray;
+
+        if ($json){
+
+        	for ($i=0; $i < count($json['candidate_ind_exp']); $i++) { 
+
+        		$languageToolsUsedArray = json_decode($json['candidate_ind_exp'][$i]['language_or_tools']);
+
+        		$languagesArray = $languageToolsUsedArray[0];
+
+                $toolsArray = $languageToolsUsedArray[1];
+
+                $langStringSplit1 = explode("[",$languagesArray);
+                $langStringSplit2 = explode("]",$langStringSplit1[1]);
+                $finalLanguagesArray = explode(",",$langStringSplit2[0]);
+
+                $toolStringSplit1 = explode("[",$toolsArray);
+                $toolStringSplit2 = explode("]",$toolStringSplit1[1]);
+                $finalToolsArray = explode(",",$toolStringSplit2[0]);
+
+                $json['candidate_ind_exp'][$i]['languages'] = $finalLanguagesArray;
+                $json['candidate_ind_exp'][$i]['tools'] = $finalToolsArray;
+        	}
+
+            view()->share('candidateDetails',$json);
+			$pdf = PDF::loadView('pdfview');
+			$ext = '.pdf';
+			$candidate_name = $json['first_name'].$json['middle_name'].$json['last_name'];
+			$jdTitle = $json['job_description']['title'];
+			$jdExperience = str_replace(' ', '_', $json['job_description']['experience']);
+			$fileName = 'CV_'.$candidate_name.'_'.$jdTitle.'_'.$jdExperience.'_'.date('Y_m_d').$ext;
+
+			$filepath = public_path('/uploaded_backgroud_doc/');
+			// $pdf->download($fileName);
+			$pdf->save($filepath.'/'.$fileName);
+			return $fileName;
+        }else{
+            return $this->dispatchResponse(400, "Something went wrong.", $json->errors());
+        }
 	}
 
 	/* 
