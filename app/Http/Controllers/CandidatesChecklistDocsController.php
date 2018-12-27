@@ -196,7 +196,7 @@ class CandidatesChecklistDocsController extends BaseController
 			$candidate_name = $json['first_name'].$json['middle_name'].$json['last_name'];
 			$jdTitle = $json['job_description']['title'];
 			$jdExperience = str_replace(' ', '_', $json['job_description']['experience']);
-			$fileName = 'CV_'.$candidate_name.'_'.$jdTitle.'_'.$jdExperience.'_'.date('Y_m_d').$ext;
+			$fileName = 'CV_'.$candidate_name.'_'.$jdTitle.'_'.$jdExperience.$ext;
 
 			$filepath = public_path('/uploaded_backgroud_doc/');
 			// $pdf->download($fileName);
