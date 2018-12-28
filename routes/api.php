@@ -101,6 +101,7 @@ $api->version("v1", function($api) {
     $api->get("candidate/getJDListByCandidateId/{id}", "App\Http\Controllers\CandidateCtrl@getJDListByCandidateId");
     $api->post("candidate/getLoggedCandidateDetails","App\Http\Controllers\CandidateCtrl@getLoggedCandidateInfo");
     $api->post("create_logins","App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
+    $api->get("get_alphabets", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");

@@ -513,6 +513,11 @@ class CandidateCtrl extends BaseController
 
   }
 
+    public function getListOfCandidateOrderByAlphabets()
+  {
+      return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+  }
+
  
 
 }
