@@ -97,12 +97,17 @@ class CandidatesChecklistDocsController extends BaseController
 
         $sectionArray = explode(",",$section_names);
 
-        $cv_filename = $this->generatePdfToAddInZip($candidateId,$sectionArray);
-
 		$candidateInfo = Candidate::where('id',$candidateId)->first();
 		
 		$zipFileNamewithSpace = $candidateInfo->first_name.'_'.$candidateInfo->middle_name.'_'.$candidateInfo->last_name;
+		
 		$zipFileName = join("_",explode(" ",$zipFileNamewithSpace)).'.zip';
+
+		if(file_exists(public_path().'/'.$zipFileName)){
+	        unlink(public_path().'/'.$zipFileName);
+	    }
+
+        $cv_filename = $this->generatePdfToAddInZip($candidateId,$sectionArray);
 
 	    $documentsFileNames = CandidatesChecklistDocs::where('candidate_id',$candidateId)->pluck('file_name');
 
@@ -114,6 +119,9 @@ class CandidatesChecklistDocsController extends BaseController
 	    
 	    // if ($archive->open($archiveFile, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
 	    if ($archive->open(public_path().'/'.$archiveFile, ZipArchive::CREATE)) {
+
+	    	 $archive->deleteName('./'.$cv_filename);
+		   
 	        foreach ($documentsFileNames as $file) {
         		if ($archive->addFile($filepath.'/'.$file, basename($filepath.'/'.$file))) {
             		 continue;
@@ -144,8 +152,8 @@ class CandidatesChecklistDocsController extends BaseController
 		        );
 
 				ob_end_flush();
-				$filetopath=public_path().'/'.$archiveFile;
-
+				
+	    		$filetopath=public_path().'/'.$archiveFile;
 		        if(file_exists($filetopath)){
 		            return response()->json(['status_code' => 200, 'message' => 'Zip File Created Successfully..!']);
 		        }else{
@@ -199,6 +207,15 @@ class CandidatesChecklistDocsController extends BaseController
 			$fileName = 'CV_'.$candidate_name.'_'.$jdTitle.'_'.$jdExperience.$ext;
 
 			$filepath = public_path('/uploaded_backgroud_doc/');
+			if(is_file($filepath.'/'.$fileName)){
+				$currentTime = time(); // get current time
+			    $lastModifiedTime = filemtime($filepath.'/'.$fileName); // get file creation time    
+			    $timeDiff = abs($currentTime - $lastModifiedTime); // get how old is file in hours:
+			        
+			    if(is_file($filepath.'/'.$fileName) && $timeDiff > 1){ //check if file was modified before 1 hour:
+			        unlink($filepath.'/'.$fileName); //delete file
+				}
+			}
 			// $pdf->download($fileName);
 			$pdf->save($filepath.'/'.$fileName);
 			return $fileName;
