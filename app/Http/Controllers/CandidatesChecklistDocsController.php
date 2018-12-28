@@ -224,6 +224,38 @@ class CandidatesChecklistDocsController extends BaseController
         }
 	}
 
+	public function downloadcandidateZip(Request $request){
+		$file_name = $request->file_name;
+		// $file=public_path('/').$file_name;
+
+		
+
+	  	// $file = public_path($file_name);
+	  	// return $file;
+	  	// $headers = array('Content-Type: application/pdf');
+	  	ob_end_clean();
+		/* Header is use if zip file download function will be used*/
+	    $headers = array(
+	    	'Cache-Control' =>'public',
+	        'Content-Type' => 'application/zip',
+	        'Content-Disposition' =>'attachment',
+	        'Content-Description' =>'File Transfer',
+	        'Content-Transfer-Encoding' => 'binary',
+	      	'filename' => pathinfo($file_name , PATHINFO_BASENAME),
+	      	'Pragma' => 'no-cache',
+	      	'Expires' => 0,
+	      	// 'Content-Length' =>filesize($archiveFile),
+	    );
+
+		ob_end_flush();
+
+		$filetopath=public_path().'/'.$file_name;
+        if(file_exists($filetopath)){
+            return response()->download($filetopath,$file_name,$headers);
+        }
+	  // return Response::download($file, basename($file),$headers);
+	}
+
 	/* 
 	* Function to get download bg checklist doc URL
 	*/
