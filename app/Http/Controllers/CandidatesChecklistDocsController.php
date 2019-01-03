@@ -31,9 +31,9 @@ class CandidatesChecklistDocsController extends BaseController
 	* To get sample background check pdf file from db server
 	*/
 	public function downloadSampleBackgroundForm(){
-	  $file = public_path('/background_check_form/TCS_BGC_FORM_SAMPLE.pdf');
+	  $file = public_path('/background_check_form/SYSLOGYX_BGC_FORM_SAMPLE.pdf');
 	  $headers = array('Content-Type: application/pdf');
-	  return Response::download($file, 'TCS_BGC_FORM_SAMPLE.pdf',$headers);
+	  return Response::download($file, 'SYSLOGYX_BGC_FORM_SAMPLE.pdf',$headers);
 	}
 	  
 	/*

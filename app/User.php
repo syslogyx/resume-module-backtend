@@ -33,7 +33,7 @@ class User extends Authenticatable
     private $rules = array(
         'name' => 'required',
         'email' => 'required|unique:users,email,',
-        'password' => 'nullable',
+        'password' => 'required',
         'role_id' => 'required',
         'company_name' => 'required',
         'mobile' => 'required',
@@ -45,6 +45,7 @@ class User extends Authenticatable
     public function validate($data) {
         if ($this->id)
             $this->rules['email'] .= $this->id;
+            $this->rules['password'] = '';
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
