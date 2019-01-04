@@ -104,4 +104,15 @@ class CompanyController extends BaseController
         }
     }
 
+    /* Function to fetch active company list */
+    function activeCimpanyList(Request $request) {
+        $companyData = Company::where("status",1)->get();
+
+        if ($companyData->first()) {
+            return $this->dispatchResponse(200, "", $companyData);
+        } else {
+            return $this->dispatchResponse(404, "No Records Found!!", null);
+        }
+    }
+
 }

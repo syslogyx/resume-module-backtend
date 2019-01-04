@@ -518,6 +518,15 @@ class CandidateCtrl extends BaseController
       return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
   }
 
- 
-
+    /*
+    *   Function to get candidate list by job_id
+    */
+    function getCandidateListByJobId($job_id){
+        $candidateList = Candidate::where('job_description_id','=',$job_id)->get();
+        if($candidateList->first()){
+            return $this->dispatchResponse(200, "Data", $candidateList);
+        } else {            
+            return $this->dispatchResponse(404, "No Records Found!!", $candidateList);
+        }
+    }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Qualification extends Model
 {
-     protected $fillable = [
+    protected $fillable = [
         'name','alise','status'
     ];
     protected $table = 'qualification_details';

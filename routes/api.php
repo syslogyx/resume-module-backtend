@@ -145,6 +145,8 @@ $api->version("v1", function($api) {
     $api->post("company/create", "App\Http\Controllers\CompanyController@create");
     $api->post("company/update/{id}", "App\Http\Controllers\CompanyController@update");
     $api->post("company/changestatus/{id}", "App\Http\Controllers\CompanyController@changeStatus");
+    $api->get("company_list", "App\Http\Controllers\CompanyController@activeCimpanyList");
+    
 
     // check list documents api
     $api->get("download_background_form/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBackgroundCheckForm");
@@ -164,8 +166,15 @@ $api->version("v1", function($api) {
     $api->get("download_bg_doc_url", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBgDocURl");
     $api->get("download_candidate_zip", "App\Http\Controllers\CandidatesChecklistDocsController@downloadcandidateZip");
     // $api->get("generate_pdf_for_zip/{id}", "App\Http\Controllers\CandidatesChecklistDocsController@generatePdfToAddInZip");
-    
-    
+
+    //get job list by company id
+    $api->get("jobList/company/{company_id}", "App\Http\Controllers\JobController@getJobDescriptionListByCompanyId");
+
+    //get candidate list by job id
+    $api->get("candidateList/job/{job_id}", "App\Http\Controllers\CandidateCtrl@getCandidateListByJobId");
+
+    //Forwarded resume
+    $api->post("forwarded_resume/create", "App\Http\Controllers\ForwordedResumeController@create");
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {

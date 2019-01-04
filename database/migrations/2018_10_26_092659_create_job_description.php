@@ -16,6 +16,7 @@ class CreateJobDescription extends Migration
     {
         Schema::create('job_description', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('company_id')->unsigned()->nullable();
             $table->text('title')->nullable();
             $table->text('sub_title')->nullable();
             $table->longText('description')->nullable();
@@ -31,6 +32,10 @@ class CreateJobDescription extends Migration
             $table->string('job_code')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('job_description', function($table) {
+            $table->foreign('company_id')->references('id')->on('company_table');
         });
     }
 

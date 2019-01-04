@@ -130,5 +130,17 @@ class JobController extends BaseController
             return $this->dispatchResponse(404, "No Records Found!!", $jdData);
         }
     }
+
+    /*
+    *   Function to get job descrption list by company_id
+    */
+    function getJobDescriptionListByCompanyId($company_id){
+        $jdList = JobDescription::where('company_id','=',$company_id)->get();
+        if($jdList->first()){
+            return $this->dispatchResponse(200, "Data", $jdList);
+        } else {            
+            return $this->dispatchResponse(404, "No Records Found!!", $jdList);
+        }
+    }
     
 }
