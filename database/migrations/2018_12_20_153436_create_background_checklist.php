@@ -49,35 +49,35 @@ class CreateBackgroundChecklist extends Migration
                 "status" => 1
             ),
             array(
-                "name" => "Graduation",
+                "name" => "Graduation (All mark sheets)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
             array(
-                "name" => "Post-graduation",
+                "name" => "Post-graduation (All mark sheets)",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
-            array(
-                "name" => "Mark sheets (consolidated / semester wise)",
-                "type" => "file",
-                "mandatory" => 1,
-                "status" => 1
-            ),
+            // array(
+            //     "name" => "Mark sheets (consolidated / semester wise)",
+            //     "type" => "file",
+            //     "mandatory" => 1,
+            //     "status" => 1
+            // ),
             array(
                 "name" => "Provisional Certificate",
                 "type" => "file",
                 "mandatory" => 1,
                 "status" => 1
             ),
-            array(
-                "name" => "O.D (Original Document)",
-                "type" => "file",
-                "mandatory" => 1,
-                "status" => 1
-            ),
+            // array(
+            //     "name" => "O.D (Original Document)",
+            //     "type" => "file",
+            //     "mandatory" => 1,
+            //     "status" => 1
+            // ),
             array(
                 "name" => "Offer letter (For all employers)",
                 "type" => "file",

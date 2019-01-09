@@ -130,4 +130,11 @@ class Candidate extends Model
         return $this->hasMany('App\CandidatesChecklistDocs');    
     }
 
+    public function forwarded_resumes_data() {
+        return $this->hasMany('App\forwordedResume','candidate_id'); 
+    }
+
+    public function companies() {
+        return $this->belongsTo('App\Company','company_id');
+    }
 }

@@ -18,7 +18,9 @@ class CreateScreeningResult extends Migration
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
             $table->integer('question_id')->unsigned()->nullable();
-            $table->foreign('question_id')->references('id')->on('basic_screening_questions');            
+            $table->foreign('question_id')->references('id')->on('basic_screening_questions');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');            
             $table->string('answer')->nullable();
             $table->longText('remark')->nullable();
             $table->string('status')->nullable();            

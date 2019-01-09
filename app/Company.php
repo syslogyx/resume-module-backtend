@@ -51,4 +51,8 @@ class Company extends Model
     public function errors() {
         return $this->errors;
     }
+
+    public function forwarded_resumes_data() {
+        return $this->hasMany('App\forwordedResume','company_id'); 
+    }
 }

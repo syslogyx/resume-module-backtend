@@ -70,4 +70,8 @@ class JobDescription extends Model
         return $this->errors;
     }
 
+    public function companies() {
+        return $this->belongsTo('App\Company','company_id');
+    }
+
 }

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\companies_tech_round_info;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use App\CompaniesTechRoundInfo;
+use DateTime;
 
-class CompaniesTechRoundInfoController extends Controller
+class CompaniesTechRoundInfoController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +17,7 @@ class CompaniesTechRoundInfoController extends Controller
      */
     public function index()
     {
-        //
+    
     }
 
     /**
@@ -24,7 +27,35 @@ class CompaniesTechRoundInfoController extends Controller
      */
     public function create()
     {
-        //
+        $posted_data = Input::all(); 
+
+        foreach ($posted_data['round_info'] as $key => $value) {
+            $posted_data['round_info'][$key]["company_round_date"] = date("Y-m-d", strtotime(str_replace('/', '-', $posted_data['round_info'][$key]["company_round_date"])));
+            $posted_data['round_info'][$key]["created_at"] = new DateTime();
+            $posted_data['round_info'][$key]["updated_at"] =  new DateTime();
+           
+        }
+
+        try { 
+            DB::beginTransaction();
+            $objectResult = new CompaniesTechRoundInfo();
+            // return $posted_data['result_data'];
+            if ($objectResult->validate($posted_data['round_info'])) {
+                $model = CompaniesTechRoundInfo::insert($posted_data['round_info']);
+                DB::commit();          
+                if($model){
+                  return $this->dispatchResponse(200, "Data saved Successfully...!!", $model);
+                }else{
+                  return $this->dispatchResponse(401, "Data not saved.");
+                }
+            } else {
+                DB::rollback();
+                return $this->dispatchResponse(400, "Something went wrong.", $objectResult->errors());
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     /**
@@ -41,10 +72,10 @@ class CompaniesTechRoundInfoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\companies_tech_round_info  $companies_tech_round_info
+     * @param  \App\CompaniesTechRoundInfo  $companies_tech_round_info
      * @return \Illuminate\Http\Response
      */
-    public function show(companies_tech_round_info $companies_tech_round_info)
+    public function show(CompaniesTechRoundInfo $companies_tech_round_info)
     {
         //
     }
@@ -55,7 +86,7 @@ class CompaniesTechRoundInfoController extends Controller
      * @param  \App\companies_tech_round_info  $companies_tech_round_info
      * @return \Illuminate\Http\Response
      */
-    public function edit(companies_tech_round_info $companies_tech_round_info)
+    public function edit(CompaniesTechRoundInfo $companies_tech_round_info)
     {
         //
     }
@@ -67,7 +98,7 @@ class CompaniesTechRoundInfoController extends Controller
      * @param  \App\companies_tech_round_info  $companies_tech_round_info
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, companies_tech_round_info $companies_tech_round_info)
+    public function update(Request $request, CompaniesTechRoundInfo $companies_tech_round_info)
     {
         //
     }
@@ -78,7 +109,7 @@ class CompaniesTechRoundInfoController extends Controller
      * @param  \App\companies_tech_round_info  $companies_tech_round_info
      * @return \Illuminate\Http\Response
      */
-    public function destroy(companies_tech_round_info $companies_tech_round_info)
+    public function destroy(CompaniesTechRoundInfo $companies_tech_round_info)
     {
         //
     }

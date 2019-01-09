@@ -95,6 +95,7 @@ $api->version("v1", function($api) {
     $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
     
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
+    $api->post("not_forwarded_candidate/filter", "App\Http\Controllers\CandidateCtrl@getNotFowardedCandidateList");
     $api->put("candidate/{id}/update", "App\Http\Controllers\CandidateCtrl@update");
     $api->post("candidate/changestatus/{id}", "App\Http\Controllers\CandidateCtrl@updateStatus");
     $api->post("candidate/changeJobDescription/{id}", "App\Http\Controllers\CandidateCtrl@changeCandidateJd");
@@ -102,6 +103,7 @@ $api->version("v1", function($api) {
     $api->post("candidate/getLoggedCandidateDetails","App\Http\Controllers\CandidateCtrl@getLoggedCandidateInfo");
     $api->post("create_logins","App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
     $api->get("get_alphabets", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
+    // $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
@@ -174,7 +176,12 @@ $api->version("v1", function($api) {
     $api->get("candidateList/job/{job_id}", "App\Http\Controllers\CandidateCtrl@getCandidateListByJobId");
 
     //Forwarded resume
+    $api->post("forworded_resumes/filter", "App\Http\Controllers\ForwordedResumeController@filterForwardedResume");
     $api->post("forwarded_resume/create", "App\Http\Controllers\ForwordedResumeController@create");
+    $api->post("companies_feedback/update/{id}", "App\Http\Controllers\ForwordedResumeController@updateForwaredResumeInfo");
+
+    //Company Technical Round info resume
+    $api->post("company_techround_info/create", "App\Http\Controllers\CompaniesTechRoundInfoController@create");
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {

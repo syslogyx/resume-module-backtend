@@ -168,7 +168,7 @@ class UserController extends BaseController
         if($userData->first()){
             return $this->dispatchResponse(200, "Data", $userData);
         } else {            
-            return $this->dispatchResponse(200, "No Records Found!!", $userData);
+            return $this->dispatchResponse(404, "No Records Found!!", $userData);
         }
     }
 

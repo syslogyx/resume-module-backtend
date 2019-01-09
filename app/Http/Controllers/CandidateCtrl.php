@@ -22,6 +22,7 @@ use App\CandidateBackgroundDocuments;
 use App\CandidatesChecklistDocs;
 use App\User;
 use Response;
+use App\forwordedResume;
 
 class CandidateCtrl extends BaseController
 {
@@ -513,20 +514,60 @@ class CandidateCtrl extends BaseController
 
   }
 
-    public function getListOfCandidateOrderByAlphabets()
-  {
+  public function getListOfCandidateOrderByAlphabets(){
       return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
   }
 
-    /*
-    *   Function to get candidate list by job_id
-    */
-    function getCandidateListByJobId($job_id){
-        $candidateList = Candidate::where('job_description_id','=',$job_id)->get();
-        if($candidateList->first()){
-            return $this->dispatchResponse(200, "Data", $candidateList);
-        } else {            
-            return $this->dispatchResponse(404, "No Records Found!!", $candidateList);
-        }
-    }
+  /*
+  *   Function to get candidate list by job_id
+  */
+  function getCandidateListByJobId($job_id){
+      $candidateList = Candidate::where('job_description_id','=',$job_id)->get();
+      if($candidateList->first()){
+          return $this->dispatchResponse(200, "Data", $candidateList);
+      } else {            
+          return $this->dispatchResponse(404, "No Records Found!!", $candidateList);
+      }
+  }
+
+  // function getAllCandidateList(){
+  //     $candidateList = Candidate::get();
+  //     if($candidateList->first()){
+  //         return $this->dispatchResponse(200, "Data", $candidateList);
+  //     } else {            
+  //         return $this->dispatchResponse(404, "No Records Found!!", $candidateList);
+  //     }
+  // }
+
+  public function getNotFowardedCandidateList(Request $request)
+  {
+
+    // $page = $request->page;
+    // $limit = $request->limit;
+
+      $posted_data = Input::all();
+      $candidateIdArray = forwordedResume::where('company_id',$posted_data["company_id"])->where("job_description_id",$posted_data["job_description_id"])->pluck('candidate_id');
+
+      $query = Candidate::with('job_description','job_description.companies','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');
+
+      if(empty($candidateIdArray)){
+        $candidateData = $query->where("job_description_id",$posted_data["job_description_id"])->orderBy('created_at', 'DESC')->get();
+      }else{
+        $candidateData = $query->whereNotIn('id', $candidateIdArray)->where("job_description_id",$posted_data["job_description_id"])->orderBy('created_at', 'DESC')->get();
+      }
+      // if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
+      //     $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);     
+      // }else{
+          // $candidateData = $query->orderBy('created_at', 'DESC')->get();
+      // }
+
+      if ($candidateData->first()) {
+        return $this->dispatchResponse(200, "",$candidateData);
+      }else{
+        return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+        // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
+      }
+
+    
+  }
 }

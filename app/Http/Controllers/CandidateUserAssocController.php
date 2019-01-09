@@ -90,7 +90,8 @@ class CandidateUserAssocController extends BaseController
         try { 
             $object = new CandidateUserAssoc();        			    
             if ($object->validate($posted_data)) {
-                $model = CandidateUserAssoc::insert($posted_data);
+                // $model = CandidateUserAssoc::insert($posted_data);
+                $model = CandidateUserAssoc::create($posted_data);
                 $candidateData = Candidate::find((int) $posted_data['candidate_id']);
                 $candidateData->status = 'Schedule';
                 $candidateData->save();
