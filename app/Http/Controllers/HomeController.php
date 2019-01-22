@@ -58,7 +58,7 @@ class HomeController extends BaseController {
     }
 
     public function getAllRoles() {
-        $role = Role::where('id','<>',3)->get();
+        $role = Role::whereNotIn('id',[3,5,6])->get();
         return $this->dispatchResponse(200, "Data", $role);
     }
     public function getSelectedRoles() {

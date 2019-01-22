@@ -58,6 +58,7 @@ class Candidate extends Model
         'unique_token' => 'nullable',
         'timestamp' => 'nullable'
     );
+    
     private $errors;
 
     public function validate($data) {
@@ -115,7 +116,7 @@ class Candidate extends Model
     }
 
     public function candidate_user_assocs() {
-        return $this->hasMany('App\CandidateUserAssoc','candidate_id');    
+        return $this->hasMany('App\CandidateUserAssoc','candidate_id')->latest();    
     }
 
     public function users() {

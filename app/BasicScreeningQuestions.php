@@ -15,7 +15,7 @@ class BasicScreeningQuestions extends Model
      * @var array
      */
     protected $fillable = [
-        'stream_id', 'question'
+        'stream_id', 'question','expected_answer','status'
     ];
 
     /**
@@ -33,7 +33,9 @@ class BasicScreeningQuestions extends Model
 
     private $rules = array(
         'stream_id' => 'required',
-        'question' => 'required'
+        'question' => 'required',
+        'status' => 'required',
+        'expected_answer' => 'required'
 
     );
     private $errors;

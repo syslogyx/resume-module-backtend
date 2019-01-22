@@ -13,7 +13,7 @@ class CandidateUserAssoc extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'user_id','technical_round','schedule_date','schedule_time','mode_of_interview'
+        'candidate_id','job_description_id','user_id','technical_round','schedule_date','schedule_time','mode_of_interview'
     ];
     
     protected $table = 'candidate_user_assoc';
@@ -32,6 +32,7 @@ class CandidateUserAssoc extends Model
     // );
     private $rules = array(
         'candidate_id' => 'required',
+        'job_description_id' => 'required',
         'user_id' => 'required',
         'technical_round' => 'required',
         'schedule_date' => 'required',
@@ -65,6 +66,10 @@ class CandidateUserAssoc extends Model
 
     public function candidates() {
         return $this->belongsToMany('App\Candidate','candidate_id');
+    }
+
+    public function job_description() {
+        return $this->belongsTo('App\JobDescription','job_description_id');    
     }
 
    

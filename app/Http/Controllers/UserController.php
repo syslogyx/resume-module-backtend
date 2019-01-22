@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\CandidateUserAssoc;
 
 class UserController extends BaseController
 {
@@ -80,10 +81,11 @@ class UserController extends BaseController
                     unset($posted_data['password']);
                 }else{
                     $posted_data['password']=Hash::check('plain-text', $posted_data['password'])?$posted_data['password']:Hash::make($posted_data['password']);
-                }
-                DB::commit();
-                if ($model->update($posted_data))
+                }                
+                if ($model->update($posted_data)){
+                    DB::commit();
                     return $this->dispatchResponse(200, "User Updated Successfully...!!", $model);
+                }
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
@@ -106,7 +108,7 @@ class UserController extends BaseController
         $limit = $request->limit;
         $posted_data = Input::all();
 
-        $query = User::with('userDesignation','role');
+        $query = User::with('role');
         
         if(Input::get()=="" || Input::get()==null ){
             $query->get();
@@ -116,34 +118,44 @@ class UserController extends BaseController
             $query->where("id",Input::get("user_id"));    
         }
 
-        if(Input::get("designantions_id")){
-            $query->where("designation_id",Input::get("designantions_id"));        
+        if(isset($posted_data["role_id"]) && $posted_data["role_id"] == 'all'){
+            $query->whereNotIn("role_id",[5,6]);    
+        }else if(isset($posted_data["role_id"]) && $posted_data["role_id"] == 'candidate'){
+            $query->where("role_id",5);
+        }else if(isset($posted_data["role_id"]) && $posted_data["role_id"] == 'client'){
+            $query->where("role_id",6);
         }
 
-        if(Input::get("contact_email")){
-            $query->where("email",Input::get("contact_email"));        
-        }
 
-        if(Input::get("user_id") && Input::get("designantions_id") && !Input::get("contact_email")){
-            $query->where("id",Input::get("user_id"))
-                  ->where("designation_id",Input::get("designantions_id"));
-        }
 
-        if(Input::get("user_id") && Input::get("contact_email") && !Input::get("designantions_id")){
-            $query->where("id",Input::get("user_id"))
-                  ->where("email",Input::get("contact_email"));       
-        }
+        // if(Input::get("designantions_id")){
+        //     $query->where("designation_id",Input::get("designantions_id"));        
+        // }
 
-        if(Input::get("contact_email") && Input::get("designantions_id") && !Input::get("user_id")){
-            $query->where("email",Input::get("contact_email"))
-                  ->where("designation_id",Input::get("designantions_id"));
-        }
+        // if(Input::get("contact_email")){
+        //     $query->where("email",Input::get("contact_email"));        
+        // }
 
-        if(Input::get("user_id") && Input::get("contact_email") && Input::get("designantions_id")){
-            $query->where("id",Input::get("user_id"))
-                  ->where("email",Input::get("contact_email"))
-                  ->where("designation_id",Input::get("designantions_id"));
-        }
+        // if(Input::get("user_id") && Input::get("designantions_id") && !Input::get("contact_email")){
+        //     $query->where("id",Input::get("user_id"))
+        //           ->where("designation_id",Input::get("designantions_id"));
+        // }
+
+        // if(Input::get("user_id") && Input::get("contact_email") && !Input::get("designantions_id")){
+        //     $query->where("id",Input::get("user_id"))
+        //           ->where("email",Input::get("contact_email"));       
+        // }
+
+        // if(Input::get("contact_email") && Input::get("designantions_id") && !Input::get("user_id")){
+        //     $query->where("email",Input::get("contact_email"))
+        //           ->where("designation_id",Input::get("designantions_id"));
+        // }
+
+        // if(Input::get("user_id") && Input::get("contact_email") && Input::get("designantions_id")){
+        //     $query->where("id",Input::get("user_id"))
+        //           ->where("email",Input::get("contact_email"))
+        //           ->where("designation_id",Input::get("designantions_id"));
+        // }
 
         if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
             $userList = $query->orderBy('name', 'asc')->paginate($limit);
@@ -165,6 +177,23 @@ class UserController extends BaseController
     **/
     function getUsersByInterviewerRoleId(){
         $userData = User::where('role_id','=',4)->get();
+        if($userData->first()){
+            return $this->dispatchResponse(200, "Data", $userData);
+        } else {            
+            return $this->dispatchResponse(404, "No Records Found!!", $userData);
+        }
+    }
+
+
+    function getUserByCandidateIdAndJdId(){
+        $posted_data = Input::all();
+        $userId = CandidateUserAssoc::where('candidate_id',$posted_data['candidate_id'])->where('job_description_id',$posted_data['job_description_id'])->pluck('user_id');
+        
+        if(count($userId) == 0){
+            $userData = User::where('role_id','=',4)->get();
+        }else{
+            $userData = User::where('role_id','=',4)->where('id','!=',$userId[0])->get();
+        }
         if($userData->first()){
             return $this->dispatchResponse(200, "Data", $userData);
         } else {            

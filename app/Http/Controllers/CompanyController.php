@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Hash;
 use App\Company;
+use App\User;
 
 class CompanyController extends BaseController
 {
@@ -49,6 +51,17 @@ class CompanyController extends BaseController
             $posted_data["status"] = 1;
             if ($objectCompany->validate($posted_data)) {
                 $model = Company::create($posted_data);
+                if ($model->id) {
+                    $user_data["name"] = $posted_data['name'];
+                    $user_data["email"] = $posted_data['email'];
+                    $user_data["mobile"] = $posted_data['contact_no'];
+                    $user_data["password"] = $posted_data['contact_no'];
+                    $user_data["role_id"] = 6;
+                    $user_data["company_name"] = $posted_data['name'];
+                    $user_data["password"] = Hash::make($posted_data['contact_no']);
+                    $user_data["status"] = "Active";
+                    User::create($user_data);
+                }
                 DB::commit();
                 if($model)
                     return $this->dispatchResponse(200, "Company Created Successfully...!!", $model);
@@ -68,8 +81,28 @@ class CompanyController extends BaseController
         try {
             DB::beginTransaction();
             $model = Company::find((int) $id);
+            $oldEmailId = $model->email;
+            $oldMobile = $model->contact_no;
             if ($model->validate($posted_data)) {                         
                 if ($model->update($posted_data)){
+                    // if ($model->id) {
+                    //     $user_data["name"] = $posted_data['name'];
+                    //     $user_data["email"] = $posted_data['email'];
+                    //     $user_data["mobile"] = $posted_data['contact_no'];
+                    //     $user_data["password"] = $posted_data['contact_no'];
+                    //     $user_data["role_id"] = 6;
+                    //     $user_data["company_name"] = $posted_data['name'];
+                    //     $user_data["password"] = Hash::make($posted_data['contact_no']);
+                    //     $user_data["status"] ="Active";
+                    //     User::create($user_data);
+                    // }
+
+                    $user_name = $posted_data['name'];
+                    $user_email = $posted_data['email'];
+                    $user_mobile = $posted_data['contact_no'];
+                    $user_pwd = Hash::make($posted_data['contact_no']);
+
+                    User::where('email','=',$oldEmailId)->where('mobile','=',$oldMobile)->update(['name'=>$user_name,'email'=>$user_email,'mobile'=>$user_mobile,'password'=>$user_pwd]);
                     DB::commit();
                     return $this->dispatchResponse(200, "Company Updated Successfully...!!", $model);
                 }

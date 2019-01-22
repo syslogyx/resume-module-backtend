@@ -21,7 +21,7 @@ class CreateScreeningResult extends Migration
             $table->foreign('question_id')->references('id')->on('basic_screening_questions');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');            
-            $table->string('answer')->nullable();
+            $table->longText('answer')->nullable();
             $table->longText('remark')->nullable();
             $table->string('status')->nullable();            
             $table->string('refereral_token')->nullable();

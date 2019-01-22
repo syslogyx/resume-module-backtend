@@ -17,6 +17,8 @@ class CreateBasicQuestions extends Migration
             $table->increments('id');
             $table->integer('stream_id')->unsigned()->nullable();
             $table->longText('question')->nullable();
+            $table->integer('status');
+            $table->longText('expected_answer')->nullable();
             $table->timestamps();
         });
 

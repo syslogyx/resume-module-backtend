@@ -15,7 +15,7 @@ class JobDescription extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'sub_title', 'description','no_of_requiremet','experience','skills_required','additional_skills','roles_and_responsibility','job_location','job_type','ctc','notice_period','job_code','status','company_id'
+        'title', 'sub_title', 'description','no_of_requiremet','experience','skills_required','additional_skills','roles_and_responsibility','job_location','job_type','ctc','notice_period','job_code','status','company_id','project_title'
     ];
 
     /**
@@ -46,6 +46,8 @@ class JobDescription extends Model
         'notice_period' => 'nullable',
         'ctc' => 'nullable',
         'status' => 'nullable',
+        'company_id' => 'required',
+        'project_title' => 'required',
         'job_code' => 'required|unique:job_description,job_code,',
 
 

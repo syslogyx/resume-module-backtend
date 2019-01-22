@@ -22,31 +22,20 @@ class CandidateUserAssocController extends BaseController
         $limit = $request->limit;
         $posted_data = Input::all();
         $id=$posted_data['user_id'];
-        
-        if(Input::get("user_id")){
-          $query = CandidateUserAssoc::with('users','all_candidates')->with(array('all_candidates.candidate_technical_result'=>function($que) use ($id){
-                    $que->where('user_id',$id)->get();
-                }))->where("user_id",$id); 
-        }else{
-              $query = CandidateUserAssoc::with('users','all_candidates')->with('all_candidates.candidate_technical_result');
+        $jd_id=$posted_data['job_description_id'];
+
+        $query = CandidateUserAssoc::with('users','all_candidates','job_description','all_candidates.candidate_technical_result');
+
+        if(isset($posted_data["job_description_id"]) && isset($posted_data["user_id"])){
+            $query = CandidateUserAssoc::with('users','all_candidates','job_description')->with(array('all_candidates.candidate_technical_result'=>function($que) use ($id,$jd_id){
+                    $que->where('user_id',$id)->where('job_description_id',$jd_id)->get();
+                }))->where("user_id",$id)->where('job_description_id',$jd_id);
+        }
+          
+        if(isset($posted_data["user_id"])){
+            $query->where("user_id",$posted_data["user_id"]);
         }
 
-      
-            //     $que->where('user_id',$id)->get();
-            // })'users.candidate_technical_result');
-        // $query = CandidateUserAssoc::with('users','candidates')->with(array('candidates.candidate_technical_result'=>function($que) use ($id){
-            //     $que->where('user_id',$id)->get();
-            // }));
-
-        //return $posted_data;
-        // if(Input::get()=="" || Input::get()==null){
-        //     $query->get();
-        // }
-
-        // if(Input::get("user_id")){
-            
-        //     $query->where("user_id",Input::get("user_id"));
-        // } 
 
         if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
             $candidateDetails = $query->paginate($limit);
@@ -135,5 +124,40 @@ class CandidateUserAssocController extends BaseController
             throw $e;
         }
         
+    }
+
+    /**
+    *   Function used to get today's scheduled interview list according to logged user id
+    **/
+    function getTodaysInterviewListByUserId(Request $request){
+        $page = $request->page;
+        $limit = $request->limit;
+        $posted_data = Input::all();
+        $id = $posted_data['user_id'];
+        $current_date = new DateTime();
+
+
+        $query = CandidateUserAssoc::with('users','all_candidates','job_description','all_candidates.candidate_technical_result');
+
+        if(isset($posted_data["user_id"])){
+            $query = CandidateUserAssoc::with('job_description')->with(array('all_candidates.candidate_technical_result'=>function($que) use ($id){
+                    $que->where('user_id',$id)->get();
+                }))->where("user_id",$id);
+        }
+
+
+        if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
+            $candidateDetails = $query->where('schedule_date',$current_date->format('Y-m-d'))->paginate($limit);
+        }
+        else{
+            $candidateDetails = $query->where('schedule_date',$current_date->format('Y-m-d'))->paginate(50);
+        }
+
+        if ($candidateDetails->first()) {
+            return $this->dispatchResponse(200, "",$candidateDetails);
+        }else{
+            // return $this->dispatchResponse(404, "No Records Found!!",$candidateDetails);
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+        }
     }
 }

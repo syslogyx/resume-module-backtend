@@ -69,6 +69,8 @@ $api->version("v1", function($api) {
     // $api->get("check_token/{token}", "App\Http\Controllers\UserController@checkTokenExit");
     $api->get("user/getUsersByInterviewerRoleId", "App\Http\Controllers\UserController@getUsersByInterviewerRoleId");
 
+    $api->post("user/getUserByCandidateIdAndJdId", "App\Http\Controllers\UserController@getUserByCandidateIdAndJdId");
+
     // qualification's api
     $api->get("qualification_details", "App\Http\Controllers\QualificationCtrl@getAllQualification");
     $api->post("qualification", "App\Http\Controllers\QualificationCtrl@create");
@@ -91,9 +93,9 @@ $api->version("v1", function($api) {
     $api->get("candidate_details", "App\Http\Controllers\CandidateCtrl@index");
     $api->post("create_candidate", "App\Http\Controllers\CandidateCtrl@create");
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
+    $api->get("candidate/technical-rounds/{candidate_id}", "App\Http\Controllers\CandidateCtrl@getCandidateTechnicalRoundDetails");
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
-    $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
-    
+    $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");    
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
     $api->post("not_forwarded_candidate/filter", "App\Http\Controllers\CandidateCtrl@getNotFowardedCandidateList");
     $api->put("candidate/{id}/update", "App\Http\Controllers\CandidateCtrl@update");
@@ -105,6 +107,8 @@ $api->version("v1", function($api) {
     $api->get("get_alphabets", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
     // $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
 
+
+
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
     $api->get("jobInfoByID/{id}/view", "App\Http\Controllers\JobController@viewJob");
@@ -115,9 +119,14 @@ $api->version("v1", function($api) {
 
     // Basic Screen Questions api
     $api->get("basic_screening_questions", "App\Http\Controllers\BasicScreeningQuestionsController@index");
+
+    // Basic Screen Questions api
+    $api->post("basic_screening_questions/filter", "App\Http\Controllers\BasicScreeningQuestionsController@filterList");
+
     $api->post("questions/add", "App\Http\Controllers\BasicScreeningQuestionsController@create");
     $api->get("questionInfoByID/{id}/view", "App\Http\Controllers\BasicScreeningQuestionsController@view");
     $api->put("questions/{id}/update", "App\Http\Controllers\BasicScreeningQuestionsController@update");
+    $api->post("questions/changestatus/{id}", "App\Http\Controllers\BasicScreeningQuestionsController@changeStatus");
 
     // streams api
     $api->get("streams", "App\Http\Controllers\StreamsController@getAllStreams");
@@ -131,6 +140,7 @@ $api->version("v1", function($api) {
 
     // CandidateUser Assoc
     $api->post("interview/filter", "App\Http\Controllers\CandidateUserAssocController@filterUserAssoc");
+    $api->post("interview/todays", "App\Http\Controllers\CandidateUserAssocController@getTodaysInterviewListByUserId");
 
     //candidate feedback api
     $api->post("tech_feedback/add", "App\Http\Controllers\TechnicalInterviewResultController@create");

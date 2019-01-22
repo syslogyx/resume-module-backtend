@@ -49,11 +49,11 @@ class ForwordedResumeController extends BaseController
         }
 
         if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
-            $forwardedResumesList = $query->orderBy('updated_at', 'DESC')->paginate($limit);
+            $forwardedResumesList = $query->paginate($limit);
 
         }
         else{
-            $forwardedResumesList = $query->orderBy('updated_at', 'DESC')->paginate(50);
+            $forwardedResumesList = $query->paginate(50);
         }
 
         if ($forwardedResumesList->first()) {
@@ -111,14 +111,22 @@ class ForwordedResumeController extends BaseController
     public function updateForwaredResumeInfo($id)
     {
         $posted_data = Input::all();
-
-        // $id = $posted_data["forwarded_id"];
-        // unset ($posted_data["forwarded_id"]);
         $model = forwordedResume::find($id);
         if ($model){
             try{
                 DB::beginTransaction();
                 if ($model->update($posted_data)) {
+                    if($model->id){
+                        if(isset($posted_data['candidate_id'])){
+                            $candidateData = Candidate::find((int) $posted_data['candidate_id']);
+                            if($candidateData->status != 'Selected' && $candidateData->status != 'Joined'){
+                                $candidateData->status = $posted_data['final_status'];
+                                $candidateData->save();
+                            }else{                                
+                                return $this->dispatchResponse(401,"Candidate is already selected.");
+                            }
+                        }
+                    }
                     DB::commit();
                     return $this->dispatchResponse(200, "Details saved Successfully...!!", $model);
                 } else {

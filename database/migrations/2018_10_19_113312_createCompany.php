@@ -27,12 +27,14 @@ class CreateCompany extends Migration
             array(
                 "name" => "Tata Consultancy Services",
                 "contact_no" => "2266568484",
+                "email"=> "careers@tcs.com",
                 "address" => "MIHAN, Nagpur, Telhara, Maharashtra 441108",
                 "status" => 1
             ),
             array(
                 "name" => "Syslogyx Technologies Pvt. Ltd.",
-                "contact_no" => "01722",
+                "contact_no" => "07122292195",
+                "email"=> "contact@syslogyx.com",
                 "address" => "215, H.B. Estate, Sonegaon, Nagpur, Maharashtra, India – 440025",
                 "status" => 1
             )

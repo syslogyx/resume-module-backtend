@@ -33,20 +33,26 @@ class User extends Authenticatable
     private $rules = array(
         'name' => 'required',
         'email' => 'required|unique:users,email,',
+        'mobile' => 'required|unique:users,mobile,',
+        // 'mobile' => 'unique:users,mobile,$user->id,id,account_id,1'
         'password' => 'required',
         'role_id' => 'required',
         'company_name' => 'required',
-        'mobile' => 'required',
         'status' => 'required',
         'unique_token' => 'nullable'
     );
+
     private $errors;
 
     public function validate($data) {
-        if ($this->id)
-            $this->rules['email'] .= $this->id;
+        if ($this->id){            
+            $this->rules['email'] .= $this->id;        
+            $this->rules['mobile'] .= $this->id;
             $this->rules['password'] = '';
-        $validator = Validator::make($data, $this->rules);
+        }  
+
+        $validator = Validator::make($data, $this->rules); 
+
         if ($validator->fails()) {
             $this->errors = $validator->errors();
             return false;

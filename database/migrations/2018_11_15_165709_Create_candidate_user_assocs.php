@@ -16,6 +16,7 @@ class CreateCandidateUserAssocs extends Migration
         Schema::create('candidate_user_assoc', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('candidate_id')->unsigned()->nullable();
+            $table->integer('job_description_id')->unsigned()->nullable();
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('technical_round')->nullable();
             $table->date('schedule_date')->nullable();
@@ -25,6 +26,7 @@ class CreateCandidateUserAssocs extends Migration
         });
         Schema::table('candidate_user_assoc', function($table) {
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
+            $table->foreign('job_description_id')->references('id')->on('job_description');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

@@ -12,7 +12,7 @@ use App\Candidate;
 class BasicScreeningResultController extends BaseController
 {
     /*
-    *  Function to create Result
+    *  Function to save candidate's screening result
     */
     function create(){
         $posted_data = Input::all();  
@@ -29,7 +29,6 @@ class BasicScreeningResultController extends BaseController
         DB::beginTransaction();
         try { 
             $objectResult = new BasicScreeningResults();
-		    // return $posted_data['result_data'];
             if ($objectResult->validate($posted_data['result_data'])) {
 
                 $model = BasicScreeningResults::insert($posted_data['result_data']);

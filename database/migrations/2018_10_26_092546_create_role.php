@@ -35,6 +35,9 @@ class CreateRole extends Migration
             ),
             array(
                 "name" => "Candidate",
+            ),
+            array(
+                "name" => "Client",
             )
 
         );

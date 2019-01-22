@@ -25,6 +25,7 @@ class CreateJobDescription extends Migration
             $table->longText('skills_required')->nullable();
             $table->longText('additional_skills')->nullable();
             $table->longText('roles_and_responsibility')->nullable();
+            $table->longText('project_title')->nullable();
             $table->string('job_location')->nullable();
             $table->string('job_type')->nullable();
             $table->string('ctc')->nullable();

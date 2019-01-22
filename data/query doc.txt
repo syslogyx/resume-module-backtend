@@ -7,5 +7,12 @@ SELECT  id, job_description_id FROM `candidate_details`
 
 // used to create logins for all candidate type role
 INSERT INTO `users` (NAME, mobile, email, company_name, PASSWORD, role_id, STATUS)
-SELECTÂ  CONCAT(first_name,' ', middle_name,' ',last_name) AS NAME, mobile_no,email,'Candidate' AS company_name, mobile_no AS PASSWORD, '4' AS role_id, STATUS
+SELECT  CONCAT(first_name,' ', middle_name,' ',last_name) AS NAME, mobile_no,email,'Candidate' AS company_name, mobile_no AS PASSWORD, '4' AS role_id, STATUS
 FROM `candidate_details`
+
+
+
+// used to create logins for all company's client type role
+INSERT INTO `users` (`name`, mobile, email, company_name, PASSWORD, role_id, STATUS)
+SELECT  `name`, contact_no,email,`name` AS company_name, contact_no AS PASSWORD, '6' AS role_id, STATUS
+FROM `company_table`

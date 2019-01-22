@@ -16,6 +16,7 @@ class CreateTechnicalInterviewResult extends Migration
         Schema::create('technical_interview_result', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('candidate_id')->unsigned()->nullable();
+            $table->integer('job_description_id')->unsigned()->nullable();
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('technical_round')->nullable();
             $table->string('feedback')->nullable();
@@ -26,6 +27,7 @@ class CreateTechnicalInterviewResult extends Migration
         });
         Schema::table('technical_interview_result', function($table) {
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
+            $table->foreign('job_description_id')->references('id')->on('candidate_details');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

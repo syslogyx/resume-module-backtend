@@ -85,12 +85,15 @@ class CandidateCtrl extends BaseController
       if(isset($posted_data['search_alphabet']) && $posted_data['search_alphabet'] != 'All'){
         $query->where('first_name','LIKE',$posted_data['search_alphabet']."%");
       }
-      
-      // DB::enableQueryLog();
+
+      if(isset($posted_data["status"]) && $posted_data["status"] == 'selected'){
+          $query->where("status","Selected")->orwhere("status","Joined");    
+      }else if(isset($posted_data["status"]) && $posted_data["status"] == 'non-selected'){
+          $query->where("status","!=","Selected");
+      }
 
       if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);
-
       }
       else{
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate(50);
@@ -112,8 +115,6 @@ class CandidateCtrl extends BaseController
   * To save data of candidate details and its relevent details
   */
 	function create(Request $request) {
-    // $type=$request->type;
-    // if($type =='data'){
     try {
       $posted_data = Input::all();
 
@@ -208,7 +209,6 @@ class CandidateCtrl extends BaseController
                 $user_data["email"] = $posted_data['email'];
                 $user_data["mobile"] = $posted_data['mobile_no'];
                 $user_data["password"] = $posted_data['mobile_no'];
-                $user_data["password"] = $posted_data['mobile_no'];
                 $user_data["role_id"] = 5;
                 $user_data["company_name"] = 'Candidate';
                 $user_data["password"] = Hash::make($posted_data['mobile_no']);
@@ -232,25 +232,22 @@ class CandidateCtrl extends BaseController
         throw $e;
     } 
   }
-  // else{
-
-  //    //   $file = $request->file('file');
-  //    // $posted_data['file_name'] =time().'.'.$file->getClientOriginalExtension();
-  
-  // }
     
   /*
   * To Fetch candidate details by id
   */
   function viewCandiadte($id) {
-      $candidateDtls = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);      
-      if ($candidateDtls){
-          return response()->json(['status_code' => 200, 'message' => 'Candidate Details', 'data' => $candidateDtls]);
-      }else{
-        return response()->json(['status_code' => 404, 'message' => 'Details not found']);
-      }
+    $candidateDtls = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document')->find((int) $id);      
+    if ($candidateDtls){
+        return response()->json(['status_code' => 200, 'message' => 'Candidate Details', 'data' => $candidateDtls]);
+    }else{
+      return response()->json(['status_code' => 404, 'message' => 'Details not found']);
+    }
   }
 
+  /*
+  * To Check token already exist or not
+  */
   function checkTokenExit($token){       
     $uniqueToken = User::where('unique_token','=',$token)->pluck('unique_token');
     if(count($uniqueToken)>0){
@@ -264,18 +261,10 @@ class CandidateCtrl extends BaseController
   /*
   * To save uploaded resume file in db
   */
-  public function uploadResume(Request $request){
+  function uploadResume(Request $request){
       $object = new CandidateDocument();
       $image = $request->file('file_name');
       $ext = $image->getClientOriginalExtension();
-      // if($ext != 'pdf'){
-      //   $ext = 'docx';
-      // $converter = App::make(ConverterInterface::class);
-      // $parameters = (new UnoconvParameters())
-      //     ->setInputStream(time().'.'.$ext)
-      //     ->setOutputFormat(Format::FORMAT_TEXT_PDF);
-      // echo $converter->convert($parameters);
-      //}
       if($ext == 'doc'){
         $ext = 'docx';
       }
@@ -286,11 +275,11 @@ class CandidateCtrl extends BaseController
       $posted_data['path']=$destinationPath;       
       
       if ($object->validate($posted_data)) {
-          $image->move($destinationPath, $posted_data['file_name']);
-          $model = CandidateDocument::create($posted_data);
-          return response()->json(['status_code' => 200, 'message' => 'Resume uploaded successfully', 'data' => $model]);           
+        $image->move($destinationPath, $posted_data['file_name']);
+        $model = CandidateDocument::create($posted_data);
+        return response()->json(['status_code' => 200, 'message' => 'Resume uploaded successfully', 'data' => $model]);           
       } else {
-           throw new \Dingo\Api\Exception\StoreResourceFailedException('Resume not uploaded.',$object->errors());
+        throw new \Dingo\Api\Exception\StoreResourceFailedException('Resume not uploaded.',$object->errors());
       }
   }
 
@@ -304,11 +293,12 @@ class CandidateCtrl extends BaseController
       return Response::download($file, $data['file_name'],$headers);
   }
 
+  /*
+  * To update data of candidate details and its relevent details
+  */
   public function update($id){
     try {
       $posted_data = Input::all();
-
-        //DB::beginTransaction();
         $model = Candidate::find((int) $id);
         $oldEmailId = $model->email;
         $oldMobile = $model->mobile_no;
@@ -325,7 +315,6 @@ class CandidateCtrl extends BaseController
                   CandidateJdAssoc::create($candidateJdData);
                   
                   $candidate_education = new CandidateQualification();
-
                     //to delete previous data and store new data in candidate 'educationl_details' table
                     CandidateQualification::where('timestamp', '=', $currentTimestamp)->delete();
                     foreach ($posted_data["educationalDetails"] as &$row) {
@@ -409,9 +398,7 @@ class CandidateCtrl extends BaseController
               DB::rollback();
               return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
           }
-
     } catch (\Exception $e) {
-       // DB::rollback();
         throw $e;
     }
   }
@@ -439,11 +426,14 @@ class CandidateCtrl extends BaseController
         }
   }
 
+  /*
+  * Function to get Jd list by candidate id
+  */
   public function getJDListByCandidateId($candidateId){
     $oldJdIdArray = CandidateJdAssoc::distinct()->select('job_description_id')->where('candidate_id', '=', $candidateId)->get()->pluck('job_description_id')->toArray();
     $getAllJdIdArray = JobDescription::get()->pluck('id')->toArray();
     $ids = array_merge(array_diff($oldJdIdArray, $getAllJdIdArray), array_diff($getAllJdIdArray, $oldJdIdArray));
-    $newJdList = JobDescription::whereIn('id', $ids)->get();
+    $newJdList = JobDescription::whereIn('id', $ids)->where('status',1)->get();
       if($newJdList){
           return $this->dispatchResponse(200, "Data", $newJdList);
       } else {            
@@ -451,6 +441,9 @@ class CandidateCtrl extends BaseController
       }
   }
 
+  /*
+  * Function used to change jd and create candidate jd assoc
+  */
   public function changeCandidateJd($candidateId){
     $posted_data = Input::all();
     $model = Candidate::find((int) $candidateId);
@@ -478,10 +471,12 @@ class CandidateCtrl extends BaseController
     }
   }
 
+  /*
+  * Function used to fetch logged user (role as candidate) information
+  */
   public function getLoggedCandidateInfo(){
     $posted_data = Input::all();
       $model = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document','job_description')->where('email','=',$posted_data['email'])->where('mobile_no','=',$posted_data['mobile'])->get()->first();
-      // return $model;
       if ($model){
           return $this->dispatchResponse(200, "Records Found...!!", $model);
       }else{
@@ -489,28 +484,30 @@ class CandidateCtrl extends BaseController
       }
   }
 
-
+  /*
+  *  Function now not in use but required when we want to create logins of previous created candidates
+  */
   public function createAllCandidatesLogin(){
 
-    $candidate_data = "SELECT CONCAT(first_name,' ', middle_name,' ',last_name) AS name, mobile_no,email,'Candidate' AS company_name, mobile_no AS password, '5' AS role_id, status FROM `candidate_details`";
+      $candidate_data = "SELECT CONCAT(first_name,' ', middle_name,' ',last_name) AS name, mobile_no,email,'Candidate' AS company_name, mobile_no AS password, '5' AS role_id, status FROM `candidate_details`";
 
-    $res_candidate = DB::select($candidate_data);  
-    $data = json_decode(json_encode($res_candidate), True);
+      $res_candidate = DB::select($candidate_data);  
+      $data = json_decode(json_encode($res_candidate), True);
     
-    foreach ($data as $value) {
-      $array['name'] = $value['name'];
-      $array['mobile'] = $value['mobile_no'];
-      $array['email'] = $value['email'];
-      $array['company_name'] = $value['company_name'];
-      $array['role_id'] = $value['role_id'];
-      $array['status'] = $value['status'];
-      $array['password'] = Hash::make($value['mobile_no']);
-      $array["created_at"] = new DateTime();
-      $array["updated_at"] =  new DateTime();
-      $newArray[] = $array;
-    }
+      foreach ($data as $value) {
+        $array['name'] = $value['name'];
+        $array['mobile'] = $value['mobile_no'];
+        $array['email'] = $value['email'];
+        $array['company_name'] = $value['company_name'];
+        $array['role_id'] = $value['role_id'];
+        $array['status'] = $value['status'];
+        $array['password'] = Hash::make($value['mobile_no']);
+        $array["created_at"] = new DateTime();
+        $array["updated_at"] =  new DateTime();
+        $newArray[] = $array;
+      }
 
-    User::insert($newArray);
+      User::insert($newArray);
 
   }
 
@@ -522,7 +519,7 @@ class CandidateCtrl extends BaseController
   *   Function to get candidate list by job_id
   */
   function getCandidateListByJobId($job_id){
-      $candidateList = Candidate::where('job_description_id','=',$job_id)->get();
+      $candidateList = Candidate::where('job_description_id','=',$job_id)->orderBy('created_at', 'DESC')->get();
       if($candidateList->first()){
           return $this->dispatchResponse(200, "Data", $candidateList);
       } else {            
@@ -542,32 +539,38 @@ class CandidateCtrl extends BaseController
   public function getNotFowardedCandidateList(Request $request)
   {
 
-    // $page = $request->page;
-    // $limit = $request->limit;
-
       $posted_data = Input::all();
       $candidateIdArray = forwordedResume::where('company_id',$posted_data["company_id"])->where("job_description_id",$posted_data["job_description_id"])->pluck('candidate_id');
 
       $query = Candidate::with('job_description','job_description.companies','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');
 
       if(empty($candidateIdArray)){
-        $candidateData = $query->where("job_description_id",$posted_data["job_description_id"])->orderBy('created_at', 'DESC')->get();
+        $candidateData = $query->where("job_description_id",$posted_data["job_description_id"])->where("status","Pass")->orwhere("status","Clear")->orderBy('created_at', 'DESC')->get();
       }else{
-        $candidateData = $query->whereNotIn('id', $candidateIdArray)->where("job_description_id",$posted_data["job_description_id"])->orderBy('created_at', 'DESC')->get();
+        $candidateData = $query->whereNotIn('id', $candidateIdArray)->where("job_description_id",$posted_data["job_description_id"])->where("status","Pass")->orderBy('created_at', 'DESC')->get();
       }
-      // if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
-      //     $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);     
-      // }else{
-          // $candidateData = $query->orderBy('created_at', 'DESC')->get();
-      // }
-
+      
       if ($candidateData->first()) {
         return $this->dispatchResponse(200, "",$candidateData);
       }else{
         return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
-        // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
       }
 
     
+  }
+
+  public function getCandidateTechnicalRoundDetails($candidate_id){
+    // return $candidate_id;
+    if($candidate_id){
+      $candidateDtls = Candidate::with('candidate_technical_result','candidate_technical_result.job_description','candidate_technical_result.users','forwarded_resumes_data','forwarded_resumes_data.job_description','forwarded_resumes_data.companies','forwarded_resumes_data.companies_tech_round_info')->find((int) $candidate_id);      
+
+      if ($candidateDtls){
+          return response()->json(['status_code' => 200, 'message' => 'Candidate Details', 'data' => $candidateDtls]);
+      }else{
+        return response()->json(['status_code' => 404, 'message' => 'Details not found']);
+      }
+    }else{
+      return $this->dispatchResponse(400,"Something went wrong.");
+    }
   }
 }

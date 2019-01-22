@@ -13,7 +13,7 @@ class TechnicalInterviewResult extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'user_id','technical_round','feedback','status','duration_of_interview','observation'
+        'candidate_id','job_description_id','user_id','technical_round','feedback','status','duration_of_interview','observation'
     ];
     
     protected $table = 'technical_interview_result';
@@ -21,6 +21,7 @@ class TechnicalInterviewResult extends Model
     
     private $rules = array(
         'candidate_id' => 'required',
+        'job_description_id' => 'required',
         'user_id' => 'required',
         'technical_round' => 'required',
         'feedback' => 'required',
@@ -47,5 +48,9 @@ class TechnicalInterviewResult extends Model
 
     public function users() {
         return $this->belongsTo('App\User','user_id');    
+    }
+    
+    public function job_description() {
+        return $this->belongsTo('App\JobDescription','job_description_id');    
     }
 }
