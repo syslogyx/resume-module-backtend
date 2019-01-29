@@ -85,7 +85,7 @@ class ForwordedResumeController extends BaseController
                 $model = forwordedResume::insert($posted_data["data"]);
                 DB::commit();
                 if($model)
-                    return $this->dispatchResponse(200, "Forworded resume Created Successfully...!!", $model);
+                    return $this->dispatchResponse(200, "Forwarded resume Created Successfully...!!", $model);
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400, "Something went wrong.", $objectFd->errors());
