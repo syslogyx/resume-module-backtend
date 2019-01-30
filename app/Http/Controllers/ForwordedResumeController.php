@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App\forwordedResume;
 use App\Candidate;
+use App\Company;
 use DateTime;
 
 class ForwordedResumeController extends BaseController
@@ -78,6 +79,7 @@ class ForwordedResumeController extends BaseController
             $posted_data['data'][$key]["updated_at"] =  new DateTime();
         }
 
+        $companyName = Company::where('id',$posted_data['data'][0]['company_id'])->pluck('name')->first();
         
         try {        
             $objectFd = new forwordedResume();
@@ -85,7 +87,7 @@ class ForwordedResumeController extends BaseController
                 $model = forwordedResume::insert($posted_data["data"]);
                 DB::commit();
                 if($model)
-                    return $this->dispatchResponse(200, "Forwarded resume Created Successfully...!!", $model);
+                    return $this->dispatchResponse(200, "Resume successfully forwarded to ".$companyName.".", $model);
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400, "Something went wrong.", $objectFd->errors());
