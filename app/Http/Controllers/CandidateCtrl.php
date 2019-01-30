@@ -86,7 +86,15 @@ class CandidateCtrl extends BaseController
         $query->where('first_name','LIKE',$posted_data['search_alphabet']."%");
       }
 
-      if(isset($posted_data["status"]) && $posted_data["status"] == 'selected'){
+      // if(isset($posted_data["status"]) && $posted_data["status"] == 'selected'){
+      //     $query->where("status","Selected")->orwhere("status","Joined");    
+      // }else if(isset($posted_data["status"]) && $posted_data["status"] == 'non-selected'){
+      //     $query->where("status","!=","Selected");
+      // }
+
+      if(isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] != 'All'){
+          $query->where("status","Selected")->orwhere("status","Joined")->where('first_name','LIKE',$posted_data['search_alphabet']."%");    
+      }else if(isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] == 'All'){
           $query->where("status","Selected")->orwhere("status","Joined");    
       }else if(isset($posted_data["status"]) && $posted_data["status"] == 'non-selected'){
           $query->where("status","!=","Selected");
@@ -511,8 +519,12 @@ class CandidateCtrl extends BaseController
 
   }
 
-  public function getListOfCandidateOrderByAlphabets(){
+  public function getListOfCandidateOrderByAlphabets($type){
+    if($type =='selected'){      
+      return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->where('status',$type)->orwhere('status','joined')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+    }else{
       return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+    }
   }
 
   /*
