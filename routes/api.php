@@ -106,6 +106,8 @@ $api->version("v1", function($api) {
     $api->post("create_logins","App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
     $api->get("get_alphabets/{type}", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
     // $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
+    // Get login client candidate list api
+    $api->post("candidate/get_login_client_candidatelist","App\Http\Controllers\CandidateCtrl@getLoginClientsCandidateList");
 
 
 
@@ -116,6 +118,7 @@ $api->version("v1", function($api) {
     $api->post("job/update/{id}", "App\Http\Controllers\JobController@update");
     $api->post("job/changestatus/{id}", "App\Http\Controllers\JobController@updateStatus");
     $api->get("getAllActiveJd", "App\Http\Controllers\JobController@fetchActiveJd");
+    $api->post("job/get_login_clients_jdlist", "App\Http\Controllers\JobController@getLoginClientsJobDescriptionList");
 
     // Basic Screen Questions api
     $api->get("basic_screening_questions", "App\Http\Controllers\BasicScreeningQuestionsController@index");

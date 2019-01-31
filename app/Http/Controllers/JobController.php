@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App\JobDescription;
+use App\Company;
 
 class JobController extends BaseController
 {
@@ -142,5 +143,26 @@ class JobController extends BaseController
             return $this->dispatchResponse(404, "No Records Found!!", $jdList);
         }
     }
+
+    public function getLoginClientsJobDescriptionList(Request $request){
+      $page = $request->page;
+      $limit = $request->limit;
+      $posted_data = Input::all();
+      
+      $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+      
+      if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
+            $model = JobDescription::where('company_id',$clientID)->paginate(50);
+      }
+      else{
+            $model = JobDescription::where('company_id',$clientID)->paginate($limit);
+      }
+      
+      if ($model->first()) {
+            return $this->dispatchResponse(200, "Job Description List", $model);
+      } else {          
+            return $this->dispatchResponse(404, "No Records Found!!", $model);
+      }
+  }
     
 }

@@ -21,6 +21,7 @@ use App\TechnicalInterviewResult;
 use App\CandidateBackgroundDocuments;
 use App\CandidatesChecklistDocs;
 use App\User;
+use App\Company;
 use Response;
 use App\forwordedResume;
 
@@ -40,10 +41,9 @@ class CandidateCtrl extends BaseController
       }
 
       if ($candidateData->first()) {
-        return $this->dispatchResponse(200, "Candidate List", $candidateData);
-
+          return $this->dispatchResponse(200, "Candidate List", $candidateData);
       } else {          
-        return $this->dispatchResponse(404, "No Records Found!!", $candidateData);
+          return $this->dispatchResponse(404, "No Records Found!!", $candidateData);
       }
   }
 
@@ -56,9 +56,22 @@ class CandidateCtrl extends BaseController
       $limit = $request->limit;
 
       $posted_data = Input::all();
-      // return $request;
-      $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');
-      
+
+      if($posted_data['role_id']==6){
+          if(isset($posted_data["email"]) && isset($posted_data["contact_no"]) ){
+              $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+            
+              $jdIDArrayOfClient = JobDescription::where('company_id',$clientID)->pluck('id');
+
+              $query = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document','job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents')->whereIn('job_description_id',$jdIDArrayOfClient);
+          }
+          else{
+              return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+          }
+      }else{
+          $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');  
+      }
+
       if(Input::get()=="" || Input::get()==null ){
           $query->get();
       }
@@ -72,18 +85,18 @@ class CandidateCtrl extends BaseController
       }  
 
       if(isset($posted_data["from_ctc"]) && isset($posted_data["to_ctc"])){
-        $query->where('ctc', '>=', $posted_data["from_ctc"]);
-        $query->where('ctc', '<=', $posted_data["to_ctc"]);        
+          $query->where('ctc', '>=', $posted_data["from_ctc"]);
+          $query->where('ctc', '<=', $posted_data["to_ctc"]);        
       }
 
 
       if(isset($posted_data["from_total_experience"]) && isset($posted_data["to_total_experience"])){
-        $query->where('total_experience', '>=', $posted_data["from_total_experience"]);
-        $query->where('total_experience', '<=', $posted_data["to_total_experience"]);        
+          $query->where('total_experience', '>=', $posted_data["from_total_experience"]);
+          $query->where('total_experience', '<=', $posted_data["to_total_experience"]);        
       }
 
       if(isset($posted_data['search_alphabet']) && $posted_data['search_alphabet'] != 'All'){
-        $query->where('first_name','LIKE',$posted_data['search_alphabet']."%");
+          $query->where('first_name','LIKE',$posted_data['search_alphabet']."%");
       }
 
       // if(isset($posted_data["status"]) && $posted_data["status"] == 'selected'){
@@ -107,14 +120,10 @@ class CandidateCtrl extends BaseController
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate(50);
       }
 
-      // print_r(DB::getQueryLog());
-      // die();
-
       if ($candidateData->first()) {
-        return $this->dispatchResponse(200, "",$candidateData);
+          return $this->dispatchResponse(200, "",$candidateData);
       }else{
-        return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
-        // return $this->dispatchResponse(404, "No Records Found!!",$candidateData);
+          return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
       }
 
   }
@@ -585,4 +594,30 @@ class CandidateCtrl extends BaseController
       return $this->dispatchResponse(400,"Something went wrong.");
     }
   }
+
+/* Get login client candidate list
+  public function getLoginClientsCandidateList(Request $request){
+      $page = $request->page;
+      $limit = $request->limit;
+      $posted_data = Input::all();
+      
+      $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+      
+      $jdIDArrayOfClient = JobDescription::where('company_id',$clientID)->pluck('id');
+      
+      if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
+          $model = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document','job_description')->whereIn('job_description_id',$jdIDArrayOfClient)->paginate(50);
+      }
+      else{
+          $model = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document','job_description')->whereIn('job_description_id',$jdIDArrayOfClient)->paginate($limit);
+      }
+      
+      if ($model->first()) {
+          return $this->dispatchResponse(200, "Candidate List", $model);
+      } else {          
+          return $this->dispatchResponse(404, "No Records Found!!", $model);
+      }
+  }
+*/
+
 }
