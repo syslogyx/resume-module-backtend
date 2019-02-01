@@ -15,7 +15,7 @@ class CreateDocumentTab extends Migration
     {
         Schema::create('candidate_document', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('file_name');
+            $table->longText('file_name');
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
             $table->string('path')->nullable();

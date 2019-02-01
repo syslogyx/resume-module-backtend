@@ -15,7 +15,7 @@ class CreateChecklistDoc extends Migration
     {
         Schema::create('candidate_bgcheck_list_documents', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('file_name');
+            $table->longText('file_name');
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->integer('bg_checklist_id')->unsigned()->nullable();
             $table->string('path')->nullable();
