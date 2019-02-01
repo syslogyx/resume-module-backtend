@@ -57,19 +57,23 @@ class CandidateCtrl extends BaseController
 
       $posted_data = Input::all();
 
-      if($posted_data['role_id']==6){
-          if(isset($posted_data["email"]) && isset($posted_data["contact_no"]) ){
-              $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
-            
-              $jdIDArrayOfClient = JobDescription::where('company_id',$clientID)->pluck('id');
+      if(isset($posted_data["job_description_id"])){
+          if($posted_data['role_id']==6){
+              if(isset($posted_data["email"]) && isset($posted_data["contact_no"]) ){
+                  $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+                
+                  $jdIDArrayOfClient = JobDescription::where('company_id',$clientID)->pluck('id');
 
-              $query = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document','job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents')->whereIn('job_description_id',$jdIDArrayOfClient);
-          }
-          else{
-              return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+                  $query = Candidate::with('candidate_achievements','candidate_hobbies','candidate_ind_exp','candidate_qualification.qualification','candidate_tech_skill','candidate_document','job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents')->whereIn('job_description_id',$jdIDArrayOfClient);
+              }
+              else{
+                  return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+              }
+          }else{
+              $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');  
           }
       }else{
-          $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');  
+          $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents'); 
       }
 
       if(Input::get()=="" || Input::get()==null ){
