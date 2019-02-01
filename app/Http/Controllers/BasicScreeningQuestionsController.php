@@ -110,6 +110,7 @@ class BasicScreeningQuestionsController extends BaseController
         try {
             DB::beginTransaction();
             $model = BasicScreeningQuestions::find((int) $id);
+            $posted_data["status"] = 1;
             if ($model->validate($posted_data)) {                         
                 if ($model->update($posted_data)){
                     DB::commit();
