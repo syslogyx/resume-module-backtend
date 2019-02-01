@@ -106,12 +106,16 @@ class CandidateCtrl extends BaseController
       // }
 
       if(isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] != 'All'){
-          $query->where("status","Selected")->orwhere("status","Joined")->where('first_name','LIKE',$posted_data['search_alphabet']."%");    
+          $query->where("status","Selected")->orwhere("status","Joined")->where('first_name','LIKE',$posted_data['search_alphabet']."%");  
+
       }else if(isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] == 'All'){
-          $query->where("status","Selected")->orwhere("status","Joined");    
+          $query->where("status","Selected")->orwhere("status","Joined");
+
       }else if(isset($posted_data["status"]) && $posted_data["status"] == 'non-selected'){
-          $query->where("status","!=","Selected");
+          $query->where("status","!=","Selected")->where("status","!=","Joined");
       }
+      // return $query->get();
+
 
       if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);

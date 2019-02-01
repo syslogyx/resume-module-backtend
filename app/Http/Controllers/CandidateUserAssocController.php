@@ -31,11 +31,17 @@ class CandidateUserAssocController extends BaseController
                     $que->where('user_id',$id)->where('job_description_id',$jd_id)->get();
                 }))->where("user_id",$id)->where('job_description_id',$jd_id);
         }
-          
+        if(isset($posted_data["job_description_id"])){
+            $query->where("job_description_id",$posted_data["job_description_id"]);
+        }
+        
         if(isset($posted_data["user_id"])){
             $query->where("user_id",$posted_data["user_id"]);
         }
 
+        if(isset($posted_data["schedule_date"])){
+            $query->where('schedule_date',$posted_data['schedule_date']);
+        }
 
         if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
             $candidateDetails = $query->paginate($limit);

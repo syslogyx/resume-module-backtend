@@ -17,18 +17,18 @@ class JobController extends BaseController
         $page = $request->page;
         $limit = $request->limit;
         if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
-            $jobDescriptionData = JobDescription::paginate(50);
+            $jobDescriptionData = JobDescription::with('companies')->paginate(50);
         }
         else{
-            $jobDescriptionData = JobDescription::paginate($limit);
+            $jobDescriptionData = JobDescription::with('companies')->paginate($limit);
         }
 
         if ($jobDescriptionData->first()) {
 
-            return $this->dispatchResponse(200, "", $jobDescriptionData);
+            return $this->dispatchResponse(200, "Job Description List", $jobDescriptionData);
 
         } else {
-            
+           
             // return $this->dispatchResponse(200, "No Records Found!!", $jobDescriptionData);
             return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
