@@ -140,17 +140,18 @@ class CandidateUserAssocController extends BaseController
         $limit = $request->limit;
         $posted_data = Input::all();
         $id = $posted_data['user_id'];
+        $jd_id = $posted_data['job_description_id'];
+        
         $current_date = new DateTime();
 
 
         $query = CandidateUserAssoc::with('users','all_candidates','job_description','all_candidates.candidate_technical_result');
 
-        if(isset($posted_data["user_id"])){
-            $query = CandidateUserAssoc::with('job_description')->with(array('all_candidates.candidate_technical_result'=>function($que) use ($id){
-                    $que->where('user_id',$id)->get();
-                }))->where("user_id",$id);
+        if(isset($posted_data["user_id"]) && isset($posted_data["job_description_id"])){
+            $query = CandidateUserAssoc::with('job_description')->with(array('all_candidates.candidate_technical_result'=>function($que) use ($id,$jd_id){
+                    $que->where('user_id',$id)->where('job_description_id',$jd_id)->get();
+                }))->where("user_id",$id)->where('job_description_id',$jd_id);
         }
-
 
         if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
             $candidateDetails = $query->where('schedule_date',$current_date->format('Y-m-d'))->paginate($limit);
