@@ -192,7 +192,7 @@ class UserController extends BaseController
         if(count($userId) == 0){
             $userData = User::where('role_id','=',4)->get();
         }else{
-            $userData = User::where('role_id','=',4)->where('id','!=',$userId[0])->get();
+            $userData = User::where('role_id','=',4)->whereNotIn('id',$userId)->get();
         }
         if($userData->first()){
             return $this->dispatchResponse(200, "Data", $userData);
