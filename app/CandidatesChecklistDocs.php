@@ -13,7 +13,7 @@ class CandidatesChecklistDocs extends Model
      * @var array
      */
     protected $fillable = [
-        'file_name','candidate_id','bg_checklist_id', 'path','timestamp'
+        'file_name','real_file_name','candidate_id','bg_checklist_id', 'path','timestamp'
     ];
 
     /**
@@ -31,6 +31,7 @@ class CandidatesChecklistDocs extends Model
 
     private $rules = array(
     	'file_name.*' => 'required|mimes:jpeg,png,jpg,bmp,pdf',
+        'real_file_name.*' => 'required',
         'candidate_id.*' => 'required',
         'bg_checklist_id.*' => 'required',
         'path.*' => 'required',

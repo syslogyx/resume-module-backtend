@@ -49,9 +49,14 @@ class CandidatesChecklistDocsController extends BaseController
 			// if($request->hasfile('file_name'))
 			// {
 				foreach($request->file('file_name') as $file){ 
-					$fileArray['file_name'] = $file->getClientOriginalName();	 
-					// $fileExtension = $file->getClientOriginalExtension();
+					// $fileName = $file->getClientOriginalName();
+					$fullName=$file->getClientOriginalName();
+					$fileName=explode('.',$fullName)[0];
+					$ext = $file->getClientOriginalExtension();
+					$fileArray['file_name'] = $request['candidate_name'].'_'.$request['bg_name'].'_'.time().'.'.$ext;
+
 					// $fileArray['file_name'] = time().'.'.$fileExtension;
+					$fileArray['real_file_name']= $fullName;
 					$fileArray['candidate_id']= $request['candidate_id'];
 					$fileArray['timestamp']= $request['timestamp'];
 					$fileArray['bg_checklist_id']=$request['bg_checklist_id'];
@@ -64,6 +69,8 @@ class CandidatesChecklistDocsController extends BaseController
 		      		$fileArray["updated_at"] =  new DateTime();
 					array_push($posted_data, $fileArray);
 				}
+				unset($request['bg_name']);
+				unset($request['candidate_name']);
 				if ($object->validate($posted_data)) {
 					$model = CandidatesChecklistDocs::insert($posted_data);
 					DB::commit();

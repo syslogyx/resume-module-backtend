@@ -195,6 +195,10 @@ $api->version("v1", function($api) {
 
     //Company Technical Round info resume
     $api->post("company_techround_info/create", "App\Http\Controllers\CompaniesTechRoundInfoController@create");
+
+    //Remote validation
+    $api->post("validate","App\Http\Controllers\CandidateCtrl@check_validation");
+
 });
 
 $api->version("v1", ['middleware' => 'api.auth'], function($api) {

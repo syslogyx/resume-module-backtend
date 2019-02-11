@@ -24,6 +24,9 @@ use App\User;
 use App\Company;
 use Response;
 use App\forwordedResume;
+use Validator;
+use Illuminate\Validation\Rule; 
+
 
 class CandidateCtrl extends BaseController
 {
@@ -304,7 +307,7 @@ class CandidateCtrl extends BaseController
         $model = CandidateDocument::create($posted_data);
         return response()->json(['status_code' => 200, 'message' => 'Resume uploaded successfully', 'data' => $model]);           
       } else {
-        throw new \Dingo\Api\Exception\StoreResourceFailedException('Resume not uploaded.',$object->errors());
+        throw new \Dingo\Api\Exception\StoreResourceFailedException('File not uploaded.',$object->errors());
       }
   }
 
@@ -601,6 +604,43 @@ class CandidateCtrl extends BaseController
     }else{
       return $this->dispatchResponse(400,"Something went wrong.");
     }
+  }
+
+  public function check_validation() {
+        $rules = [];
+        if (Input::get("mobile_no")) {
+            $data = json_decode(Input::get("mobile_no"));
+            $rules['mobile_no'] = 'required|unique:candidate_details,mobile_no,'.$data->id;
+            $validator = Validator::make((array) $data, $rules);
+            if ($validator->fails()) {
+                $this->errors = $validator->errors();
+                //return $this->errors;
+                return "false";
+            }
+        }
+
+        if (Input::get("email")) {
+            $data = json_decode(Input::get("email"));
+            $rules['email'] = 'required|email|unique:candidate_details,email,'.$data->id;
+            $validator = Validator::make((array) $data, $rules);
+            if ($validator->fails()) {
+                $this->errors = $validator->errors();
+                //return $this->errors;
+                return "false";
+            }
+        }
+
+        if (Input::get("pan_number")) {
+            $data = json_decode(Input::get("pan_number"));
+            // return $data;
+            $rules['pan_number'] = 'required|unique:candidate_details,pan_number,'.$data->id;
+            $validator = Validator::make((array) $data, $rules);
+            if ($validator->fails()) {
+                $this->errors = $validator->errors();
+                //return $this->errors;
+                return "false";
+            }
+        }
   }
 
 /* Get login client candidate list

@@ -438,7 +438,7 @@ h1{
         
   
     <div class="" style="display:inline-block;">       
-        <section style="border-top:0px; margin-left: 50px">
+        <section style="border-top:0px; margin-left: 60px">
             @if(in_array(1, $candidateDetails['section_names']))    
                 <div style="width: 50%; float: left;margin-bottom: 20px">            
                     <h1 class="set-title-color" style="font-size: 16px;"><strong>{{ $candidateDetails['first_name'] }}<br>
