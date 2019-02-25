@@ -40,7 +40,7 @@ class Candidate extends Model
         'gender' => 'required',
         'marital_status' => 'required',
         'indian_languages' => 'required',
-        'foreign_languages' => 'required',
+        // 'foreign_languages' => 'required',
         'currency_unit' => 'nullable',
         'mobile_no' => 'required|unique:candidate_details,mobile_no,',
         'corresponding_address' => 'required',

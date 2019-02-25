@@ -92,14 +92,19 @@ class CandidateCtrl extends BaseController
       }  
 
       if(isset($posted_data["from_ctc"]) && isset($posted_data["to_ctc"])){
-          $query->where('ctc', '>=', $posted_data["from_ctc"]);
-          $query->where('ctc', '<=', $posted_data["to_ctc"]);        
+          $from_ctc = ($posted_data["from_ctc"] == (int) $posted_data["from_ctc"]) ? (int) $posted_data["from_ctc"] : (float) $posted_data["from_ctc"];
+
+          $to_ctc = ($posted_data["to_ctc"] == (int) $posted_data["to_ctc"]) ? (int) $posted_data["to_ctc"] : (float) $posted_data["to_ctc"];
+
+          $query->where('ctc', '>=', $from_ctc)->where('ctc', '<=', $to_ctc);        
       }
 
 
       if(isset($posted_data["from_total_experience"]) && isset($posted_data["to_total_experience"])){
-          $query->where('total_experience', '>=', $posted_data["from_total_experience"]);
-          $query->where('total_experience', '<=', $posted_data["to_total_experience"]);        
+          $from_number = ($posted_data["from_total_experience"] == (int) $posted_data["from_total_experience"]) ? (int) $posted_data["from_total_experience"] : (float) $posted_data["from_total_experience"];
+           $to_number = ($posted_data["to_total_experience"] == (int) $posted_data["to_total_experience"]) ? (int) $posted_data["to_total_experience"] : (float) $posted_data["to_total_experience"];
+
+          $query->where('total_experience', '>=',$from_number)->where('total_experience', '<=', $to_number);        
       }
 
       if(isset($posted_data['search_alphabet']) && $posted_data['search_alphabet'] != 'All'){

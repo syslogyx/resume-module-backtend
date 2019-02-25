@@ -32,11 +32,14 @@ class CreateJobDescription extends Migration
             $table->string('notice_period')->nullable();
             $table->string('job_code')->nullable();
             $table->string('status')->nullable();
+            $table->integer('technology_id')->unsigned()->nullable();
+            $table->date('valid_till_date')->nullable();
             $table->timestamps();
         });
 
         Schema::table('job_description', function($table) {
             $table->foreign('company_id')->references('id')->on('company_table');
+            $table->foreign('technology_id')->references('id')->on('technologies');
         });
     }
 

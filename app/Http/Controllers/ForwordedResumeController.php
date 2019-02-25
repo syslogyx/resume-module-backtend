@@ -71,12 +71,15 @@ class ForwordedResumeController extends BaseController
         $posted_data = Input::all();
         DB::beginTransaction();
 
+        $candidatesIds = [];
         // return $posted_data['data'];
         foreach ($posted_data['data'] as $key => $value) {
             // $posted_data['data'][$key]["cv_received_on_date"] = date("Y-m-d", strtotime(str_replace('/', '-', $posted_data['data'][$key]["cv_received_on_date"])));
             $posted_data['data'][$key]["data_sent_to_company_date"] = date('Y-m-d');
             $posted_data['data'][$key]["created_at"] = new DateTime();
             $posted_data['data'][$key]["updated_at"] =  new DateTime();
+
+
         }
 
         $companyName = Company::where('id',$posted_data['data'][0]['company_id'])->pluck('name')->first();

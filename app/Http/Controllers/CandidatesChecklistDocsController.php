@@ -48,12 +48,13 @@ class CandidatesChecklistDocsController extends BaseController
 			$posted_data=[];
 			// if($request->hasfile('file_name'))
 			// {
-				foreach($request->file('file_name') as $file){ 
+
+				foreach($request->file('file_name') as $file => $value){ 
 					// $fileName = $file->getClientOriginalName();
-					$fullName=$file->getClientOriginalName();
+					$fullName=$value->getClientOriginalName();
 					$fileName=explode('.',$fullName)[0];
-					$ext = $file->getClientOriginalExtension();
-					$fileArray['file_name'] = $request['candidate_name'].'_'.$request['bg_name'].'_'.time().'.'.$ext;
+					$ext = $value->getClientOriginalExtension();
+					$fileArray['file_name'] = $request['candidate_name'].'_'.$request['bg_name'].'_'.$file.'_'.time().'.'.$ext;
 
 					// $fileArray['file_name'] = time().'.'.$fileExtension;
 					$fileArray['real_file_name']= $fullName;
@@ -62,13 +63,14 @@ class CandidatesChecklistDocsController extends BaseController
 					$fileArray['bg_checklist_id']=$request['bg_checklist_id'];
 					$destinationPath = public_path('/uploaded_backgroud_doc');
 
-					$file->move($destinationPath, $fileArray['file_name']);
+					$value->move($destinationPath, $fileArray['file_name']);
 					// $file->move($destinationPath, $name);  
 				    $fileArray['path']=$destinationPath; 
 				    $fileArray["created_at"] = new DateTime();
 		      		$fileArray["updated_at"] =  new DateTime();
 					array_push($posted_data, $fileArray);
 				}
+				// return $posted_data;
 				unset($request['bg_name']);
 				unset($request['candidate_name']);
 				if ($object->validate($posted_data)) {

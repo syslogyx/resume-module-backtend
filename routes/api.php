@@ -160,7 +160,7 @@ $api->version("v1", function($api) {
     $api->post("company/create", "App\Http\Controllers\CompanyController@create");
     $api->post("company/update/{id}", "App\Http\Controllers\CompanyController@update");
     $api->post("company/changestatus/{id}", "App\Http\Controllers\CompanyController@changeStatus");
-    $api->get("company_list", "App\Http\Controllers\CompanyController@activeCimpanyList");
+    $api->get("company_list", "App\Http\Controllers\CompanyController@activeCompanyList");
     
 
     // check list documents api
@@ -199,8 +199,17 @@ $api->version("v1", function($api) {
     //Remote validation
     $api->post("validate","App\Http\Controllers\CandidateCtrl@check_validation");
 
+    // Technology api's
+    $api->get("technologies","App\Http\Controllers\TechnologyController@index");
+    $api->get("technologiesInfoByID/{id}/view", "App\Http\Controllers\TechnologyController@viewTechnology");
+    $api->post("technologies/create", "App\Http\Controllers\TechnologyController@create");
+    $api->post("technologies/update/{id}","App\Http\Controllers\TechnologyController@update");
+    $api->post("technologies/changestatus/{id}","App\Http\Controllers\TechnologyController@changeStatus");
+    $api->get("technologies_list","App\Http\Controllers\TechnologyController@activeTechnologyList");
+    $api->get("technologies/list/dashboard","App\Http\Controllers\TechnologyController@getTechnologyAccordingToJobDescription");
+
 });
 
-$api->version("v1", ['middleware' => 'api.auth'], function($api) {
+$api->version("v4", ['middleware' => 'api.auth'], function($api) {
     
 });

@@ -15,7 +15,7 @@ class JobDescription extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'sub_title', 'description','no_of_requiremet','experience','skills_required','additional_skills','roles_and_responsibility','job_location','job_type','ctc','notice_period','job_code','status','company_id','project_title'
+        'title', 'sub_title', 'description','no_of_requiremet','experience','skills_required','additional_skills','roles_and_responsibility','job_location','job_type','ctc','notice_period','job_code','status','company_id','project_title','technology_id','valid_till_date'
     ];
 
     /**
@@ -49,8 +49,8 @@ class JobDescription extends Model
         'company_id' => 'required',
         'project_title' => 'required',
         'job_code' => 'required|unique:job_description,job_code,',
-
-
+        'technology_id' => 'required',
+        'valid_till_date' => 'required'
     );
     private $errors;
 
@@ -74,6 +74,10 @@ class JobDescription extends Model
 
     public function companies() {
         return $this->belongsTo('App\Company','company_id');
+    }
+
+    public function technologies() {
+        return $this->belongsTo('App\Technology','technology_id');
     }
 
 }

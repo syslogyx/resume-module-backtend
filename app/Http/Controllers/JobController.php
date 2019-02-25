@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App\JobDescription;
 use App\Company;
+use App\Technology;
 
 class JobController extends BaseController
 {
@@ -17,10 +18,10 @@ class JobController extends BaseController
         $page = $request->page;
         $limit = $request->limit;
         if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
-            $jobDescriptionData = JobDescription::with('companies')->paginate(50);
+            $jobDescriptionData = JobDescription::with('companies','technologies')->paginate(50);
         }
         else{
-            $jobDescriptionData = JobDescription::with('companies')->paginate($limit);
+            $jobDescriptionData = JobDescription::with('companies','technologies')->paginate($limit);
         }
 
         if ($jobDescriptionData->first()) {
@@ -38,7 +39,7 @@ class JobController extends BaseController
     *  Function to Get job descrption by id
     */
     function viewJob($id) {
-        $model = JobDescription::find((int) $id);
+        $model = JobDescription::with('companies')->find((int) $id);
 
         if ($model){
             return $this->dispatchResponse(200, "Records Found...!!", $model);
@@ -150,12 +151,11 @@ class JobController extends BaseController
       $posted_data = Input::all();
       
       $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
-      
       if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
-            $model = JobDescription::where('company_id',$clientID)->paginate(50);
+            $model = JobDescription::with('companies,technologies')->where('company_id',$clientID)->paginate(50);
       }
       else{
-            $model = JobDescription::where('company_id',$clientID)->paginate($limit);
+            $model = JobDescription::with('companies','technologies')->where('company_id',$clientID)->paginate($limit);
       }
       
       if ($model->first()) {

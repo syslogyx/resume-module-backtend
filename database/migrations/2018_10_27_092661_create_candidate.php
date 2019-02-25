@@ -36,7 +36,7 @@ class CreateCandidate extends Migration
             $table->string('status')->nullable();
             $table->string('timestamp')->nullable();                         
             $table->string('total_experience')->nullable();
-            $table->float('ctc')->nullable();  
+            $table->double('ctc', 15, 2)->nullable();  
             $table->integer('job_description_id')->unsigned()->nullable();
             $table->foreign('job_description_id')->references('id')->on('job_description');
             // $table->date('expired_on')->nullable();

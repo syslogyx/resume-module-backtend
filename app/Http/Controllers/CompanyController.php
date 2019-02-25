@@ -24,7 +24,7 @@ class CompanyController extends BaseController
         }
 
         if ($companyData->first()) {
-            return $this->dispatchResponse(200, "", $companyData);
+            return $this->dispatchResponse(200, "Client List", $companyData);
         } else {
         	// return $this->dispatchResponse(404, "No Records Found!!");
              return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
@@ -64,7 +64,7 @@ class CompanyController extends BaseController
                 }
                 DB::commit();
                 if($model)
-                    return $this->dispatchResponse(200, "Company Created Successfully...!!", $model);
+                    return $this->dispatchResponse(200, "Client Created Successfully...!!", $model);
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400, "Something went wrong.", $objectCompany->errors());
@@ -104,7 +104,7 @@ class CompanyController extends BaseController
 
                     User::where('email','=',$oldEmailId)->where('mobile','=',$oldMobile)->update(['name'=>$user_name,'email'=>$user_email,'mobile'=>$user_mobile,'password'=>$user_pwd]);
                     DB::commit();
-                    return $this->dispatchResponse(200, "Company Updated Successfully...!!", $model);
+                    return $this->dispatchResponse(200, "Client Updated Successfully...!!", $model);
                 }
             } else {
                 DB::rollback();
@@ -138,11 +138,10 @@ class CompanyController extends BaseController
     }
 
     /* Function to fetch active company list */
-    function activeCimpanyList(Request $request) {
+    function activeCompanyList(Request $request) {
         $companyData = Company::where("status",1)->get();
-
         if ($companyData->first()) {
-            return $this->dispatchResponse(200, "", $companyData);
+            return $this->dispatchResponse(200, "Client List", $companyData);
         } else {
             return $this->dispatchResponse(404, "No Records Found!!", null);
         }
