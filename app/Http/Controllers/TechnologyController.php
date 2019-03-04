@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use App\Technology;
 use App\JobDescription;
 use App\Candidate;
+use App\Company;
 
 class TechnologyController extends BaseController
 {
@@ -118,19 +119,22 @@ class TechnologyController extends BaseController
     }
 
 
-    function getTechnologyAccordingToJobDescription(){
+    function getTechnologyAccordingToJobDescription(Request $request){
         $technologiesData = Technology::where("status",1)->get();
+        $posted_data = Input::all();
+
+        $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
 
         if ($technologiesData){
             foreach ($technologiesData  as &$data) {
                 //set technology id
                 $technology_id = $data['id'];
                 //retrive count of jd as per technology
-                $data['job_description_count'] = JobDescription::where('technology_id',$technology_id)->count();
+                $data['job_description_count'] = JobDescription::where('technology_id',$technology_id)->where('company_id',$clientID)->count();
                 //retrive total no of requirement of jd
-                $data['total_no_of_requiremet_count'] = JobDescription::where('technology_id',$technology_id)->sum('no_of_requiremet');
+                $data['total_no_of_requiremet_count'] = JobDescription::where('technology_id',$technology_id)->where('company_id',$clientID)->sum('no_of_requiremet');
                 //get Jd id's
-                $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
+                $jd_data_ids = JobDescription::where('technology_id',$technology_id)->where('company_id',$clientID)->pluck('id');
 
                 $data['jd_ids'] = $jd_data_ids;
 

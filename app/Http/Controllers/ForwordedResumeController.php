@@ -78,18 +78,21 @@ class ForwordedResumeController extends BaseController
             $posted_data['data'][$key]["data_sent_to_company_date"] = date('Y-m-d');
             $posted_data['data'][$key]["created_at"] = new DateTime();
             $posted_data['data'][$key]["updated_at"] =  new DateTime();
-
+            array_push($candidatesIds, $posted_data['data'][$key]['candidate_id']);
 
         }
+
+        // return $candidatesIds;
 
         $companyName = Company::where('id',$posted_data['data'][0]['company_id'])->pluck('name')->first();
         
         try {        
             $objectFd = new forwordedResume();
             if ($objectFd->validate($posted_data["data"])) {
-                $model = forwordedResume::insert($posted_data["data"]);
+                $model = forwordedResume::insert($posted_data["data"]);                
                 DB::commit();
                 if($model)
+                    Candidate::whereIn('id',$candidatesIds)->update(array('status' => 'Forwarded'));
                     return $this->dispatchResponse(200, "Resume successfully forwarded to ".$companyName.".", $model);
             } else {
                 DB::rollback();

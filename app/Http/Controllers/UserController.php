@@ -49,10 +49,10 @@ class UserController extends BaseController
         DB::beginTransaction();
         try {        
             $objectUser = new User();
+            $posted_data["status"] ="Active";
             if ($objectUser->validate($posted_data)) {
                 $posted_data["password"] = trim($posted_data["password"]);
                 $posted_data["password"] = Hash::make($posted_data["password"]);
-                $posted_data["status"] ="Active";
                 $posted_data["unique_token"] =isset($posted_data["unique_token"])?$posted_data["unique_token"]:base64_encode($posted_data['email'].$posted_data['mobile'].$posted_data['company_name']);
                 // $posted_data["data"] =base64_decode($posted_data["unique_token"]);
                 // return $posted_data;
@@ -72,6 +72,8 @@ class UserController extends BaseController
 
     function update($id) {
         $posted_data = Input::all();
+
+        // return $posted_data;
         try {
             DB::beginTransaction();
             $model = User::find((int) $id);

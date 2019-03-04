@@ -109,7 +109,7 @@ class CandidateUserAssocController extends BaseController
 
 
     /**
-    *   Function used to reSchedule interview of a candidate
+    * Function used to reSchedule interview of a candidate
     **/
     public function rescheduleInterview($id){
         $posted_data = Input::all();
@@ -133,7 +133,8 @@ class CandidateUserAssocController extends BaseController
     }
 
     /**
-    *   Function used to get today's scheduled interview list according to logged user id
+    *  Function used to get today's scheduled interview list according to logged user 
+    *  id
     **/
     function getTodaysInterviewListByUserId(Request $request){
         $page = $request->page;
@@ -163,7 +164,6 @@ class CandidateUserAssocController extends BaseController
         if ($candidateDetails->first()) {
             return $this->dispatchResponse(200, "",$candidateDetails);
         }else{
-            // return $this->dispatchResponse(404, "No Records Found!!",$candidateDetails);
             return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
     }

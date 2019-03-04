@@ -12,6 +12,7 @@ class BaseController extends Controller {
 
     use Helpers;
 
+    // comman method to set response
     public function dispatchResponse( $statusCode = 200, $msg = "", $data = null) {
         $response = [];
         $response["status_code"] = $statusCode;

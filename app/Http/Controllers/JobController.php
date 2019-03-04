@@ -36,10 +36,45 @@ class JobController extends BaseController
     }
 
     /*
+    *  Function to fetch job descrption list
+    */
+    function jdListWithFilter(Request $request) {
+        $page = $request->page;
+        $limit = $request->limit;
+        $posted_data = Input::all();
+
+        $query = JobDescription::with('companies','technologies');
+
+        if(Input::get()=="" || Input::get()==null ){
+            $query->get();
+        }
+
+        if(isset($posted_data['technology_id'])){
+            $query = $query->where('technology_id',$posted_data['technology_id']);
+        }
+
+        if(($page != null && $page != 0) && ($limit != null && $limit != 0)){
+            $jobDescriptionData = $query->orderBy('created_at', 'DESC')->paginate($limit);
+        }else{
+            $jobDescriptionData = $query->orderBy('created_at', 'DESC')->paginate(50);
+        }
+
+        if ($jobDescriptionData->first()) {
+
+            return $this->dispatchResponse(200, "Job Description List", $jobDescriptionData);
+
+        } else {
+           
+            // return $this->dispatchResponse(200, "No Records Found!!", $jobDescriptionData);
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+        }
+    }
+
+    /*
     *  Function to Get job descrption by id
     */
     function viewJob($id) {
-        $model = JobDescription::with('companies')->find((int) $id);
+        $model = JobDescription::with('companies','technologies')->find((int) $id);
 
         if ($model){
             return $this->dispatchResponse(200, "Records Found...!!", $model);
@@ -146,23 +181,34 @@ class JobController extends BaseController
     }
 
     public function getLoginClientsJobDescriptionList(Request $request){
-      $page = $request->page;
-      $limit = $request->limit;
-      $posted_data = Input::all();
+        $page = $request->page;
+        $limit = $request->limit;
+        $posted_data = Input::all();
+
+        $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+
+        $query = JobDescription::with('companies','technologies');
+
+        if(Input::get()=="" || Input::get()==null ){
+            $query->get();
+        }
+
+        if(isset($posted_data['technology_id'])){
+            $query = $query->where('technology_id',$posted_data['technology_id']);
+        }
+
+        if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
+            $model = $query->where('company_id',$clientID)->paginate(50);
+        }
+        else{
+            $model = $query->where('company_id',$clientID)->paginate($limit);
+        }
       
-      $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
-      if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
-            $model = JobDescription::with('companies,technologies')->where('company_id',$clientID)->paginate(50);
-      }
-      else{
-            $model = JobDescription::with('companies','technologies')->where('company_id',$clientID)->paginate($limit);
-      }
-      
-      if ($model->first()) {
+        if ($model->first()) {
             return $this->dispatchResponse(200, "Job Description List", $model);
-      } else {          
+        } else {          
             return $this->dispatchResponse(404, "No Records Found!!", $model);
-      }
+        }
   }
     
 }

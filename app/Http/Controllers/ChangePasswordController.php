@@ -19,6 +19,9 @@ class ChangePasswordController extends BaseController
         }
     }
 
+    /*
+    *   Function used to change pasword
+    */
     function create() {
         $posted_data = Input::all();
         DB::beginTransaction();
@@ -81,6 +84,9 @@ class ChangePasswordController extends BaseController
         }        
     }
 
+    /*
+    *  function used to change update password (not in use)
+    */
     function update($id) {
         $posted_data = Input::all();
 

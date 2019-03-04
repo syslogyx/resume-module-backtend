@@ -108,11 +108,14 @@ $api->version("v1", function($api) {
     // $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
     // Get login client candidate list api
     $api->post("candidate/get_login_client_candidatelist","App\Http\Controllers\CandidateCtrl@getLoginClientsCandidateList");
-
+    $api->post("read_excel", "App\Http\Controllers\CandidateCtrl@readCsvFileData");
+    $api->post("import_excel", "App\Http\Controllers\CandidateCtrl@importCandidateData");
+    $api->post("candidate/filter/clients", "App\Http\Controllers\CandidateCtrl@getCandidateListByJDDetails");
 
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
+    $api->post("job_description/filter", "App\Http\Controllers\JobController@jdListWithFilter");
     $api->get("jobInfoByID/{id}/view", "App\Http\Controllers\JobController@viewJob");
     $api->post("job/create", "App\Http\Controllers\JobController@create");
     $api->post("job/update/{id}", "App\Http\Controllers\JobController@update");
@@ -206,7 +209,7 @@ $api->version("v1", function($api) {
     $api->post("technologies/update/{id}","App\Http\Controllers\TechnologyController@update");
     $api->post("technologies/changestatus/{id}","App\Http\Controllers\TechnologyController@changeStatus");
     $api->get("technologies_list","App\Http\Controllers\TechnologyController@activeTechnologyList");
-    $api->get("technologies/list/dashboard","App\Http\Controllers\TechnologyController@getTechnologyAccordingToJobDescription");
+    $api->post("technologies/list/dashboard","App\Http\Controllers\TechnologyController@getTechnologyAccordingToJobDescription");
 
 });
 
