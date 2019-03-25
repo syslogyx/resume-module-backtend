@@ -127,12 +127,12 @@ class ForwordedResumeController extends BaseController
                     if($model->id){
                         if(isset($posted_data['candidate_id'])){
                             $candidateData = Candidate::find((int) $posted_data['candidate_id']);
-                            if($candidateData->status != 'Selected' && $candidateData->status != 'Joined'){
+                            // if($candidateData->status != 'Selected' && $candidateData->status != 'Joined'){
                                 $candidateData->status = $posted_data['final_status'];
                                 $candidateData->save();
-                            }else{                                
-                                return $this->dispatchResponse(401,"Candidate is already selected.");
-                            }
+                            // }else{                                
+                            //     return $this->dispatchResponse(401,"Candidate is already selected.");
+                            // }
                         }
                     }
                     DB::commit();

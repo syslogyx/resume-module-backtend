@@ -9,6 +9,8 @@ use App\Technology;
 use App\JobDescription;
 use App\Candidate;
 use App\Company;
+use App\CandidateUserAssoc;
+use DateTime;
 
 class TechnologyController extends BaseController
 {
@@ -150,4 +152,178 @@ class TechnologyController extends BaseController
           return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
         }
     }
+
+    /*
+    *   API to get Client details on dashboard page
+    */
+    function getClientDashboardDetails(Request $request){
+        if($request->isMethod('POST')){
+            $technologiesData = Technology::select('id','name','status')->where("status",1)->get();
+            $posted_data = Input::all();
+
+            $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+            $responsedata["technology_details"] = [];
+            if ($clientID) {
+                $jdID = [];
+                if (count($technologiesData) > 0){
+                    foreach ($technologiesData  as &$data) {
+                        $technology_id = $data['id'];
+                        $jd_data_ids = JobDescription::where('technology_id',$technology_id)->where('company_id',$clientID)->pluck('id');
+                        $data['jd_ids'] = $jd_data_ids;
+                        $data['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
+                        $data['selected_candidates_count'] = Candidate::where('status','Selected')->whereIN('job_description_id', $jd_data_ids)->count();
+                                // "shortlist_through_other_vendor_count":01,
+                                // "shortlist_through_other_vendor":10,
+                                // "joined_tcs_directly":05,
+                                // "joined_somewhere_else":03,
+                                // "rejected":02,
+                                // "no_response_from_Candidate":01,
+                                // "expecting_high_ctc":00,
+                                // "bgc_form_not_shared_not_interested_candidate":03
+                        if(count($jd_data_ids)>0){
+                            array_push($jdID, $jd_data_ids);
+                        }
+
+                        // $responsedata["technology_details"] = $data;
+                        array_push($responsedata["technology_details"], $data);
+
+                    }
+                    $responsedata['total_no_of_client_cv'] = Candidate::whereIN('job_description_id', $jdID)->count(); 
+                    return response()->json(['status_code' => 200, 'message' => 'Data', 'data' => $responsedata]);
+                }else{
+                    return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
+                }
+            }else{
+                return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
+            }
+        }
+    }
+
+    /*
+    *   API to get Admin details on dashboard page
+    */
+    function getAdminDashboardDetails(Request $request){
+        if($request->isMethod('GET')){
+           $responsedata = [];
+           $jd_count = JobDescription::where('status',1)->count();
+           $client_count = Company::where('status',1)->count();
+
+           $responsedata['total_jd_count']=$jd_count;
+           $responsedata['total_client_count']=$client_count;
+           $responsedata['overall_technology_details'] = [];
+           $responsedata['joined_technology_details'] = [];
+           $responsedata['candidate_mgmt_details'] = [];
+
+           $technologiesData = Technology::select('id','name','status')->where("status",1)->get();
+
+            if (count($technologiesData) > 0){
+                // to set overall candidates technologies detials
+                foreach ($technologiesData  as &$data1) {
+                    $technology_id = $data1['id'];
+                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
+                    $data1['jd_ids'] = $jd_data_ids;
+                    $data1['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
+
+                    array_push($responsedata['overall_technology_details'], $data1);
+                }
+
+                // to set joined candidates technologies detials
+                foreach ($technologiesData  as &$data2) {
+                    $technology_id = $data2['id'];
+                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
+                    $data2['jd_ids'] = $jd_data_ids;
+                    $data2['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->where('status','Joined')->count();
+
+                    array_push($responsedata['joined_technology_details'], $data2);
+                }
+
+                $responsedata['candidate_mgmt_details']['shortlisted_candidates_count'] = Candidate::where('status','Pass')->count();
+
+                $responsedata['candidate_mgmt_details']['forwarded_candidates_count'] = Candidate::where('status','Forwarded')->count();
+                
+                $responsedata['candidate_mgmt_details']['joined_candidates_count'] = Candidate::where('status','Joined')->count();
+
+                $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->count();
+
+                $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','OnBording')->count();
+
+                return response()->json(['status_code' => 200, 'message' => 'Data', 'data' => $responsedata]);
+            }else{
+                return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
+            }
+        }else{
+            return response()->json(['status_code' => 405, 'message' => 'Method Not Allowed']);
+        }
+    }
+
+    /*
+    *   API to get HR details on dashboard page
+    */
+    function getHrDashboardDetails(Request $request){
+        if($request->isMethod('GET')){
+           $responsedata = [];
+           $jd_count = JobDescription::where('status',1)->count();
+           $client_count = Company::where('status',1)->count();
+
+           $responsedata['total_jd_count']=$jd_count;
+           $responsedata['total_client_count']=$client_count;
+           $responsedata['overall_technology_details'] = [];
+           $responsedata['joined_technology_details'] = [];
+           $responsedata['candidate_mgmt_details'] = [];
+           $responsedata['todays_interview_details'] = [];
+
+           $technologiesData = Technology::select('id','name','status')->where("status",1)->get();
+
+            if (count($technologiesData) > 0){
+                // to set overall candidates technologies detials
+                foreach ($technologiesData  as &$data1) {
+                    $technology_id = $data1['id'];
+                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
+                    $data1['jd_ids'] = $jd_data_ids;
+                    $data1['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
+
+                    array_push($responsedata['overall_technology_details'], $data1);
+                }
+
+                // to set joined candidates technologies detials
+                foreach ($technologiesData  as &$data2) {
+                    $technology_id = $data2['id'];
+                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
+                    $data2['jd_ids'] = $jd_data_ids;
+                    $data2['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->where('status','Joined')->count();
+
+                    array_push($responsedata['joined_technology_details'], $data2);
+                }
+
+                $current_date = new DateTime();
+
+                // to set joined candidates technologies detials
+                foreach ($technologiesData  as &$data3) {
+                    $technology_id = $data3['id'];
+                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
+                    $data3['jd_ids'] = $jd_data_ids;
+                    $data3['total_candidate_count'] = CandidateUserAssoc::whereIN('job_description_id', $jd_data_ids)->where('schedule_date',$current_date->format('Y-m-d'))->count();
+
+                    array_push($responsedata['todays_interview_details'], $data3);
+                }
+
+                $responsedata['candidate_mgmt_details']['shortlisted_candidates_count'] = Candidate::where('status','Pass')->count();
+
+                $responsedata['candidate_mgmt_details']['forwarded_candidates_count'] = Candidate::where('status','Forwarded')->count();
+                
+                $responsedata['candidate_mgmt_details']['joined_candidates_count'] = Candidate::where('status','Joined')->count();
+
+                $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->count();
+
+                $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','OnBording')->count();
+
+                return response()->json(['status_code' => 200, 'message' => 'Data', 'data' => $responsedata]);
+            }else{
+                return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
+            }
+        }else{
+            return response()->json(['status_code' => 405, 'message' => 'Method Not Allowed']);
+        }
+    }
+
 }

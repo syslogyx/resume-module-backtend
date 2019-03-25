@@ -211,6 +211,15 @@ $api->version("v1", function($api) {
     $api->get("technologies_list","App\Http\Controllers\TechnologyController@activeTechnologyList");
     $api->post("technologies/list/dashboard","App\Http\Controllers\TechnologyController@getTechnologyAccordingToJobDescription");
 
+
+    //API for Client dashboard
+    $api->post("dashboard/client","App\Http\Controllers\TechnologyController@getClientDashboardDetails");
+    //API for HR dashboard
+    $api->get("dashboard/hr","App\Http\Controllers\TechnologyController@getHrDashboardDetails");
+    //API for Admin dashboard
+    $api->get("dashboard/admin","App\Http\Controllers\TechnologyController@getAdminDashboardDetails");
+
+
 });
 
 $api->version("v4", ['middleware' => 'api.auth'], function($api) {
