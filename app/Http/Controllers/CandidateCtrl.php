@@ -243,7 +243,7 @@ class CandidateCtrl extends BaseController
                 $user_data["role_id"] = 5;
                 $user_data["company_name"] = 'Candidate';
                 $user_data["password"] = Hash::make($posted_data['mobile_no']);
-                $user_data["password"] = $posted_data["unique_token"];
+                $user_data["unique_token"] = $posted_data["unique_token"];
                 $user_data["status"] ="Active";
                 // $user_data["unique_token"] = $posted_data['unique_token'];
                 User::create($user_data);

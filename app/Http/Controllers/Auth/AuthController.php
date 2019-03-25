@@ -33,11 +33,10 @@ class AuthController extends Controller {
 
     public function authenticate(Request $request) {
         $credentials = $request->only("email", "password");
-//        print_r($credentials);die();
         $userObject = new User();
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-//                return $this->response->error(["error" => "User credentials are not correct!"], 401);
+               // return $this->response->error(["error" => "User credentials are not correct!"], 401);
                 $response = 'Your Username and/or Password is incorrect.';
 //                return $response;
 //                throw new \Exception($response);
@@ -52,6 +51,7 @@ class AuthController extends Controller {
         $email = $request["email"];
 
         $user = User::where('email', $email)->first();
+       // print_r($user);die();
         $user->remember_token = $token;
         // return $user;
         if ($user) {

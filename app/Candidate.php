@@ -33,7 +33,7 @@ class Candidate extends Model
 
     private $rules = array(
         'first_name' => 'required',
-        'middle_name' => 'required',
+        'middle_name' => 'nullable',
         'last_name' => 'required',
         'email' => 'required|unique:candidate_details,email,',
         'opprtunity_for' => 'required',

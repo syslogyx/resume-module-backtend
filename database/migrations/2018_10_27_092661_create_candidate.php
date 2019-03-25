@@ -16,7 +16,7 @@ class CreateCandidate extends Migration
         Schema::create('candidate_details', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name');
-            $table->string('middle_name');
+            $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->string('email')->nullable();            
             $table->string('opprtunity_for')->nullable();
