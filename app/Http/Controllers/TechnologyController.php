@@ -172,19 +172,22 @@ class TechnologyController extends BaseController
                         $data['jd_ids'] = $jd_data_ids;
                         $data['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
                         $data['selected_candidates_count'] = Candidate::where('status','Selected')->whereIN('job_description_id', $jd_data_ids)->count();
-                                // "shortlist_through_other_vendor_count":01,
-                                // "shortlist_through_other_vendor":10,
-                                // "joined_tcs_directly":05,
-                                // "joined_somewhere_else":03,
-                                // "rejected":02,
-                                // "no_response_from_Candidate":01,
-                                // "expecting_high_ctc":00,
-                                // "bgc_form_not_shared_not_interested_candidate":03
+                        $data['shortlist_through_other_vendor'] = '0';
+                        $data['joinded_directly_tcs'] = '0';
+
+                        $data['joined_somewhere_else'] = Candidate::where('status','Join Somewhere Else')->whereIN('job_description_id', $jd_data_ids)->count();
+
+                        $data['rejected'] = Candidate::where('status','Rejected')->orwhere('status','Rejected')->whereIN('job_description_id', $jd_data_ids)->count();
+
+                        $data['no_response_from_Candidate'] = Candidate::where('status','No Response from Candidate')->whereIN('job_description_id', $jd_data_ids)->count();
+
+                        $data['expecting_high_ctc'] = Candidate::where('status','Expecting High CTC')->whereIN('job_description_id', $jd_data_ids)->count();
+
+                        $data['bgc_form_not_shared_not_interested_candidate'] = Candidate::where('status','BGC Form not shared / candidate not interested')->whereIN('job_description_id', $jd_data_ids)->count();
                         if(count($jd_data_ids)>0){
                             array_push($jdID, $jd_data_ids);
                         }
 
-                        // $responsedata["technology_details"] = $data;
                         array_push($responsedata["technology_details"], $data);
 
                     }
@@ -210,8 +213,8 @@ class TechnologyController extends BaseController
 
            $responsedata['total_jd_count']=$jd_count;
            $responsedata['total_client_count']=$client_count;
-           $responsedata['overall_technology_details'] = [];
-           $responsedata['joined_technology_details'] = [];
+           $responsedata['technology_details'] = [];
+           // $responsedata['joined_technology_details'] = [];
            $responsedata['candidate_mgmt_details'] = [];
 
            $technologiesData = Technology::select('id','name','status')->where("status",1)->get();
@@ -222,19 +225,10 @@ class TechnologyController extends BaseController
                     $technology_id = $data1['id'];
                     $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
                     $data1['jd_ids'] = $jd_data_ids;
-                    $data1['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
+                    $data1['total_overall_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
+                     $data1['total_joined_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->where('status','Joined')->count();
 
-                    array_push($responsedata['overall_technology_details'], $data1);
-                }
-
-                // to set joined candidates technologies detials
-                foreach ($technologiesData  as &$data2) {
-                    $technology_id = $data2['id'];
-                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
-                    $data2['jd_ids'] = $jd_data_ids;
-                    $data2['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->where('status','Joined')->count();
-
-                    array_push($responsedata['joined_technology_details'], $data2);
+                    array_push($responsedata['technology_details'], $data1);
                 }
 
                 $responsedata['candidate_mgmt_details']['shortlisted_candidates_count'] = Candidate::where('status','Pass')->count();
@@ -245,7 +239,7 @@ class TechnologyController extends BaseController
 
                 $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->count();
 
-                $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','OnBording')->count();
+                $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','Selected')->count();
 
                 return response()->json(['status_code' => 200, 'message' => 'Data', 'data' => $responsedata]);
             }else{
@@ -267,44 +261,24 @@ class TechnologyController extends BaseController
 
            $responsedata['total_jd_count']=$jd_count;
            $responsedata['total_client_count']=$client_count;
-           $responsedata['overall_technology_details'] = [];
-           $responsedata['joined_technology_details'] = [];
+           $responsedata['technology_details'] = [];
+           // $responsedata['joined_technology_details'] = [];
            $responsedata['candidate_mgmt_details'] = [];
-           $responsedata['todays_interview_details'] = [];
+           // $responsedata['todays_interview_details'] = [];
 
            $technologiesData = Technology::select('id','name','status')->where("status",1)->get();
-
+           $current_date = new DateTime();
             if (count($technologiesData) > 0){
                 // to set overall candidates technologies detials
                 foreach ($technologiesData  as &$data1) {
                     $technology_id = $data1['id'];
                     $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
                     $data1['jd_ids'] = $jd_data_ids;
-                    $data1['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
+                    $data1['total_overall_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->count();
+                    $data1['total_joined_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->where('status','Joined')->count();
+                    $data1['total_todayinterview_candidate_count'] = CandidateUserAssoc::whereIN('job_description_id', $jd_data_ids)->where('schedule_date',$current_date->format('Y-m-d'))->count();
 
-                    array_push($responsedata['overall_technology_details'], $data1);
-                }
-
-                // to set joined candidates technologies detials
-                foreach ($technologiesData  as &$data2) {
-                    $technology_id = $data2['id'];
-                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
-                    $data2['jd_ids'] = $jd_data_ids;
-                    $data2['total_candidate_count'] = Candidate::whereIN('job_description_id', $jd_data_ids)->where('status','Joined')->count();
-
-                    array_push($responsedata['joined_technology_details'], $data2);
-                }
-
-                $current_date = new DateTime();
-
-                // to set joined candidates technologies detials
-                foreach ($technologiesData  as &$data3) {
-                    $technology_id = $data3['id'];
-                    $jd_data_ids = JobDescription::where('technology_id',$technology_id)->pluck('id');
-                    $data3['jd_ids'] = $jd_data_ids;
-                    $data3['total_candidate_count'] = CandidateUserAssoc::whereIN('job_description_id', $jd_data_ids)->where('schedule_date',$current_date->format('Y-m-d'))->count();
-
-                    array_push($responsedata['todays_interview_details'], $data3);
+                    array_push($responsedata['technology_details'], $data1);
                 }
 
                 $responsedata['candidate_mgmt_details']['shortlisted_candidates_count'] = Candidate::where('status','Pass')->count();
@@ -315,7 +289,7 @@ class TechnologyController extends BaseController
 
                 $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->count();
 
-                $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','OnBording')->count();
+                $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','Selected')->count();
 
                 return response()->json(['status_code' => 200, 'message' => 'Data', 'data' => $responsedata]);
             }else{
