@@ -177,7 +177,7 @@ class TechnologyController extends BaseController
 
                         $data['joined_somewhere_else'] = Candidate::where('status','Join Somewhere Else')->whereIN('job_description_id', $jd_data_ids)->count();
 
-                        $data['rejected'] = Candidate::where('status','Rejected')->orwhere('status','Rejected')->whereIN('job_description_id', $jd_data_ids)->count();
+                        $data['rejected'] = Candidate::where('status','Fail')->orwhere('status','Rejected')->whereIN('job_description_id', $jd_data_ids)->count();
 
                         $data['no_response_from_Candidate'] = Candidate::where('status','No Response from Candidate')->whereIN('job_description_id', $jd_data_ids)->count();
 
@@ -237,7 +237,7 @@ class TechnologyController extends BaseController
                 
                 $responsedata['candidate_mgmt_details']['joined_candidates_count'] = Candidate::where('status','Joined')->count();
 
-                $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->count();
+                $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->orwhere('status','Schedule')->count();
 
                 $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','Selected')->count();
 
@@ -287,7 +287,7 @@ class TechnologyController extends BaseController
                 
                 $responsedata['candidate_mgmt_details']['joined_candidates_count'] = Candidate::where('status','Joined')->count();
 
-                $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->count();
+                $responsedata['candidate_mgmt_details']['inprogress_interviews_count'] = Candidate::where('status','Clear')->orwhere('status','Schedule')->count();
 
                 $responsedata['candidate_mgmt_details']['onbording'] = Candidate::where('status','Selected')->count();
 

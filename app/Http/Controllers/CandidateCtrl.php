@@ -445,8 +445,11 @@ class CandidateCtrl extends BaseController
             try{
                 DB::beginTransaction();
                 if ($model->update($posted_data)) {
+                  if($posted_data['id']){
+                    forwordedResume::where('candidate_id','=',$posted_data['id'])->update(['final_status'=>$posted_data['status']]);                    
                     DB::commit();
                     return $this->dispatchResponse(200, "Status Updated Successfully...!!", $model);
+                  }
                 } else {
                     DB::rollback();
                     return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
