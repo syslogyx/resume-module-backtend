@@ -200,7 +200,7 @@ $api->version("v1", function($api) {
     $api->post("company_techround_info/create", "App\Http\Controllers\CompaniesTechRoundInfoController@create");
 
     //Remote validation
-    $api->post("validate","App\Http\Controllers\CandidateCtrl@check_validation");
+    $api->post("candidate/validate","App\Http\Controllers\CandidateCtrl@check_validation");
 
     // Technology api's
     $api->get("technologies","App\Http\Controllers\TechnologyController@index");

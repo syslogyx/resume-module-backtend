@@ -618,42 +618,50 @@ class CandidateCtrl extends BaseController
   }
 
   /*
-  * Function to check remote validation of field
+  * Function to check remote validation of candidate's field
   */
-  public function check_validation() {
+  public function check_validation(Request $request) {
         $rules = [];
-        if (Input::get("mobile_no")) {
-            $data = json_decode(Input::get("mobile_no"));
-            $rules['mobile_no'] = 'required|unique:candidate_details,mobile_no,'.$data->id;
-            $validator = Validator::make((array) $data, $rules);
-            if ($validator->fails()) {
-                $this->errors = $validator->errors();
-                //return $this->errors;
-                return "false";
-            }
+        $posted_data = Input::all();
+        if (isset($posted_data["mobile_no"])) {
+            // $data = json_decode($posted_data["mobile_no"]);
+            // print_r($data);
+            // die();
+            // $rules['mobile_no'] = 'required|unique:candidate_details,mobile_no,'.$data->id;
+            // $validator = Validator::make((array) $data, $rules);
+            // if ($validator->fails()) {
+            //     $this->errors = $validator->errors();
+            //     //return $this->errors;
+            //     return false;
+            // }
+
+          $mobile_no = $posted_data["mobile_no"];
+          $isMobileExists = Candidate::where('mobile_no',$mobile_no)->first();
+          if($isMobileExists){
+              return response()->json("true");
+          }else{
+              return response()->json("false");
+          }
         }
 
-        if (Input::get("email")) {
-            $data = json_decode(Input::get("email"));
-            $rules['email'] = 'required|email|unique:candidate_details,email,'.$data->id;
-            $validator = Validator::make((array) $data, $rules);
-            if ($validator->fails()) {
-                $this->errors = $validator->errors();
-                //return $this->errors;
-                return "false";
-            }
+        if (isset($posted_data["email"])) {
+          $email = $posted_data["email"];
+          $isEmailExists = Candidate::where('email',$email)->first();
+          if($isEmailExists){
+              return response()->json("true");
+          }else{
+              return response()->json("false");
+          }
         }
 
-        if (Input::get("pan_number")) {
-            $data = json_decode(Input::get("pan_number"));
-            // return $data;
-            $rules['pan_number'] = 'required|unique:candidate_details,pan_number,'.$data->id;
-            $validator = Validator::make((array) $data, $rules);
-            if ($validator->fails()) {
-                $this->errors = $validator->errors();
-                //return $this->errors;
-                return "false";
-            }
+        if (isset($posted_data["pan_number"])) {
+          $pan_no = $posted_data["pan_number"];
+          $isPanExists = Candidate::where('email',$pan_no)->first();
+          if($isPanExists){
+              return response()->json("true");
+          }else{
+              return response()->json("false");
+          }
         }
   }
 
