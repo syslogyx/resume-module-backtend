@@ -105,7 +105,7 @@ $api->version("v1", function($api) {
     $api->post("candidate/getLoggedCandidateDetails","App\Http\Controllers\CandidateCtrl@getLoggedCandidateInfo");
     $api->post("create_logins","App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
     $api->get("get_alphabets/{type}", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
-    // $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
+    $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
     // Get login client candidate list api
     $api->post("candidate/get_login_client_candidatelist","App\Http\Controllers\CandidateCtrl@getLoginClientsCandidateList");
     $api->post("read_excel", "App\Http\Controllers\CandidateCtrl@readCsvFileData");

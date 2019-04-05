@@ -81,9 +81,11 @@ class CandidateCtrl extends BaseController
       // }
 
       // if filter is not appiled
-      if(Input::get()=="" || Input::get()==null ){
+      if(Input::get()=="" || Input::get()==null){
           $query->get();
       }
+
+      
 
       // to filter according to job description
       if(isset($posted_data["job_description_id"])){
@@ -131,7 +133,7 @@ class CandidateCtrl extends BaseController
           $candidateData = $query->orderBy('created_at', 'DESC')->paginate($limit);
       }
       else{
-          $candidateData = $query->orderBy('created_at', 'DESC')->paginate(50);
+          $candidateData = $query->orderBy('created_at', 'DESC')->paginate(200);
       }
 
       if ($candidateData->first()) {
@@ -569,14 +571,14 @@ class CandidateCtrl extends BaseController
       }
   }
 
-  // function getAllCandidateList(){
-  //     $candidateList = Candidate::get();
-  //     if($candidateList->first()){
-  //         return $this->dispatchResponse(200, "Data", $candidateList);
-  //     } else {            
-  //         return $this->dispatchResponse(404, "No Records Found!!", $candidateList);
-  //     }
-  // }
+  function getAllCandidateList(){
+      $candidateList = Candidate::get();
+      if($candidateList->first()){
+          return $this->dispatchResponse(200, "Data", $candidateList);
+      } else {            
+          return $this->dispatchResponse(404, "No Records Found!!", $candidateList);
+      }
+  }
 
   /*
   * Function to get Candidate which is not yet forwared to any company.
@@ -621,48 +623,38 @@ class CandidateCtrl extends BaseController
   * Function to check remote validation of candidate's field
   */
   public function check_validation(Request $request) {
-        $rules = [];
-        $posted_data = Input::all();
-        if (isset($posted_data["mobile_no"])) {
-            // $data = json_decode($posted_data["mobile_no"]);
-            // print_r($data);
-            // die();
-            // $rules['mobile_no'] = 'required|unique:candidate_details,mobile_no,'.$data->id;
-            // $validator = Validator::make((array) $data, $rules);
-            // if ($validator->fails()) {
-            //     $this->errors = $validator->errors();
-            //     //return $this->errors;
-            //     return false;
-            // }
-
-          $mobile_no = $posted_data["mobile_no"];
-          $isMobileExists = Candidate::where('mobile_no',$mobile_no)->first();
-          if($isMobileExists){
-              return response()->json("true");
-          }else{
-              return response()->json("false");
-          }
+    $posted_data = Input::all();
+    $rules = [];
+    if (@$posted_data["candidate_mobile_no"]) {
+        $data = json_decode($posted_data["candidate_mobile_no"]);
+        $rules['mobile_no'] = 'required|unique:candidate_details,mobile_no,'.$data->id;
+        $validator = Validator::make((array) $data, $rules);
+        if ($validator->fails()) {
+            $this->errors = $validator->errors();
+            return "false";
         }
+    }
 
-        if (isset($posted_data["email"])) {
-          $email = $posted_data["email"];
-          $isEmailExists = Candidate::where('email',$email)->first();
-          if($isEmailExists){
-              return response()->json("true");
-          }else{
-              return response()->json("false");
-          }
+    if (@$posted_data["candidate_email"]) {
+        $data = json_decode($posted_data["candidate_email"]);
+        $rules['email'] = 'required|unique:candidate_details,email,'.$data->id;
+        $validator = Validator::make((array) $data, $rules);
+        if ($validator->fails()) {
+            $this->errors = $validator->errors();
+            return "false";
         }
+    }
 
-        if (isset($posted_data["pan_number"])) {
-          $pan_no = $posted_data["pan_number"];
-          $isPanExists = Candidate::where('email',$pan_no)->first();
-          if($isPanExists){
-              return response()->json("true");
-          }else{
-              return response()->json("false");
-          }
+    if (@$posted_data["candidate_pan_number"]) {
+        $data = json_decode($posted_data["candidate_pan_number"]);
+        $rules['pan_number'] = 'required|unique:candidate_details,pan_number,'.$data->id;
+        $validator = Validator::make((array) $data, $rules);
+        if ($validator->fails()) {
+            $this->errors = $validator->errors();
+            return "false";
         }
+    }
+   return "true";
   }
 
   /* Get login client candidate list

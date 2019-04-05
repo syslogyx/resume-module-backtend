@@ -158,10 +158,16 @@ class TechnologyController extends BaseController
     */
     function getClientDashboardDetails(Request $request){
         if($request->isMethod('POST')){
-            $technologiesData = Technology::select('id','name','status')->where("status",1)->get();
             $posted_data = Input::all();
 
             $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+
+            $tec_data_ids = JobDescription::where('company_id',$clientID)->pluck('technology_id');
+
+            $technologiesData = Technology::select('id','name','status')->whereIn('id',$tec_data_ids)->where("status",1)->get();
+
+            // return $technologiesData;
+
             $responsedata["technology_details"] = [];
             if ($clientID) {
                 $jdID = [];
