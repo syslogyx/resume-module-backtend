@@ -15,7 +15,7 @@ class CandidateDocument extends Model
      * @var array
      */
     protected $fillable = [
-        'file_name','candidate_id', 'path','timestamp'
+        'file_name','candidate_id', 'path','timestamp','type'
     ];
 
     /**

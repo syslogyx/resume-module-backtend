@@ -306,7 +306,8 @@ class CandidateCtrl extends BaseController
       $posted_data['candidate_id']=$request['candidate_id'];
       $posted_data['timestamp']=$request['timestamp'];
       $destinationPath = public_path('/doc');
-      $posted_data['path']=$destinationPath;       
+      $posted_data['path']=$destinationPath;
+      $posted_data['type']='Resume';         
       
       if ($object->validate($posted_data)) {
         $image->move($destinationPath, $posted_data['file_name']);
@@ -314,6 +315,38 @@ class CandidateCtrl extends BaseController
         return response()->json(['status_code' => 200, 'message' => 'Resume uploaded successfully', 'data' => $model]);           
       } else {
         throw new \Dingo\Api\Exception\StoreResourceFailedException('File not uploaded.',$object->errors());
+      }
+  }
+
+  /*
+  * To save uploaded profile image file of candidate in db
+  */
+  function uploadProfilePicture(Request $request){
+      $object = new CandidateDocument();
+      $image = $request->file('file_name');
+      $ext = $image->getClientOriginalExtension();
+      // if($ext == 'doc'){
+      //   $ext = 'docx';
+      // }
+      $posted_data['file_name'] =time().'.'.$ext;
+      $posted_data['candidate_id']=$request['candidate_id'];
+      $posted_data['timestamp']=$request['timestamp'];
+      $destinationPath = public_path('/imgs');
+      $posted_data['path']=$destinationPath; 
+      $posted_data['type']='Image';
+
+      $emailId = $request['email'];
+      $mobile = $request['mobile'];
+      
+      if ($object->validate($posted_data)) {
+        $image->move($destinationPath, $posted_data['file_name']);
+        $model = CandidateDocument::create($posted_data);
+
+        User::where('email','=',$emailId)->where('mobile','=',$mobile)->update(['avatar'=>$posted_data['file_name'],'path'=>$destinationPath]);
+
+        return response()->json(['status_code' => 200, 'message' => 'Profile Image uploaded successfully', 'data' => $model]);           
+      } else {
+        throw new \Dingo\Api\Exception\StoreResourceFailedException('Profile Image not uploaded.',$object->errors());
       }
   }
 

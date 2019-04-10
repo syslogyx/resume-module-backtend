@@ -54,7 +54,7 @@ class BackgroundChecklist extends Model
         return $this->errors;
     }
 
-    // public function candidate_bg_docs() {
-    //     return $this->belongsTo('App\CandidateJdAssoc','candidate_id');
-    // }
+    public function candidate_bg_documents() {
+        return $this->hasMany('App\CandidatesChecklistDocs','bg_checklist_id');    
+    }
 }

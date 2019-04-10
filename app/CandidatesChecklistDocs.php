@@ -52,9 +52,13 @@ class CandidatesChecklistDocs extends Model
         return $this->errors;
     }
 
-    // public function background_checklist() {
-    //     return $this->belongsTo('App\BackgroundChecklist');    
-    // }
+    public function background_checklist() {
+        return $this->belongsTo('App\BackgroundChecklist');    
+    }
+
+    public function candidate() {
+        return $this->belongsTo('App\Candidate','candidate_id');    
+    }
 
     // public function candidate_checklist_docs() {
     //     return $this->hasMany('App\CandidatesChecklistDocs','bg_checklist_id'); 

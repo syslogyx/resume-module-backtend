@@ -35,6 +35,35 @@ class CandidatesChecklistDocsController extends BaseController
 	  $headers = array('Content-Type: application/pdf');
 	  return Response::download($file, 'SYSLOGYX_BGC_FORM_SAMPLE.pdf',$headers);
 	}
+
+	/*
+	* To get bg uploaded file by candidate checklist doc ID
+	*/
+	public function downloadCandidateChecklistDocID($id){
+		$candidateUploadFile = CandidatesChecklistDocs::where('id',$id)->first();
+	 	$file = public_path('/uploaded_backgroud_doc/'.$candidateUploadFile->file_name);
+	  	$headers = array('Content-Type: application/pdf');
+	  	return Response::download($file, $candidateUploadFile->file_name,$headers);
+	}
+
+	/*
+	* To delete bg uploaded file by candidate checklist doc ID
+	*/
+	function deleteCandidateChecklistDoc($id) {
+		$model = CandidatesChecklistDocs::where('id',$id)->first();
+        if($id != null && $model){
+        	if(file_exists(public_path('/uploaded_backgroud_doc/'.$model->file_name))){
+			  	unlink(public_path('/uploaded_backgroud_doc/'.$model->file_name));
+			  	$query = CandidatesChecklistDocs::where('id',$id)->delete();
+	            if ($query)
+	            	return $this->dispatchResponse(200, "Document deleted Successfully...!!", null);
+			}else{
+				return $this->dispatchResponse(201, "File does not exists.", null);  
+			}  
+        }else{
+            return $this->dispatchResponse(202, "Something went wrong", null);    
+        }
+    }
 	  
 	/*
 	* To save Filled background check pdf file form on server

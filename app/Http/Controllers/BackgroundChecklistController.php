@@ -132,7 +132,9 @@ class BackgroundChecklistController extends BaseController
 
         if($viewType == 'candidate_view'){
 
-            $backgroundChecklistData = BackgroundChecklist::where('status',1)->get();
+            $backgroundChecklistData = BackgroundChecklist::with(array('candidate_bg_documents'=>function($que) use ($id){
+                    $que->where('candidate_id',$id)->get();
+                }))->where('status',1)->get();
         }else{
             $backgroundChecklistData = BackgroundChecklist::all();
         }

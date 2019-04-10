@@ -37,7 +37,7 @@ class DocumentController extends BaseController {
             $posted_data["file_name"] = $file_name;
             //$posted_data["file_name"] = $request->file->store("");
             $posted_data["path"] =  $storage_path;
-            $document = new Document();
+            // $document = new Document();
 
 
 

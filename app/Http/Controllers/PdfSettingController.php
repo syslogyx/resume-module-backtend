@@ -19,7 +19,9 @@ class PdfSettingController extends BaseController
     **/
     function getAllPdfSectionList(Request $request) {
 
-        $pdfSettingData = PdfSetting::all();
+        // $pdfSettingData = PdfSetting::all();
+        $defaultList = [1,2,3];
+        $pdfSettingData = PdfSetting::whereNOTIn('id',$defaultList)->get();
         if (count($pdfSettingData)>0) {
             return response()->json(['status_code' => 200, 'message' => 'Pdf List', 'data' => $pdfSettingData]);
         } else {

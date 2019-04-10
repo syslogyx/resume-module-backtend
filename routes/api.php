@@ -71,6 +71,8 @@ $api->version("v1", function($api) {
 
     $api->post("user/getUserByCandidateIdAndJdId", "App\Http\Controllers\UserController@getUserByCandidateIdAndJdId");
 
+    $api->get("get_users_alphabets/{type}", "App\Http\Controllers\UserController@getListOfUserOrderByAlphabets");
+
     // qualification's api
     $api->get("qualification_details", "App\Http\Controllers\QualificationCtrl@getAllQualification");
     $api->post("qualification", "App\Http\Controllers\QualificationCtrl@create");
@@ -95,6 +97,7 @@ $api->version("v1", function($api) {
     $api->get("candidateInfoByID/{id}", "App\Http\Controllers\CandidateCtrl@viewCandiadte");
     $api->get("candidate/technical-rounds/{candidate_id}", "App\Http\Controllers\CandidateCtrl@getCandidateTechnicalRoundDetails");
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
+    $api->post("upload_profile_image", "App\Http\Controllers\CandidateCtrl@uploadProfilePicture");
     $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");    
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
     $api->post("not_forwarded_candidate/filter", "App\Http\Controllers\CandidateCtrl@getNotFowardedCandidateList");
@@ -170,6 +173,8 @@ $api->version("v1", function($api) {
     $api->get("download_background_form/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBackgroundCheckForm");
     $api->post("upload_bgdoc", "App\Http\Controllers\CandidatesChecklistDocsController@uploadBackgroundForm");
     $api->get("download_sample_bgform/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadSampleBackgroundForm");
+    $api->get("download_candidate_bg_file/{id}", "App\Http\Controllers\CandidatesChecklistDocsController@downloadCandidateChecklistDocID");
+    $api->post("candidate_bg_file/{id}/delete", "App\Http\Controllers\CandidatesChecklistDocsController@deleteCandidateChecklistDoc");
 
     // Background Checklist api
     $api->get("background_checklist", "App\Http\Controllers\BackgroundChecklistController@index");

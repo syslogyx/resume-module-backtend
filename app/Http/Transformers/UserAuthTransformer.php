@@ -24,8 +24,8 @@ class UserAuthTransformer extends TransformerAbstract {
             // 'email_external' => $user->email_external,
             // 'department' => $user->department,
             //'designation' => $user->designation,
-            //'avatar' => $user->avatar,
-            // 'user_id'=> $user->user_id,
+            'avatar' => $user->avatar,
+            'path'=> $user->path
         ];
     }
 }

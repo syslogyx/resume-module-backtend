@@ -43,6 +43,10 @@ class CandidateUserAssocController extends BaseController
             $query->where('schedule_date',$posted_data['schedule_date']);
         }
 
+        if(isset($posted_data["candidate_id"])){
+            $query->where('candidate_id',$posted_data['candidate_id']);
+        }
+
         if(($page != null && $page != -1) && ($limit != null && $limit != -1)){
             $candidateDetails = $query->paginate($limit);
         }

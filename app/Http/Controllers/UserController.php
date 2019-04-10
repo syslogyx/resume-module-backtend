@@ -105,6 +105,19 @@ class UserController extends BaseController
             return $this->dispatchResponse(200, "Records Found...!!", $model);
     }
 
+    /*
+    *  Function to get initial alphabet list of users
+    */
+    public function getListOfUserOrderByAlphabets($type){
+        if($type =='all'){      
+            return $alphabetsArray = User::selectRaw('substr(upper(name),1,1) as letter')->whereNotIn("role_id",[5,6])->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+        }else if($type =='candidate'){
+            return $alphabetsArray = User::selectRaw('substr(upper(name),1,1) as letter')->where("role_id",5)->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+        }else if($type =='client'){
+            return $alphabetsArray = User::selectRaw('substr(upper(name),1,1) as letter')->where("role_id",6)->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+        }
+    }
+
     function filterUsers(Request $request){
         $page = $request->page;
         $limit = $request->limit;
@@ -118,6 +131,11 @@ class UserController extends BaseController
 
         if(Input::get("user_id")){
             $query->where("id",Input::get("user_id"));    
+        }
+
+        // to filter according to alphabets
+        if(isset($posted_data['search_alphabet']) && $posted_data['search_alphabet'] != 'All'){
+            $query->where('name','LIKE',$posted_data['search_alphabet']."%");
         }
 
         if(isset($posted_data["role_id"]) && $posted_data["role_id"] == 'all'){
