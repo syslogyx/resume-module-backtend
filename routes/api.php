@@ -1,33 +1,28 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
-  |--------------------------------------------------------------------------
-  | API Routes
-  |--------------------------------------------------------------------------
-  |
-  | Here is where you can register API routes for your application. These
-  | routes are loaded by the RouteServiceProvider within a group which
-  | is assigned the "api" middleware group. Enjoy building your API!
-  |
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
  */
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
 
-
-
 $api = app("Dingo\Api\Routing\Router");
 
-
-$api->version("v1", function($api) {
+$api->version("v1", function ($api) {
 
     // generate token
     $api->post("authenticate", "App\Http\Controllers\Auth\AuthController@authenticate");
 
-    // test api  
+    // test api
     $api->get("hello", "App\Http\Controllers\HomeController@index");
 
     //Home controller API
@@ -38,25 +33,25 @@ $api->version("v1", function($api) {
     $api->post("role/{role_name}/permission/add", "App\Http\Controllers\HomeController@attachPermission");
 
     $api->get("role/{role_name}/permissions", "App\Http\Controllers\HomeController@getPremissions");
-    
+
     $api->get("permissions", "App\Http\Controllers\HomeController@getAllPremissions");
 
     $api->get("roles", "App\Http\Controllers\HomeController@getAllRoles");
-    
+
     $api->get("selected/roles", "App\Http\Controllers\HomeController@getSelectedRoles");
-    
+
     $api->post("create/permission", "App\Http\Controllers\HomeController@createPermissions");
 
     $api->post("create/role", "App\Http\Controllers\HomeController@createRoles");
-    
+
     $api->post("role/{id}/update", "App\Http\Controllers\HomeController@updateRoles");
 
     $api->post("permission/{id}/update", "App\Http\Controllers\HomeController@updatePermissions");
-    
+
     $api->get("role/{id}/view", "App\Http\Controllers\HomeController@viewRoles");
 
     $api->get("permission/{id}/view", "App\Http\Controllers\HomeController@viewPermissions");
-    
+
     $api->delete("user/{user_id}/role/{role_id}", "App\Http\Controllers\HomeController@deleteRolesOfUser");
 
     // user's api
@@ -78,12 +73,11 @@ $api->version("v1", function($api) {
     $api->post("qualification", "App\Http\Controllers\QualificationCtrl@create");
     $api->put("qualification/{id}/update", "App\Http\Controllers\QualificationCtrl@update");
 
-    //  document's api 
+    //  document's api
     $api->post("document/upload", "App\Http\Controllers\DocumentController@upload");
 
     // change password api
     $api->post("changePassword", "App\Http\Controllers\UserController@changePassword");
-
 
     // fund particulars's api
     $api->get("add_particular", "App\Http\Controllers\FundParticularController@index");
@@ -98,23 +92,22 @@ $api->version("v1", function($api) {
     $api->get("candidate/technical-rounds/{candidate_id}", "App\Http\Controllers\CandidateCtrl@getCandidateTechnicalRoundDetails");
     $api->post("upload_resume", "App\Http\Controllers\CandidateCtrl@uploadResume");
     $api->post("upload_profile_image", "App\Http\Controllers\CandidateCtrl@uploadProfilePicture");
-    $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");    
+    $api->get("download/{id}", "App\Http\Controllers\CandidateCtrl@getDownload");
     $api->post("candidate/filter", "App\Http\Controllers\CandidateCtrl@filterCandidates");
     $api->post("not_forwarded_candidate/filter", "App\Http\Controllers\CandidateCtrl@getNotFowardedCandidateList");
     $api->put("candidate/{id}/update", "App\Http\Controllers\CandidateCtrl@update");
     $api->post("candidate/changestatus/{id}", "App\Http\Controllers\CandidateCtrl@updateStatus");
     $api->post("candidate/changeJobDescription/{id}", "App\Http\Controllers\CandidateCtrl@changeCandidateJd");
     $api->get("candidate/getJDListByCandidateId/{id}", "App\Http\Controllers\CandidateCtrl@getJDListByCandidateId");
-    $api->post("candidate/getLoggedCandidateDetails","App\Http\Controllers\CandidateCtrl@getLoggedCandidateInfo");
-    $api->post("create_logins","App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
+    $api->post("candidate/getLoggedCandidateDetails", "App\Http\Controllers\CandidateCtrl@getLoggedCandidateInfo");
+    $api->post("create_logins", "App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
     $api->get("get_alphabets/{type}", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
     $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
     // Get login client candidate list api
-    $api->post("candidate/get_login_client_candidatelist","App\Http\Controllers\CandidateCtrl@getLoginClientsCandidateList");
+    $api->post("candidate/get_login_client_candidatelist", "App\Http\Controllers\CandidateCtrl@getLoginClientsCandidateList");
     $api->post("read_excel", "App\Http\Controllers\CandidateCtrl@readCsvFileData");
     $api->post("import_excel", "App\Http\Controllers\CandidateCtrl@importCandidateData");
     $api->post("candidate/filter/clients", "App\Http\Controllers\CandidateCtrl@getCandidateListByJDDetails");
-
 
     // Job Description's api
     $api->get("job_description", "App\Http\Controllers\JobController@index");
@@ -142,7 +135,7 @@ $api->version("v1", function($api) {
 
     // Basic screening test Api
     $api->post("result/add", "App\Http\Controllers\BasicScreeningResultController@create");
-    
+
     // Basic screening test Api
     $api->post("assignInterviewer", "App\Http\Controllers\CandidateUserAssocController@assignInterviewerToCandidate");
     $api->put("reschedule_interview/{id}/update", "App\Http\Controllers\CandidateUserAssocController@rescheduleInterview");
@@ -154,11 +147,11 @@ $api->version("v1", function($api) {
     //candidate feedback api
     $api->post("tech_feedback/add", "App\Http\Controllers\TechnicalInterviewResultController@create");
 
-    $api->get("pdf_setting","App\Http\Controllers\PdfSettingController@getAllPdfSectionList");
-    
+    $api->get("pdf_setting", "App\Http\Controllers\PdfSettingController@getAllPdfSectionList");
+
     //ZIP API
-    $api->get("pdfzip","App\Http\Controllers\PdfSettingController@generateAllPdfZipFile");
-    $api->get("generate_zip_by_creating_pdf/{id}","App\Http\Controllers\PdfSettingController@downloadZipbyPdfCreation");
+    $api->get("pdfzip", "App\Http\Controllers\PdfSettingController@generateAllPdfZipFile");
+    $api->get("generate_zip_by_creating_pdf/{id}", "App\Http\Controllers\PdfSettingController@downloadZipbyPdfCreation");
 
     // Company api
     $api->get("company_table", "App\Http\Controllers\CompanyController@index");
@@ -167,7 +160,6 @@ $api->version("v1", function($api) {
     $api->post("company/update/{id}", "App\Http\Controllers\CompanyController@update");
     $api->post("company/changestatus/{id}", "App\Http\Controllers\CompanyController@changeStatus");
     $api->get("company_list", "App\Http\Controllers\CompanyController@activeCompanyList");
-    
 
     // check list documents api
     $api->get("download_background_form/", "App\Http\Controllers\CandidatesChecklistDocsController@downloadBackgroundCheckForm");
@@ -205,28 +197,26 @@ $api->version("v1", function($api) {
     $api->post("company_techround_info/create", "App\Http\Controllers\CompaniesTechRoundInfoController@create");
 
     //Remote validation
-    $api->post("candidate/validate","App\Http\Controllers\CandidateCtrl@check_validation");
+    $api->post("candidate/validate", "App\Http\Controllers\CandidateCtrl@check_validation");
 
     // Technology api's
-    $api->get("technologies","App\Http\Controllers\TechnologyController@index");
+    $api->get("technologies", "App\Http\Controllers\TechnologyController@index");
     $api->get("technologiesInfoByID/{id}/view", "App\Http\Controllers\TechnologyController@viewTechnology");
     $api->post("technologies/create", "App\Http\Controllers\TechnologyController@create");
-    $api->post("technologies/update/{id}","App\Http\Controllers\TechnologyController@update");
-    $api->post("technologies/changestatus/{id}","App\Http\Controllers\TechnologyController@changeStatus");
-    $api->get("technologies_list","App\Http\Controllers\TechnologyController@activeTechnologyList");
-    $api->post("technologies/list/dashboard","App\Http\Controllers\TechnologyController@getTechnologyAccordingToJobDescription");
-
+    $api->post("technologies/update/{id}", "App\Http\Controllers\TechnologyController@update");
+    $api->post("technologies/changestatus/{id}", "App\Http\Controllers\TechnologyController@changeStatus");
+    $api->get("technologies_list", "App\Http\Controllers\TechnologyController@activeTechnologyList");
+    $api->post("technologies/list/dashboard", "App\Http\Controllers\TechnologyController@getTechnologyAccordingToJobDescription");
 
     //API for Client dashboard
-    $api->post("dashboard/client","App\Http\Controllers\TechnologyController@getClientDashboardDetails");
+    $api->post("dashboard/client", "App\Http\Controllers\TechnologyController@getClientDashboardDetails");
     //API for HR dashboard
-    $api->get("dashboard/hr","App\Http\Controllers\TechnologyController@getHrDashboardDetails");
+    $api->get("dashboard/hr", "App\Http\Controllers\TechnologyController@getHrDashboardDetails");
     //API for Admin dashboard
-    $api->get("dashboard/admin","App\Http\Controllers\TechnologyController@getAdminDashboardDetails");
-
+    $api->get("dashboard/admin", "App\Http\Controllers\TechnologyController@getAdminDashboardDetails");
 
 });
 
-$api->version("v4", ['middleware' => 'api.auth'], function($api) {
-    
+$api->version("v4", ['middleware' => 'api.auth'], function ($api) {
+
 });

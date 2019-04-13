@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateChecklistDoc extends Migration
 {
@@ -24,7 +24,7 @@ class CreateChecklistDoc extends Migration
             $table->timestamps();
         });
 
-        Schema::table('candidate_bgcheck_list_documents', function($table) {
+        Schema::table('candidate_bgcheck_list_documents', function ($table) {
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
             $table->foreign('bg_checklist_id')->references('id')->on('background_checklist');
         });

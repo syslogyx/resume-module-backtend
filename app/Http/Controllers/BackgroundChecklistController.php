@@ -2,59 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\BackgroundChecklist;
+use App\CandidatesChecklistDocs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use App\BackgroundChecklist;
-use App\CandidatesChecklistDocs;
-use App\Candidate;
 
 class BackgroundChecklistController extends BaseController
 {
     /* Function to fetch background checklist list */
-    function index(Request $request) {
+    public function index(Request $request)
+    {
         $page = $request->page;
         $limit = $request->limit;
 
-        if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
+        if (($page == null || $limit == null) || ($page == -1 || $limit == -1)) {
             $backgroundChecklistData = BackgroundChecklist::paginate(50);
-        }
-        else{
+        } else {
             $backgroundChecklistData = BackgroundChecklist::paginate($limit);
         }
 
         if ($backgroundChecklistData->first()) {
             return $this->dispatchResponse(200, "", $backgroundChecklistData);
         } else {
-        	// return $this->dispatchResponse(404, "No Records Found!!");
-             return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+            // return $this->dispatchResponse(404, "No Records Found!!");
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
     }
 
     /* Function to Get background checklist descrption by id */
-    function viewBackgroundChecklist($id) {
+    public function viewBackgroundChecklist($id)
+    {
         $model = BackgroundChecklist::find((int) $id);
 
-        if ($model){
+        if ($model) {
             return $this->dispatchResponse(200, "Records Found...!!", $model);
-        }else{
+        } else {
             return $this->dispatchResponse(400, 'No Records Found!!');
         }
     }
 
     /* Function to create background checklist */
-    function create(){
+    public function create()
+    {
         $posted_data = Input::all();
         DB::beginTransaction();
-        try {        
+        try {
             $objectBackgroundChecklist = new BackgroundChecklist();
             $posted_data["status"] = 1;
             // $posted_data["type"] = 'file';
             if ($objectBackgroundChecklist->validate($posted_data)) {
                 $model = BackgroundChecklist::create($posted_data);
                 DB::commit();
-                if($model)
+                if ($model) {
                     return $this->dispatchResponse(200, "Background Checklist Created Successfully...!!", $model);
+                }
+
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400, "Something went wrong.", $objectBackgroundChecklist->errors());
@@ -62,23 +65,24 @@ class BackgroundChecklistController extends BaseController
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
-        }  
+        }
     }
 
     /* Function to update background checklist by id */
-    function update($id) {
+    public function update($id)
+    {
         $posted_data = Input::all();
         try {
             DB::beginTransaction();
             $model = BackgroundChecklist::find((int) $id);
-            if ($model->validate($posted_data)) {                         
-                if ($model->update($posted_data)){
+            if ($model->validate($posted_data)) {
+                if ($model->update($posted_data)) {
                     DB::commit();
                     return $this->dispatchResponse(200, "Background Checklist Updated Successfully...!!", $model);
                 }
             } else {
                 DB::rollback();
-                return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+                return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
             }
         } catch (\Exception $e) {
             DB::rollback();
@@ -87,18 +91,19 @@ class BackgroundChecklistController extends BaseController
     }
 
     /* Function to change background checklist status by id */
-    function changeStatus($id){
+    public function changeStatus($id)
+    {
         $posted_data = Input::all();
         $model = BackgroundChecklist::find((int) $id);
-        if ($model){
-            try{
+        if ($model) {
+            try {
                 DB::beginTransaction();
                 if ($model->update($posted_data)) {
                     DB::commit();
                     return $this->dispatchResponse(200, "Status Updated Successfully...!!", $model);
                 } else {
                     DB::rollback();
-                    return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+                    return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
                 }
             } catch (\Exception $e) {
                 DB::rollback();
@@ -108,17 +113,18 @@ class BackgroundChecklistController extends BaseController
     }
 
     /* Function to get all background checklist of candiadate id */
-    function getAllBackgroundCheckList(Request $request){
+    public function getAllBackgroundCheckList(Request $request)
+    {
         $id = $request->candidate_id;
         $viewType = $request->view_type;
-        $unique_bg_checklist_ids_array =[];
+        $unique_bg_checklist_ids_array = [];
 
-        $candidateUploadedBgChecklistIDArray = CandidatesChecklistDocs::where('candidate_id',$id)->pluck('bg_checklist_id')->toArray();
-        
-        $unique_bg_checklist_ids=array_unique($candidateUploadedBgChecklistIDArray);
+        $candidateUploadedBgChecklistIDArray = CandidatesChecklistDocs::where('candidate_id', $id)->pluck('bg_checklist_id')->toArray();
+
+        $unique_bg_checklist_ids = array_unique($candidateUploadedBgChecklistIDArray);
 
         foreach ($unique_bg_checklist_ids as $key => $value) {
-           array_push($unique_bg_checklist_ids_array, $value);
+            array_push($unique_bg_checklist_ids_array, $value);
         }
 
         $uniqueBgChecklistIDCount = count($unique_bg_checklist_ids_array);
@@ -130,79 +136,78 @@ class BackgroundChecklistController extends BaseController
         // $backgroundChecklistData = BackgroundChecklist::whereNotIn('id', $unique_bg_checklist_ids_array)->get();
         // }
 
-        if($viewType == 'candidate_view'){
+        if ($viewType == 'candidate_view') {
 
-            $backgroundChecklistData = BackgroundChecklist::with(array('candidate_bg_documents'=>function($que) use ($id){
-                    $que->where('candidate_id',$id)->get();
-                }))->where('status',1)->get();
-        }else{
+            $backgroundChecklistData = BackgroundChecklist::with(array('candidate_bg_documents' => function ($que) use ($id) {
+                $que->where('candidate_id', $id)->get();
+            }))->where('status', 1)->get();
+        } else {
             $backgroundChecklistData = BackgroundChecklist::all();
         }
 
-        foreach($backgroundChecklistData as $row) {
+        foreach ($backgroundChecklistData as $row) {
             $row['displayFlag'] = 'True';
         }
 
-        if($uniqueBgChecklistIDCount > 0){
-            for($i=0;$i<$uniqueBgChecklistIDCount;$i++){
-                foreach($backgroundChecklistData as $row) {
-                    if($row['id'] == $unique_bg_checklist_ids_array[$i]){
+        if ($uniqueBgChecklistIDCount > 0) {
+            for ($i = 0; $i < $uniqueBgChecklistIDCount; $i++) {
+                foreach ($backgroundChecklistData as $row) {
+                    if ($row['id'] == $unique_bg_checklist_ids_array[$i]) {
                         $row['displayFlag'] = 'False';
                     }
-                } 
+                }
             }
         }
-        
-        if ($backgroundChecklistData){
+
+        if ($backgroundChecklistData) {
             return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
-        }else{
+        } else {
             return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
         }
     }
 
-    /* Function to get all background checklist of candiadate id 
-    function getAllBackgroundCheckListWithDisplayFlag(Request $request){
-        $id = $request->candidate_id;
-        $viewType = $request->view_type;
-        $unique_bg_checklist_ids_array =[];
+    /* Function to get all background checklist of candiadate id
+function getAllBackgroundCheckListWithDisplayFlag(Request $request){
+$id = $request->candidate_id;
+$viewType = $request->view_type;
+$unique_bg_checklist_ids_array =[];
 
-        $candidateUploadedBgChecklistIDArray = CandidatesChecklistDocs::where('candidate_id',$id)->pluck('bg_checklist_id')->toArray();
-        
-        $unique_bg_checklist_ids=array_unique($candidateUploadedBgChecklistIDArray);
+$candidateUploadedBgChecklistIDArray = CandidatesChecklistDocs::where('candidate_id',$id)->pluck('bg_checklist_id')->toArray();
 
-        foreach ($unique_bg_checklist_ids as $key => $value) {
-           array_push($unique_bg_checklist_ids_array, $value);
-        }
+$unique_bg_checklist_ids=array_unique($candidateUploadedBgChecklistIDArray);
 
-        $uniqueBgChecklistIDCount = count($unique_bg_checklist_ids_array);
+foreach ($unique_bg_checklist_ids as $key => $value) {
+array_push($unique_bg_checklist_ids_array, $value);
+}
 
-        if($viewType == 'candidate_view'){
+$uniqueBgChecklistIDCount = count($unique_bg_checklist_ids_array);
 
-            $backgroundChecklistData = BackgroundChecklist::where('status',1)->get();
-        }else{
-            $backgroundChecklistData = BackgroundChecklist::all();
-        }
-        
-        foreach($backgroundChecklistData as $row) {
-            $row['displayFlag'] = 'True';
-        }
+if($viewType == 'candidate_view'){
 
-        if($uniqueBgChecklistIDCount > 0){
-            for($i=0;$i<$uniqueBgChecklistIDCount;$i++){
-                foreach($backgroundChecklistData as $row) {
-                    if($row['id'] == $unique_bg_checklist_ids_array[$i]){
-                        $row['displayFlag'] = 'False';
-                    }
-                } 
-            }
-        }
-        
-        if ($backgroundChecklistData){
-            return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
-        }else{
-            return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
-        }
-    } */
-  
-    
+$backgroundChecklistData = BackgroundChecklist::where('status',1)->get();
+}else{
+$backgroundChecklistData = BackgroundChecklist::all();
+}
+
+foreach($backgroundChecklistData as $row) {
+$row['displayFlag'] = 'True';
+}
+
+if($uniqueBgChecklistIDCount > 0){
+for($i=0;$i<$uniqueBgChecklistIDCount;$i++){
+foreach($backgroundChecklistData as $row) {
+if($row['id'] == $unique_bg_checklist_ids_array[$i]){
+$row['displayFlag'] = 'False';
+}
+}
+}
+}
+
+if ($backgroundChecklistData){
+return response()->json(['status_code' => 200, 'message' => 'Background Check List', 'data' => $backgroundChecklistData]);
+}else{
+return response()->json(['status_code' => 404, 'message' => 'Record not found..!']);
+}
+} */
+
 }

@@ -15,7 +15,7 @@ class BackgroundChecklist extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'type','mandatory','status'
+        'name', 'type', 'mandatory', 'status',
     ];
 
     /**
@@ -35,12 +35,13 @@ class BackgroundChecklist extends Model
         'name' => 'required',
         'type' => 'required',
         'mandatory' => 'nullable',
-        'status' => 'nullable'
+        'status' => 'nullable',
 
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
@@ -50,11 +51,13 @@ class BackgroundChecklist extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidate_bg_documents() {
-        return $this->hasMany('App\CandidatesChecklistDocs','bg_checklist_id');    
+    public function candidate_bg_documents()
+    {
+        return $this->hasMany('App\CandidatesChecklistDocs', 'bg_checklist_id');
     }
 }

@@ -7,7 +7,7 @@ use Validator;
 
 class JobDescription extends Model
 {
-  	//use Notifiable;
+    //use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class JobDescription extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'sub_title', 'description','no_of_requiremet','experience','skills_required','additional_skills','roles_and_responsibility','job_location','job_type','ctc','notice_period','job_code','status','company_id','project_title','technology_id','valid_till_date'
+        'title', 'sub_title', 'description', 'no_of_requiremet', 'experience', 'skills_required', 'additional_skills', 'roles_and_responsibility', 'job_location', 'job_type', 'ctc', 'notice_period', 'job_code', 'status', 'company_id', 'project_title', 'technology_id', 'valid_till_date',
     ];
 
     /**
@@ -50,13 +50,14 @@ class JobDescription extends Model
         'project_title' => 'required',
         'job_code' => 'required|unique:job_description,job_code,',
         'technology_id' => 'required',
-        'valid_till_date' => 'required'
+        'valid_till_date' => 'required',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
-        if ($this->id){
+        if ($this->id) {
             $this->rules['job_code'] .= $this->id;
         }
 
@@ -68,16 +69,19 @@ class JobDescription extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function companies() {
-        return $this->belongsTo('App\Company','company_id');
+    public function companies()
+    {
+        return $this->belongsTo('App\Company', 'company_id');
     }
 
-    public function technologies() {
-        return $this->belongsTo('App\Technology','technology_id');
+    public function technologies()
+    {
+        return $this->belongsTo('App\Technology', 'technology_id');
     }
 
 }

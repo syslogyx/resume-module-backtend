@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Validator;
 
 class User extends Authenticatable
@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','mobile','role_id','company_name','status', 'unique_token'
+        'name', 'email', 'password', 'mobile', 'role_id', 'company_name', 'status', 'unique_token',
     ];
 
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password'
+        'password',
     ];
 
     protected $table = 'users';
@@ -39,19 +39,20 @@ class User extends Authenticatable
         'role_id' => 'required',
         'company_name' => 'required',
         'status' => 'required',
-        'unique_token' => 'nullable'
+        'unique_token' => 'nullable',
     );
 
     private $errors;
 
-    public function validate($data) {
-        if ($this->id){            
-            $this->rules['email'] .= $this->id;        
+    public function validate($data)
+    {
+        if ($this->id) {
+            $this->rules['email'] .= $this->id;
             $this->rules['mobile'] .= $this->id;
             $this->rules['password'] = '';
-        }  
+        }
 
-        $validator = Validator::make($data, $this->rules); 
+        $validator = Validator::make($data, $this->rules);
 
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -60,26 +61,29 @@ class User extends Authenticatable
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
     // public function userDesignation() {
     //     return $this->belongsTo('App\UserDesignation','designation_id');
-         
+
     // }
 
-    public function role() {
-        return $this->belongsTo('App\Role','role_id');    
+    public function role()
+    {
+        return $this->belongsTo('App\Role', 'role_id');
     }
 
-    public function candidate_user_assoc() {
-        return $this->belongsToMany('App\CandidateUserAssoc','user_id');    
+    public function candidate_user_assoc()
+    {
+        return $this->belongsToMany('App\CandidateUserAssoc', 'user_id');
     }
 
-    public function candidate_technical_result() {
-        // return $this->hasMany('App\TechnicalInterviewResult','user_id')->where('candidate_id','=', 10); 
-        return $this->hasMany('App\TechnicalInterviewResult','user_id'); 
+    public function candidate_technical_result()
+    {
+        // return $this->hasMany('App\TechnicalInterviewResult','user_id')->where('candidate_id','=', 10);
+        return $this->hasMany('App\TechnicalInterviewResult', 'user_id');
     }
 }
-

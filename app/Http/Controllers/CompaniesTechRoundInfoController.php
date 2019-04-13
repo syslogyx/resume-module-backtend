@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\CompaniesTechRoundInfo;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use App\CompaniesTechRoundInfo;
-use DateTime;
 
 class CompaniesTechRoundInfoController extends BaseController
 {
@@ -17,7 +17,7 @@ class CompaniesTechRoundInfoController extends BaseController
      */
     public function index()
     {
-    
+
     }
 
     /**
@@ -27,26 +27,26 @@ class CompaniesTechRoundInfoController extends BaseController
      */
     public function create()
     {
-        $posted_data = Input::all(); 
+        $posted_data = Input::all();
 
         foreach ($posted_data['round_info'] as $key => $value) {
             $posted_data['round_info'][$key]["company_round_date"] = date("Y-m-d", strtotime(str_replace('/', '-', $posted_data['round_info'][$key]["company_round_date"])));
             $posted_data['round_info'][$key]["created_at"] = new DateTime();
-            $posted_data['round_info'][$key]["updated_at"] =  new DateTime();
-           
+            $posted_data['round_info'][$key]["updated_at"] = new DateTime();
+
         }
 
-        try { 
+        try {
             DB::beginTransaction();
             $objectResult = new CompaniesTechRoundInfo();
             // return $posted_data['result_data'];
             if ($objectResult->validate($posted_data['round_info'])) {
                 $model = CompaniesTechRoundInfo::insert($posted_data['round_info']);
-                DB::commit();          
-                if($model){
-                  return $this->dispatchResponse(200, "Data saved Successfully...!!", $model);
-                }else{
-                  return $this->dispatchResponse(401, "Data not saved.");
+                DB::commit();
+                if ($model) {
+                    return $this->dispatchResponse(200, "Data saved Successfully...!!", $model);
+                } else {
+                    return $this->dispatchResponse(401, "Data not saved.");
                 }
             } else {
                 DB::rollback();

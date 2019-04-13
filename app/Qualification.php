@@ -7,20 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class Qualification extends Model
 {
     protected $fillable = [
-        'name','alise','status'
+        'name', 'alise', 'status',
     ];
     protected $table = 'qualification_details';
     protected $guarded = ['id', 'created_at', 'updated_at'];
     private $rules = array(
         'name' => 'required|unique:qualification_details,name,',
         'alise' => 'required',
-        'status' => 'required'
+        'status' => 'required',
     );
     private $errors;
-  
-    public function validate($data) {
-        if ($this->id)
+
+    public function validate($data)
+    {
+        if ($this->id) {
             $this->rules['name'] .= $this->id;
+        }
 
         $validator = Validator::make($data, $this->rules);
 
@@ -31,7 +33,8 @@ class Qualification extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 }

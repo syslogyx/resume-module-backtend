@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCandidateQualifications extends Migration
 {
@@ -17,7 +17,7 @@ class CreateCandidateQualifications extends Migration
             $table->increments('id');
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->integer('qualification_id')->unsigned()->nullable();
-            $table->string('stream')->nullable();  
+            $table->string('stream')->nullable();
             $table->float('percentage')->nullable();
             $table->string('university')->nullable();
             $table->string('college')->nullable();
@@ -27,7 +27,7 @@ class CreateCandidateQualifications extends Migration
             $table->timestamps();
         });
 
-        Schema::table('educationl_details', function($table) {
+        Schema::table('educationl_details', function ($table) {
             $table->foreign('qualification_id')->references('id')->on('qualification_details');
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
         });

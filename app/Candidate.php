@@ -7,7 +7,7 @@ use Validator;
 
 class Candidate extends Model
 {
-  	//use Notifiable;
+    //use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class Candidate extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name','middle_name','last_name','email','opprtunity_for','gender','marital_status','mobile_no','corresponding_address','permanent_address','date_of_birth','pan_number','passport','objective','summary','status','total_experience','ctc','job_description_id','unique_token','timestamp','indian_languages','foreign_languages','currency_unit'
+        'first_name', 'middle_name', 'last_name', 'email', 'opprtunity_for', 'gender', 'marital_status', 'mobile_no', 'corresponding_address', 'permanent_address', 'date_of_birth', 'pan_number', 'passport', 'objective', 'summary', 'status', 'total_experience', 'ctc', 'job_description_id', 'unique_token', 'timestamp', 'indian_languages', 'foreign_languages', 'currency_unit',
     ];
 
     /**
@@ -56,13 +56,14 @@ class Candidate extends Model
         'job_description_id' => 'required',
         // 'expired_on' => 'nullable',
         'unique_token' => 'nullable',
-        'timestamp' => 'nullable'
+        'timestamp' => 'nullable',
     );
-    
+
     private $errors;
 
-    public function validate($data) {
-        if ($this->id){
+    public function validate($data)
+    {
+        if ($this->id) {
             $this->rules['email'] .= $this->id;
             $this->rules['mobile_no'] .= $this->id;
             $this->rules['pan_number'] .= $this->id;
@@ -75,67 +76,83 @@ class Candidate extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidate_achievements() {
-        return $this->hasMany('App\CandidateAchivements');    
+    public function candidate_achievements()
+    {
+        return $this->hasMany('App\CandidateAchivements');
     }
 
-    public function candidate_hobbies() {
-        return $this->hasMany('App\CandidateHobbies');    
+    public function candidate_hobbies()
+    {
+        return $this->hasMany('App\CandidateHobbies');
     }
 
-    public function candidate_ind_exp() {
-        return $this->hasMany('App\CandidateIndustrialExperiance');    
+    public function candidate_ind_exp()
+    {
+        return $this->hasMany('App\CandidateIndustrialExperiance');
     }
 
-    public function candidate_qualification() {
-        return $this->hasMany('App\CandidateQualification');    
+    public function candidate_qualification()
+    {
+        return $this->hasMany('App\CandidateQualification');
     }
 
-    public function candidate_tech_skill() {
-        return $this->hasMany('App\CandidateTechnicalSkill');    
+    public function candidate_tech_skill()
+    {
+        return $this->hasMany('App\CandidateTechnicalSkill');
     }
 
-    public function candidate_document() {
-        return $this->hasMany('App\CandidateDocument');    
+    public function candidate_document()
+    {
+        return $this->hasMany('App\CandidateDocument');
     }
 
-    public function candidate_technical_result() {
-        return $this->hasMany('App\TechnicalInterviewResult','candidate_id'); 
+    public function candidate_technical_result()
+    {
+        return $this->hasMany('App\TechnicalInterviewResult', 'candidate_id');
     }
 
-    public function job_description() {
-        return $this->belongsTo('App\JobDescription','job_description_id');    
+    public function job_description()
+    {
+        return $this->belongsTo('App\JobDescription', 'job_description_id');
     }
 
-    public function candidate_user_assoc() {
-        return $this->belongsToMany('App\CandidateUserAssoc','candidate_id');    
+    public function candidate_user_assoc()
+    {
+        return $this->belongsToMany('App\CandidateUserAssoc', 'candidate_id');
     }
 
-    public function candidate_user_assocs() {
-        return $this->hasMany('App\CandidateUserAssoc','candidate_id')->latest();    
+    public function candidate_user_assocs()
+    {
+        return $this->hasMany('App\CandidateUserAssoc', 'candidate_id')->latest();
     }
 
-    public function users() {
-        return $this->belongsTo('App\User','user_id');    
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function candidate_jd_assocs() {
-        return $this->hasMany('App\CandidateJdAssoc','candidate_id');
+    public function candidate_jd_assocs()
+    {
+        return $this->hasMany('App\CandidateJdAssoc', 'candidate_id');
     }
 
-    public function candidate_bg_documents() {
-        return $this->hasMany('App\CandidatesChecklistDocs');    
+    public function candidate_bg_documents()
+    {
+        return $this->hasMany('App\CandidatesChecklistDocs');
     }
 
-    public function forwarded_resumes_data() {
-        return $this->hasMany('App\forwordedResume','candidate_id'); 
+    public function forwarded_resumes_data()
+    {
+        return $this->hasMany('App\forwordedResume', 'candidate_id');
     }
 
-    public function companies() {
-        return $this->belongsTo('App\Company','company_id');
+    public function companies()
+    {
+        return $this->belongsTo('App\Company', 'company_id');
     }
 }

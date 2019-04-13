@@ -14,7 +14,7 @@ class PdfSetting extends Model
      * @var array
      */
     protected $fillable = [
-        'section_name'
+        'section_name',
     ];
 
     /**
@@ -32,13 +32,14 @@ class PdfSetting extends Model
 
     private $rules = array(
         'section_name' => 'required',
-        'timestamp' => 'nullable'
+        'timestamp' => 'nullable',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
-        if ($this->id){
+        if ($this->id) {
             $this->rules['id'] .= $this->id;
         }
 
@@ -50,7 +51,8 @@ class PdfSetting extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 }

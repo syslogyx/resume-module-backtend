@@ -7,8 +7,8 @@ use Validator;
 
 class Technology extends Model
 {
-   	protected $fillable = [
-        'name', 'description','status'
+    protected $fillable = [
+        'name', 'description', 'status',
     ];
 
     protected $table = 'technologies';
@@ -18,11 +18,12 @@ class Technology extends Model
     private $rules = array(
         'name' => 'required',
         'description' => 'nullable',
-        'status' => 'nullable'
+        'status' => 'nullable',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         // if ($this->id){
         //     $this->rules['email'] .= $this->id;
         //     $this->rules['contact_no'] .= $this->id;
@@ -35,7 +36,8 @@ class Technology extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 }

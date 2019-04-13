@@ -15,7 +15,7 @@ class CandidateQualification extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'qualification_id', 'steam','percentage','university','college','start_year','end_year','timestamp'
+        'candidate_id', 'qualification_id', 'steam', 'percentage', 'university', 'college', 'start_year', 'end_year', 'timestamp',
     ];
 
     /**
@@ -40,12 +40,13 @@ class CandidateQualification extends Model
         'college' => 'required',
         'start_year' => 'required',
         'end_year' => 'required',
-        'timestamp' => 'required'
+        'timestamp' => 'required',
 
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -54,15 +55,18 @@ class CandidateQualification extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidates() {
+    public function candidates()
+    {
         return $this->belongsTo('App\Candidate');
     }
 
-    public function qualification() {
+    public function qualification()
+    {
         return $this->belongsTo('App\Qualification');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCandidateUserAssocs extends Migration
 {
@@ -24,7 +24,7 @@ class CreateCandidateUserAssocs extends Migration
             $table->string('mode_of_interview')->nullable();
             $table->timestamps();
         });
-        Schema::table('candidate_user_assoc', function($table) {
+        Schema::table('candidate_user_assoc', function ($table) {
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
             $table->foreign('job_description_id')->references('id')->on('job_description');
             $table->foreign('user_id')->references('id')->on('users');

@@ -13,13 +13,13 @@ class CandidateUserAssoc extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id','job_description_id','user_id','technical_round','schedule_date','schedule_time','mode_of_interview'
+        'candidate_id', 'job_description_id', 'user_id', 'technical_round', 'schedule_date', 'schedule_time', 'mode_of_interview',
     ];
-    
+
     protected $table = 'candidate_user_assoc';
     protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $casts = [
-        'schedule_time' => 'date:hh:mm'
+        'schedule_time' => 'date:hh:mm',
     ];
     // private $rules = array(
     //     'candidate_id.*' => 'required',
@@ -38,11 +38,12 @@ class CandidateUserAssoc extends Model
         'schedule_date' => 'required',
         'schedule_time' => 'required',
         'mode_of_interview' => 'required',
-        'timestamp' => 'nullable'
+        'timestamp' => 'nullable',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
@@ -52,25 +53,29 @@ class CandidateUserAssoc extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function users() {
-        return $this->belongsTo('App\User','user_id');    
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function all_candidates() {
-        return $this->belongsTo('App\Candidate','candidate_id');
+    public function all_candidates()
+    {
+        return $this->belongsTo('App\Candidate', 'candidate_id');
     }
 
-    public function candidates() {
-        return $this->belongsToMany('App\Candidate','candidate_id');
+    public function candidates()
+    {
+        return $this->belongsToMany('App\Candidate', 'candidate_id');
     }
 
-    public function job_description() {
-        return $this->belongsTo('App\JobDescription','job_description_id');    
+    public function job_description()
+    {
+        return $this->belongsTo('App\JobDescription', 'job_description_id');
     }
 
-   
 }

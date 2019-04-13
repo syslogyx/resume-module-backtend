@@ -7,7 +7,7 @@ use Validator;
 
 class CandidateTechnicalSkill extends Model
 {
-   // use Notifiable;
+    // use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class CandidateTechnicalSkill extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'technology_name', 'technology_experience','timestamp'
+        'candidate_id', 'technology_name', 'technology_experience', 'timestamp',
     ];
 
     /**
@@ -35,12 +35,13 @@ class CandidateTechnicalSkill extends Model
         'candidate_id' => 'required',
         'technology_name' => 'required',
         'technology_experience' => 'required',
-        'timestamp' => 'required'
+        'timestamp' => 'required',
 
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -49,11 +50,13 @@ class CandidateTechnicalSkill extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidates() {
+    public function candidates()
+    {
         return $this->belongsTo('App\Candidate');
     }
 

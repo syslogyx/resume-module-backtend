@@ -5,7 +5,7 @@
 </head>
 <body>
 <div class="container">
-	<a href="{{ route('create-zip',['download'=>'zip']) }}" class="btn btn-info" >Download ZIP</a>	
+	<a href="{{ route('create-zip',['download'=>'zip']) }}" class="btn btn-info" >Download ZIP</a>
 </div>
 </body>
 </html>

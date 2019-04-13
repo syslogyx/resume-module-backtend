@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\PdfSetting;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePdfSetting extends Migration
 {
@@ -22,44 +22,44 @@ class CreatePdfSetting extends Migration
 
         $data = array(
             array(
-                "section_name" => "Name"
+                "section_name" => "Name",
             ),
             array(
-                "section_name" => "Email"
+                "section_name" => "Email",
             ),
             array(
-                "section_name" => "Phone"
+                "section_name" => "Phone",
             ),
             array(
-                "section_name" => "Address"
+                "section_name" => "Address",
             ),
             array(
-                "section_name" => "Summary"
+                "section_name" => "Summary",
             ),
             array(
-                "section_name" => "Date Of Birth"
+                "section_name" => "Date Of Birth",
             ),
             array(
-                "section_name" => "Passport No."
+                "section_name" => "Passport No.",
             ),
             array(
-                "section_name" => "Total Experience"
+                "section_name" => "Total Experience",
             ),
             array(
-                "section_name" => "Educational Details"
+                "section_name" => "Educational Details",
             ),
             array(
-                "section_name" => "Other Achievements"
+                "section_name" => "Other Achievements",
             ),
             array(
-                "section_name" => "Technical Skill"
+                "section_name" => "Technical Skill",
             ),
             array(
-                "section_name" => "Industrial Experience"
+                "section_name" => "Industrial Experience",
             ),
             array(
-                "section_name" => "Hobbies"
-            )
+                "section_name" => "Hobbies",
+            ),
         );
 
         PdfSetting::insert($data);

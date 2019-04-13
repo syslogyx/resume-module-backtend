@@ -16,7 +16,7 @@ class Document extends Model
      */
 
     protected $fillable = [
-        'file_name','path'
+        'file_name', 'path',
     ];
 
     /**
@@ -32,12 +32,13 @@ class Document extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
     private $rules = array(
         'file_name' => 'required',
-        
-        'candidate_id'=> 'required',
+
+        'candidate_id' => 'required',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -46,7 +47,8 @@ class Document extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 }

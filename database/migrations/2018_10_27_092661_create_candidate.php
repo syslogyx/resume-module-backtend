@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCandidate extends Migration
 {
@@ -18,7 +18,7 @@ class CreateCandidate extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->string('email')->nullable();            
+            $table->string('email')->nullable();
             $table->string('opprtunity_for')->nullable();
             $table->string('gender')->nullable();
             $table->string('marital_status')->nullable();
@@ -34,13 +34,13 @@ class CreateCandidate extends Migration
             $table->text('objective')->nullable();
             $table->text('summary')->nullable();
             $table->string('status')->nullable();
-            $table->string('timestamp')->nullable();                         
+            $table->string('timestamp')->nullable();
             $table->string('total_experience')->nullable();
-            $table->double('ctc', 15, 2)->nullable();  
+            $table->double('ctc', 15, 2)->nullable();
             $table->integer('job_description_id')->unsigned()->nullable();
             $table->foreign('job_description_id')->references('id')->on('job_description');
             // $table->date('expired_on')->nullable();
-            $table->string('unique_token')->nullable();          
+            $table->string('unique_token')->nullable();
             $table->timestamps();
         });
     }

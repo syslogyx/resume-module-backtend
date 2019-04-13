@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBasicQuestions extends Migration
 {
@@ -22,7 +22,7 @@ class CreateBasicQuestions extends Migration
             $table->timestamps();
         });
 
-        Schema::table('basic_screening_questions', function($table) {
+        Schema::table('basic_screening_questions', function ($table) {
             $table->foreign('stream_id')->references('id')->on('streams');
         });
     }

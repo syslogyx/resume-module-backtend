@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateScreeningResult extends Migration
 {
@@ -20,10 +20,10 @@ class CreateScreeningResult extends Migration
             $table->integer('question_id')->unsigned()->nullable();
             $table->foreign('question_id')->references('id')->on('basic_screening_questions');
             $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');            
+            $table->foreign('user_id')->references('id')->on('users');
             $table->longText('answer')->nullable();
             $table->longText('remark')->nullable();
-            $table->string('status')->nullable();            
+            $table->string('status')->nullable();
             $table->string('refereral_token')->nullable();
             $table->float('duration_of_interview')->nullable();
             $table->text('observation')->nullable();

@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\Company;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCompany extends Migration
 {
@@ -27,17 +27,17 @@ class CreateCompany extends Migration
             array(
                 "name" => "Tata Consultancy Services",
                 "contact_no" => "2266568484",
-                "email"=> "careers@tcs.com",
+                "email" => "careers@tcs.com",
                 "address" => "MIHAN, Nagpur, Telhara, Maharashtra 441108",
-                "status" => 1
+                "status" => 1,
             ),
             array(
                 "name" => "Syslogyx Technologies Pvt. Ltd.",
                 "contact_no" => "07122292195",
-                "email"=> "contact@syslogyx.com",
+                "email" => "contact@syslogyx.com",
                 "address" => "215, H.B. Estate, Sonegaon, Nagpur, Maharashtra, India – 440025",
-                "status" => 1
-            )
+                "status" => 1,
+            ),
         );
 
         Company::insert($data);

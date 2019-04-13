@@ -7,25 +7,26 @@ use Validator;
 
 class CandidateJdAssoc extends Model
 {
-   /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'job_description_id'
+        'candidate_id', 'job_description_id',
     ];
-    
+
     protected $table = 'candidate_jd_assoc';
     protected $guarded = ['id', 'created_at', 'updated_at'];
     private $rules = array(
         'candidate_id' => 'required',
         'job_description_id' => 'required',
-        'timestamp' => 'nullable'
+        'timestamp' => 'nullable',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
@@ -35,11 +36,13 @@ class CandidateJdAssoc extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidate_jd_assocs() {
-        return $this->belongsTo('App\CandidateJdAssoc','candidate_id');
+    public function candidate_jd_assocs()
+    {
+        return $this->belongsTo('App\CandidateJdAssoc', 'candidate_id');
     }
 }

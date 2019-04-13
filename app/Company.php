@@ -15,7 +15,7 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'contact_no','email','address','status'
+        'name', 'contact_no', 'email', 'address', 'status',
     ];
 
     /**
@@ -36,12 +36,13 @@ class Company extends Model
         'contact_no' => 'required|unique:company_table,contact_no,',
         'email' => 'required|unique:company_table,email,',
         'address' => 'required',
-        'status' => 'nullable'
+        'status' => 'nullable',
     );
     private $errors;
 
-    public function validate($data) {
-        if ($this->id){
+    public function validate($data)
+    {
+        if ($this->id) {
             $this->rules['email'] .= $this->id;
             $this->rules['contact_no'] .= $this->id;
         }
@@ -53,11 +54,13 @@ class Company extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function forwarded_resumes_data() {
-        return $this->hasMany('App\forwordedResume','company_id'); 
+    public function forwarded_resumes_data()
+    {
+        return $this->hasMany('App\forwordedResume', 'company_id');
     }
 }

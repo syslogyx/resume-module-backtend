@@ -2,51 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Hash;
 use App\Company;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 
 class CompanyController extends BaseController
 {
-   	/* Function to fetch company list */
-    function index(Request $request) {
+    /* Function to fetch company list */
+    public function index(Request $request)
+    {
         $page = $request->page;
         $limit = $request->limit;
 
-        if(($page == null|| $limit == null) || ($page == -1 || $limit == -1)){
+        if (($page == null || $limit == null) || ($page == -1 || $limit == -1)) {
             $companyData = Company::paginate(50);
-        }
-        else{
+        } else {
             $companyData = Company::paginate($limit);
         }
 
         if ($companyData->first()) {
             return $this->dispatchResponse(200, "Client List", $companyData);
         } else {
-        	// return $this->dispatchResponse(404, "No Records Found!!");
-             return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
+            // return $this->dispatchResponse(404, "No Records Found!!");
+            return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
     }
 
     /* Function to Get company descrption by id */
-    function viewCompany($id) {
+    public function viewCompany($id)
+    {
         $model = Company::find((int) $id);
 
-        if ($model){
+        if ($model) {
             return $this->dispatchResponse(200, "Records Found...!!", $model);
-        }else{
+        } else {
             return $this->dispatchResponse(400, 'No Records Found!!');
         }
     }
 
     /* Function to create company */
-    function create(){
+    public function create()
+    {
         $posted_data = Input::all();
         DB::beginTransaction();
-        try {        
+        try {
             $objectCompany = new Company();
             $posted_data["status"] = 1;
             if ($objectCompany->validate($posted_data)) {
@@ -63,8 +65,10 @@ class CompanyController extends BaseController
                     User::create($user_data);
                 }
                 DB::commit();
-                if($model)
+                if ($model) {
                     return $this->dispatchResponse(200, "Client Created Successfully...!!", $model);
+                }
+
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400, "Something went wrong.", $objectCompany->errors());
@@ -72,19 +76,20 @@ class CompanyController extends BaseController
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
-        }  
+        }
     }
 
     /* Function to update company by id */
-    function update($id) {
+    public function update($id)
+    {
         $posted_data = Input::all();
         try {
             DB::beginTransaction();
             $model = Company::find((int) $id);
             $oldEmailId = $model->email;
             $oldMobile = $model->contact_no;
-            if ($model->validate($posted_data)) {                         
-                if ($model->update($posted_data)){
+            if ($model->validate($posted_data)) {
+                if ($model->update($posted_data)) {
                     // if ($model->id) {
                     //     $user_data["name"] = $posted_data['name'];
                     //     $user_data["email"] = $posted_data['email'];
@@ -102,13 +107,13 @@ class CompanyController extends BaseController
                     $user_mobile = $posted_data['contact_no'];
                     $user_pwd = Hash::make($posted_data['contact_no']);
 
-                    User::where('email','=',$oldEmailId)->where('mobile','=',$oldMobile)->update(['name'=>$user_name,'email'=>$user_email,'mobile'=>$user_mobile,'password'=>$user_pwd]);
+                    User::where('email', '=', $oldEmailId)->where('mobile', '=', $oldMobile)->update(['name' => $user_name, 'email' => $user_email, 'mobile' => $user_mobile, 'password' => $user_pwd]);
                     DB::commit();
                     return $this->dispatchResponse(200, "Client Updated Successfully...!!", $model);
                 }
             } else {
                 DB::rollback();
-                return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+                return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
             }
         } catch (\Exception $e) {
             DB::rollback();
@@ -117,18 +122,19 @@ class CompanyController extends BaseController
     }
 
     /* Function to chasnge job status by id */
-    function changeStatus($id){
+    public function changeStatus($id)
+    {
         $posted_data = Input::all();
         $model = Company::find((int) $id);
-        if ($model){
-            try{
+        if ($model) {
+            try {
                 DB::beginTransaction();
                 if ($model->update($posted_data)) {
                     DB::commit();
                     return $this->dispatchResponse(200, "Status Updated Successfully...!!", $model);
                 } else {
                     DB::rollback();
-                    return $this->dispatchResponse(400,"Something went wrong.", $model->errors());
+                    return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
                 }
             } catch (\Exception $e) {
                 DB::rollback();
@@ -138,8 +144,9 @@ class CompanyController extends BaseController
     }
 
     /* Function to fetch active company list */
-    function activeCompanyList(Request $request) {
-        $companyData = Company::where("status",1)->get();
+    public function activeCompanyList(Request $request)
+    {
+        $companyData = Company::where("status", 1)->get();
         if ($companyData->first()) {
             return $this->dispatchResponse(200, "Client List", $companyData);
         } else {

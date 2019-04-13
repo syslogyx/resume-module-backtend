@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\Stream;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateStreams extends Migration
 {
@@ -26,18 +26,18 @@ class CreateStreams extends Migration
             array(
                 "name" => "Android",
                 "alias" => "android",
-                "status" => "0"
+                "status" => "0",
             ),
             array(
                 "name" => "Java",
                 "alias" => "java",
-                "status" => "0"
+                "status" => "0",
             ),
             array(
                 "name" => "Common",
                 "alias" => "common",
-                "status" => "0"
-            )
+                "status" => "0",
+            ),
         );
 
         Stream::insert($data);

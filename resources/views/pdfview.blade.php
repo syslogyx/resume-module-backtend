@@ -1,4 +1,4 @@
-<?php 
+<?php
 // use Config;
 ?>
 <!DOCTYPE html>
@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width"/>
 <meta name="description" content="The Curriculum Vitae of Joe Bloggs."/>
-<meta charset="UTF-8"> 
+<meta charset="UTF-8">
 <style type="text/css">
 .page-break {
     page-break-after: always;
@@ -119,7 +119,7 @@ span{
 }
 
 #contactDetails ul li a, a[href^=tel] {
-    color: #444; 
+    color: #444;
     text-decoration: none;
     -webkit-transition: all .3s ease-in;
     -moz-transition: all .3s ease-in;
@@ -128,7 +128,7 @@ span{
     transition: all .3s ease-in;
 }
 
-#contactDetails ul li a:hover { 
+#contactDetails ul li a:hover {
     color: #cf8a05;
 }
 
@@ -213,7 +213,7 @@ section:last-child {
     #headshot {
         display: none;
     }
-    
+
     .keySkills {
     -moz-column-count:2;
     -webkit-column-count:2;
@@ -227,27 +227,27 @@ section:last-child {
         margin: 10px auto;
         min-width: 280px;
     }
-    
+
     #headshot {
         display: none;
     }
-    
+
     #name, #contactDetails {
         float: none;
         width: 100%;
         text-align: center;
     }
-    
+
     .sectionTitle, .sectionContent {
         float: none;
         width: 100%;
     }
-    
+
     .sectionTitle {
         margin-left: -2px;
         font-size: 1.25em;
     }
-    
+
     .keySkills {
         -moz-column-count:2;
         -webkit-column-count:2;
@@ -259,22 +259,22 @@ section:last-child {
     .mainDetails {
         padding: 15px 15px;
     }
-    
+
     section {
         padding: 15px 0 0;
     }
-    
+
     #mainArea {
         padding: 0 25px;
     }
 
-    
+
     .keySkills {
     -moz-column-count:1;
     -webkit-column-count:1;
     column-count:1;
     }
-    
+
     #name h1 {
         line-height: .8em;
         margin-bottom: 4px;
@@ -354,11 +354,11 @@ section:last-child {
     -webkit-animation-name: reset, fade-in;
     -webkit-animation-duration: 1.5s;
     -webkit-animation-timing-function: ease-in;
-    
+
     -moz-animation-name: reset, fade-in;
     -moz-animation-duration: 1.5s;
     -moz-animation-timing-function: ease-in;
-    
+
     animation-name: reset, fade-in;
     animation-duration: 1.5s;
     animation-timing-function: ease-in;
@@ -368,16 +368,16 @@ section:last-child {
     -webkit-animation-name: reset, fade-in;
     -webkit-animation-duration: 2.5s;
     -webkit-animation-timing-function: ease-in;
-    
+
     -moz-animation-name: reset, fade-in;
     -moz-animation-duration: 2.5s;
     -moz-animation-timing-function: ease-in;
-    
+
     animation-name: reset, fade-in;
     animation-duration: 2.5s;
     animation-timing-function: ease-in;
 }
- 
+
 .delayOne {
     -webkit-animation-delay: 0, .5s;
     -moz-animation-delay: 0, .5s;
@@ -433,44 +433,44 @@ h1{
 <htmlpageheader name="page-header">
     <img src="{{ public_path('/imgs/Header_.png') }}">
 </htmlpageheader>
-@if(isset($candidateDetails['section_names'])) 
+@if(isset($candidateDetails['section_names']))
 <div id="cv" class="instaFade">
-        
-  
-    <div class="" style="display:inline-block;">       
+
+
+    <div class="" style="display:inline-block;">
         <section style="border-top:0px; margin-left: 60px">
-            @if(in_array(1, $candidateDetails['section_names']))    
-                <div style="width: 50%; float: left;margin-bottom: 20px">            
+            @if(in_array(1, $candidateDetails['section_names']))
+                <div style="width: 50%; float: left;margin-bottom: 20px">
                     <h1 class="set-title-color" style="font-size: 16px;"><strong>{{ $candidateDetails['first_name'] }}<br>
                     @if($candidateDetails['middle_name'] =='')
-                        {{ $candidateDetails['last_name'] }}        
+                        {{ $candidateDetails['last_name'] }}
                     @else
                         {{ $candidateDetails['middle_name'] }}<br>
                         {{ $candidateDetails['last_name'] }}
                     @endif
-                    </strong></h1> 
-                </div>       
+                    </strong></h1>
+                </div>
             @endif
 
             <div id="contactDetails" class="" style="width: 50%;float: right;text-align: left">
                 <ul style="text-align: left;">
-                    @if(in_array(2, $candidateDetails['section_names']))  
+                    @if(in_array(2, $candidateDetails['section_names']))
                         <li>
                             <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a style="margin-top:-2px" href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
                         </li>
                     @endif
-                    @if(in_array(3, $candidateDetails['section_names']))  
+                    @if(in_array(3, $candidateDetails['section_names']))
                         <li>
-                            <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}                       
+                            <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}
                         </li>
                     @endif
-                    @if(in_array(4, $candidateDetails['section_names'])) 
-                        <li style="display: inline-block;">                       
+                    @if(in_array(4, $candidateDetails['section_names']))
+                        <li style="display: inline-block;">
                             <div style="float:left;width:20px">
                                 <img src="{{ public_path('/imgs/location_ic.png') }}">
                             </div>
                             <div style="float:left;width:80%;margin-left: 2%;">
-                                 <a style="word-wrap: break-word;">{{ $candidateDetails['permanent_address'] }}</a> 
+                                 <a style="word-wrap: break-word;">{{ $candidateDetails['permanent_address'] }}</a>
                             </div>
                         </li>
                     @endif
@@ -490,7 +490,7 @@ h1{
                 <div class="sectionContent">
                     <article>
                         <p>{{ $candidateDetails['objective'] }}</p>
-                    </article>           
+                    </article>
                 </div>
             <div class="clear"></div>
         </section>
@@ -499,26 +499,26 @@ h1{
             <article>
                 <span class="subDetails"><b>Job Title: </b></span>
                 <span>{{ $candidateDetails['job_description']['title'] }}</span>
-            </article>  
+            </article>
             <br>
             <div class="clear"></div>
         </section>
-                 
-        @if(in_array(5, $candidateDetails['section_names'])) 
-            <section style="border-top:0px">                
+
+        @if(in_array(5, $candidateDetails['section_names']))
+            <section style="border-top:0px">
                         <div class="sectionTitle set-title-color">
                             <h1>Summary</h1>
                         </div>
                         <div class="sectionContent">
                             <article>
                                 <ul  class="keySkills">
-                                    @foreach(json_decode(@$candidateDetails['summary']) as $sum)   
+                                    @foreach(json_decode(@$candidateDetails['summary']) as $sum)
                                         <li>
                                             {{ @$sum }}
-                                        </li>                        
+                                        </li>
                                     @endforeach
                                 </ul>
-                            </article>          
+                            </article>
                         </div>
                     <div class="clear"></div>
             </section>
@@ -529,12 +529,12 @@ h1{
             <section style="border-top:0px">
             @else
             <section>
-            @endif    
+            @endif
                 <div class="sectionTitle set-title-color">
                     <h1>Personal Details</h1>
                 </div>
                 <div class="sectionContent">
-                    <article> 
+                    <article>
                         <div style="display: inline-block;">
                             @if(in_array(6, $candidateDetails['section_names']))
                                 <div style="float:left;width:33.333%">
@@ -547,7 +547,7 @@ h1{
                                 <span class="subDetails"><b>PAN No.: </b></span>
                                 <span>{{$candidateDetails['pan_number'] }}</span>
                             </div>
-                            
+
                             @if(in_array(7, $candidateDetails['section_names']))
                                 <div style="float:left;width:33.333%">
                                     <span class="subDetails"><b>Passport No.: </b></span>
@@ -557,8 +557,8 @@ h1{
 
                             @if(in_array(8, $candidateDetails['section_names']))
           			            <div style="float:left;width:33.333%">
-                                    <span class="subDetails"><strong>Total Experience: </strong></span> 
-                                    <span>{{ $candidateDetails['total_experience'] }} yrs</span> 
+                                    <span class="subDetails"><strong>Total Experience: </strong></span>
+                                    <span>{{ $candidateDetails['total_experience'] }} yrs</span>
                                 </div>
                             @endif
                         </div>
@@ -566,7 +566,7 @@ h1{
                         <div style="display: inline-block;">
                             <div style="display: none;float:left;width:33.333%">
                                 <span class="subDetails"><b>Current CTC: </b></span>
-                                <span>{{$candidateDetails['ctc'] }} {{$candidateDetails['currency_unit']}}</span> 
+                                <span>{{$candidateDetails['ctc'] }} {{$candidateDetails['currency_unit']}}</span>
                             </div>
                         </div>
                     </article>
@@ -574,7 +574,7 @@ h1{
                 <div class="clear"></div>
             </section>
         @endif
-        
+
         @if(in_array(9, $candidateDetails['section_names']))
         <section>
             <div class="sectionTitle set-title-color">
@@ -583,19 +583,19 @@ h1{
             <div class="sectionContent">
                 <article>
                     <ul  class="keySkills">
-                        @foreach($candidateDetails['candidate_qualification'] as $key => $qualification)    
+                        @foreach($candidateDetails['candidate_qualification'] as $key => $qualification)
                             <li>
                                 {{ @$qualification['qualification']['name'] }} with {{ $qualification['percentage'] }}% from {{ $qualification['college'] }}, {{ $qualification['university'] }} ({{ $qualification['start_year'] .' - '. $qualification['end_year'] }})
-                            </li>                        
+                            </li>
                         @endforeach
                     </ul>
-                </article>              
+                </article>
             </div>
             <div class="clear"></div>
         </section>
         @endif
 
-        @if(in_array(10, $candidateDetails['section_names']))        
+        @if(in_array(10, $candidateDetails['section_names']))
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Other Achievements</h1>
@@ -603,7 +603,7 @@ h1{
             <div class="sectionContent">
                 <article>
                     <ul class="keySkills">
-                    @foreach($candidateDetails['candidate_achievements'] as $key => $achive)                    
+                    @foreach($candidateDetails['candidate_achievements'] as $key => $achive)
                         <li>{{ $achive['achivement'] }}</li>
                     @endforeach
                     </ul>
@@ -619,15 +619,15 @@ h1{
                 <h1>Technical Skills</h1>
             </div>
             <div class="sectionContent">
-                <article>  
+                <article>
                     <ul class="keySkills">
-                    @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill) 
+                    @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill)
                         <li>{{ $skill['technology_name'] }} </li>
                     @endforeach
                     </ul>
                 </article>
             </div>
-            <div class="clear"></div>            
+            <div class="clear"></div>
         </section>
         @endif
 
@@ -637,54 +637,54 @@ h1{
                 <h1>Industrial Experience</h1>
             </div>
                 <div class="sectionContent">
-                    <article>   
+                    <article>
                         <ul  style="list-style-type: none">
-                            @foreach($candidateDetails['candidate_ind_exp'] as $key => $indExp) 
+                            @foreach($candidateDetails['candidate_ind_exp'] as $key => $indExp)
                                 <li class="subDetails"><b>Project Title: </b> {{ $indExp['project_name'] }}</li>
                                 <li class="subDetails"><b>Company Name: </b> {{ $indExp['company_name'] }}</li>
                                 <li class="subDetails"><b>Role: </b> {{ $indExp['role_in_project'] }}</li>
-                                <li class="subDetails"><b>Languages Used: </b> 
+                                <li class="subDetails"><b>Languages Used: </b>
                                 </li>
                                     <ul  class="keySkills">
-                                        @foreach(@$indExp['languages'] as $lang)   
+                                        @foreach(@$indExp['languages'] as $lang)
                                             <li>
                                                 {{ @$lang }}
-                                            </li>                        
+                                            </li>
                                         @endforeach
                                     </ul>
-                                <li class="subDetails"><b>Tools Used: </b> </li>  
+                                <li class="subDetails"><b>Tools Used: </b> </li>
                                     <ul  class="keySkills">
-                                        @foreach(@$indExp['tools'] as $tool)   
+                                        @foreach(@$indExp['tools'] as $tool)
                                             <li>
                                                 {{ @$tool }}
-                                            </li>                        
+                                            </li>
                                         @endforeach
                                     </ul>
                                 <li class="subDetails"><b>Project Description: </b> </li>
                                     <ul  class="keySkills">
-                                        @foreach(json_decode(@$indExp['project_description']) as $proj_des)   
+                                        @foreach(json_decode(@$indExp['project_description']) as $proj_des)
                                             <li>
                                                 {{ @$proj_des }}
-                                            </li>                        
+                                            </li>
                                         @endforeach
                                     </ul>
                                 <br>
                             @endforeach
-                        </ul>       
+                        </ul>
                 </article>
             </div>
             <div class="clear"></div>
         </section>
         @endif
 
-        @if(in_array(13, $candidateDetails['section_names']))      
+        @if(in_array(13, $candidateDetails['section_names']))
         <section>
             <div class="sectionTitle set-title-color">
                 <h1>Hobbies</h1>
             </div>
             <div class="sectionContent">
                 <ul class="keySkills">
-                    @foreach($candidateDetails['candidate_hobbies'] as $key => $hobbie)                    
+                    @foreach($candidateDetails['candidate_hobbies'] as $key => $hobbie)
                         <li>{{ $hobbie['hobbie_name'] }}</li>
                     @endforeach
                 </ul>
@@ -696,40 +696,40 @@ h1{
 </div>
 @else
 <div id="cv" class="instaFade">
-    <div class="" style="display:inline-block;">       
+    <div class="" style="display:inline-block;">
         <section style="border-top:0px; margin-left: 50px">
-           <!--  @if(in_array(1, $candidateDetails['section_names']))  -->   
-                <div style="width: 50%; float: left;margin-bottom: 20px">            
+           <!--  @if(in_array(1, $candidateDetails['section_names']))  -->
+                <div style="width: 50%; float: left;margin-bottom: 20px">
                     <h1 class="set-title-color" style="font-size: 16px;"><strong>{{ $candidateDetails['first_name'] }}<br>
                     @if($candidateDetails['middle_name'] =='')
-                        {{ $candidateDetails['last_name'] }}        
+                        {{ $candidateDetails['last_name'] }}
                     @else
                         {{ $candidateDetails['middle_name'] }}<br>
                         {{ $candidateDetails['last_name'] }}
                     @endif
-                    </strong></h1> 
-                </div>       
+                    </strong></h1>
+                </div>
             <!-- @endif -->
 
             <div id="contactDetails" class="" style="width: 50%;float: right;text-align: left">
                 <ul style="text-align: left;">
-                   <!--  @if(in_array(2, $candidateDetails['section_names']))  --> 
+                   <!--  @if(in_array(2, $candidateDetails['section_names']))  -->
                         <li>
                             <img src="{{ public_path('/imgs/email_ic.png') }}">&nbsp;&nbsp;<a style="margin-top:-2px" href="mailto:{{ $candidateDetails['email'] }}" target="_blank">{{ $candidateDetails['email'] }}</a>
                         </li>
                     <!-- @endif
                     @if(in_array(3, $candidateDetails['section_names']))   -->
                         <li>
-                            <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}                       
+                            <img src="{{ public_path('/imgs/phone_ic.png') }}">&nbsp;&nbsp;{{ $candidateDetails['mobile_no'] }}
                         </li>
                     <!-- @endif
-                    @if(in_array(4, $candidateDetails['section_names'])) --> 
-                        <li style="display: inline-block;">                       
+                    @if(in_array(4, $candidateDetails['section_names'])) -->
+                        <li style="display: inline-block;">
                             <div style="float:left;width:20px">
                                 <img src="{{ public_path('/imgs/location_ic.png') }}">
                             </div>
                             <div style="float:left;width:80%;margin-left: 2%;">
-                                 <a style="word-wrap: break-word;">{{ $candidateDetails['permanent_address'] }}</a> 
+                                 <a style="word-wrap: break-word;">{{ $candidateDetails['permanent_address'] }}</a>
                             </div>
                         </li>
                     <!-- @endif -->
@@ -749,7 +749,7 @@ h1{
                 <div class="sectionContent">
                     <article>
                         <p>{{ $candidateDetails['objective'] }}</p>
-                    </article>           
+                    </article>
                 </div>
             <div class="clear"></div>
         </section>
@@ -758,26 +758,26 @@ h1{
             <article>
                 <span class="subDetails"><b>Job Title: </b></span>
                 <span>{{ $candidateDetails['job_description']['title'] }}</span>
-            </article>  
+            </article>
             <br>
             <div class="clear"></div>
         </section>
-                 
+
         <!-- @if(in_array(5, $candidateDetails['section_names']))  -->
-            <section style="border-top:0px">                
+            <section style="border-top:0px">
                         <div class="sectionTitle set-title-color">
                             <h1>Summary</h1>
                         </div>
                         <div class="sectionContent">
                             <article>
                                 <ul  class="keySkills">
-                                    @foreach(json_decode(@$candidateDetails['summary']) as $sum)   
+                                    @foreach(json_decode(@$candidateDetails['summary']) as $sum)
                                         <li>
                                             {{ @$sum }}
-                                        </li>                        
+                                        </li>
                                     @endforeach
                                 </ul>
-                            </article>          
+                            </article>
                         </div>
                     <div class="clear"></div>
             </section>
@@ -788,12 +788,12 @@ h1{
             <section style="border-top:0px">
            <!--  @else -->
             <section>
-            <!-- @endif   -->  
+            <!-- @endif   -->
                 <div class="sectionTitle set-title-color">
                     <h1>Personal Details</h1>
                 </div>
                 <div class="sectionContent">
-                    <article> 
+                    <article>
                         <div style="display: inline-block;">
                            <!--  @if(in_array(6, $candidateDetails['section_names'])) -->
                                 <div style="float:left;width:33.333%">
@@ -806,7 +806,7 @@ h1{
                                 <span class="subDetails"><b>PAN No.: </b></span>
                                 <span>{{$candidateDetails['pan_number'] }}</span>
                             </div>
-                            
+
                             <!-- @if(in_array(7, $candidateDetails['section_names'])) -->
                                 <div style="float:left;width:33.333%">
                                     <span class="subDetails"><b>Passport No.: </b></span>
@@ -816,8 +816,8 @@ h1{
 
                             <!-- @if(in_array(8, $candidateDetails['section_names'])) -->
                                 <div style="float:left;width:33.333%">
-                                    <span class="subDetails"><strong>Total Experience: </strong></span> 
-                                    <span>{{ $candidateDetails['total_experience'] }} yrs</span> 
+                                    <span class="subDetails"><strong>Total Experience: </strong></span>
+                                    <span>{{ $candidateDetails['total_experience'] }} yrs</span>
                                 </div>
                             <!-- @endif -->
                         </div>
@@ -825,7 +825,7 @@ h1{
                         <div style="display: inline-block;">
                             <div style="display: none;float:left;width:33.333%">
                                 <span class="subDetails"><b>Current CTC: </b></span>
-                                <span>{{$candidateDetails['ctc'] }} {{$candidateDetails['currency_unit']}}</span> 
+                                <span>{{$candidateDetails['ctc'] }} {{$candidateDetails['currency_unit']}}</span>
                             </div>
                         </div>
                     </article>
@@ -833,7 +833,7 @@ h1{
                 <div class="clear"></div>
             </section>
         <!-- @endif -->
-        
+
         <!-- @if(in_array(9, $candidateDetails['section_names'])) -->
         <section>
             <div class="sectionTitle set-title-color">
@@ -842,13 +842,13 @@ h1{
             <div class="sectionContent">
                 <article>
                     <ul  class="keySkills">
-                        @foreach($candidateDetails['candidate_qualification'] as $key => $qualification)    
+                        @foreach($candidateDetails['candidate_qualification'] as $key => $qualification)
                             <li>
                                 {{ @$qualification['qualification']['name'] }} with {{ $qualification['percentage'] }}% from {{ $qualification['college'] }}, {{ $qualification['university'] }} ({{ $qualification['start_year'] .' - '. $qualification['end_year'] }})
-                            </li>                        
+                            </li>
                         @endforeach
                     </ul>
-                </article>              
+                </article>
             </div>
             <div class="clear"></div>
         </section>
@@ -862,7 +862,7 @@ h1{
             <div class="sectionContent">
                 <article>
                     <ul class="keySkills">
-                    @foreach($candidateDetails['candidate_achievements'] as $key => $achive)                    
+                    @foreach($candidateDetails['candidate_achievements'] as $key => $achive)
                         <li>{{ $achive['achivement'] }}</li>
                     @endforeach
                     </ul>
@@ -878,15 +878,15 @@ h1{
                 <h1>Technical Skills</h1>
             </div>
             <div class="sectionContent">
-                <article>  
+                <article>
                     <ul class="keySkills">
-                    @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill) 
+                    @foreach($candidateDetails['candidate_tech_skill'] as $key => $skill)
                         <li>{{ $skill['technology_name'] }} </li>
                     @endforeach
                     </ul>
                 </article>
             </div>
-            <div class="clear"></div>            
+            <div class="clear"></div>
         </section>
         <!-- @endif -->
 
@@ -896,40 +896,40 @@ h1{
                 <h1>Industrial Experience</h1>
             </div>
                 <div class="sectionContent">
-                    <article>   
+                    <article>
                         <ul  style="list-style-type: none">
-                            @foreach($candidateDetails['candidate_ind_exp'] as $key => $indExp) 
+                            @foreach($candidateDetails['candidate_ind_exp'] as $key => $indExp)
                                 <li class="subDetails"><b>Project Title: </b> {{ $indExp['project_name'] }}</li>
                                 <li class="subDetails"><b>Company Name: </b> {{ $indExp['company_name'] }}</li>
                                 <li class="subDetails"><b>Role: </b> {{ $indExp['role_in_project'] }}</li>
-                                <li class="subDetails"><b>Languages Used: </b> 
+                                <li class="subDetails"><b>Languages Used: </b>
                                 </li>
                                     <ul  class="keySkills">
-                                        @foreach(@$indExp['languages'] as $lang)   
+                                        @foreach(@$indExp['languages'] as $lang)
                                             <li>
                                                 {{ @$lang }}
-                                            </li>                        
+                                            </li>
                                         @endforeach
                                     </ul>
-                                <li class="subDetails"><b>Tools Used: </b> </li>  
+                                <li class="subDetails"><b>Tools Used: </b> </li>
                                     <ul  class="keySkills">
-                                        @foreach(@$indExp['tools'] as $tool)   
+                                        @foreach(@$indExp['tools'] as $tool)
                                             <li>
                                                 {{ @$tool }}
-                                            </li>                        
+                                            </li>
                                         @endforeach
                                     </ul>
                                 <li class="subDetails"><b>Project Description: </b> </li>
                                     <ul  class="keySkills">
-                                        @foreach(json_decode(@$indExp['project_description']) as $proj_des)   
+                                        @foreach(json_decode(@$indExp['project_description']) as $proj_des)
                                             <li>
                                                 {{ @$proj_des }}
-                                            </li>                        
+                                            </li>
                                         @endforeach
                                     </ul>
                                 <br>
                             @endforeach
-                        </ul>       
+                        </ul>
                 </article>
             </div>
             <div class="clear"></div>
@@ -943,7 +943,7 @@ h1{
             </div>
             <div class="sectionContent">
                 <ul class="keySkills">
-                    @foreach($candidateDetails['candidate_hobbies'] as $key => $hobbie)                    
+                    @foreach($candidateDetails['candidate_hobbies'] as $key => $hobbie)
                         <li>{{ $hobbie['hobbie_name'] }}</li>
                     @endforeach
                 </ul>

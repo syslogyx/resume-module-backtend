@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateTechnicalInterviewResult extends Migration
 {
@@ -25,7 +25,7 @@ class CreateTechnicalInterviewResult extends Migration
             $table->text('observation')->nullable();
             $table->timestamps();
         });
-        Schema::table('technical_interview_result', function($table) {
+        Schema::table('technical_interview_result', function ($table) {
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
             $table->foreign('job_description_id')->references('id')->on('candidate_details');
             $table->foreign('user_id')->references('id')->on('users');

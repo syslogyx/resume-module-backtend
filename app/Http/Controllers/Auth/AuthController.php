@@ -8,15 +8,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 //use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
+use App\Http\Transformers\UserAuthTransformer;
+//use Illuminate\Http\Response;
+use App\User;
+use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-//use Illuminate\Http\Response;
-use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
-use App\User;
-use App\Http\Transformers\UserAuthTransformer;
 
 //use Symfony\Component\Debug\ErrorHandler;
 
@@ -25,35 +24,36 @@ use App\Http\Transformers\UserAuthTransformer;
  *
  * @author chandrashekar
  */
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware("guest", ["except" => "getLogout"]);
     }
 
-    public function authenticate(Request $request) {
+    public function authenticate(Request $request)
+    {
         $credentials = $request->only("email", "password");
         $userObject = new User();
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-               // return $this->response->error(["error" => "User credentials are not correct!"], 401);
+                // return $this->response->error(["error" => "User credentials are not correct!"], 401);
                 $response = 'Your Username and/or Password is incorrect.';
 //                return $response;
-//                throw new \Exception($response);
+                //                throw new \Exception($response);
                 throw new \Dingo\Api\Exception\StoreResourceFailedException($response, $userObject->errors());
             }
         } catch (JWTException $ex) {
             return $this->response->error(["error", "Something went wrong."]);
         }
 
-
-        
         $email = $request["email"];
 
         $user = User::where('email', $email)->first();
-       // print_r($user);die();
+
         $user->remember_token = $token;
-        // return $user;
+
         if ($user) {
             return $this->response->item($user, new UserAuthTransformer())->setStatusCode(200);
         } else {

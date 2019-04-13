@@ -15,7 +15,7 @@ class BasicScreeningQuestions extends Model
      * @var array
      */
     protected $fillable = [
-        'stream_id', 'question','expected_answer','status'
+        'stream_id', 'question', 'expected_answer', 'status',
     ];
 
     /**
@@ -35,12 +35,13 @@ class BasicScreeningQuestions extends Model
         'stream_id' => 'required',
         'question' => 'required',
         'status' => 'required',
-        'expected_answer' => 'required'
+        'expected_answer' => 'required',
 
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
@@ -50,12 +51,13 @@ class BasicScreeningQuestions extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    
-    public function stream() {
-        return $this->belongsTo('App\Stream');    
+    public function stream()
+    {
+        return $this->belongsTo('App\Stream');
     }
 }

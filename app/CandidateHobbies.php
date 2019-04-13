@@ -15,7 +15,7 @@ class CandidateHobbies extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'hobbie_name','timestamp'
+        'candidate_id', 'hobbie_name', 'timestamp',
     ];
 
     /**
@@ -34,11 +34,12 @@ class CandidateHobbies extends Model
     private $rules = array(
         'candidate_id' => 'required',
         'hobbie_name' => 'required',
-        'timestamp' => 'required'
+        'timestamp' => 'required',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -47,11 +48,13 @@ class CandidateHobbies extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidates() {
+    public function candidates()
+    {
         return $this->belongsTo('App\Candidate');
     }
 }

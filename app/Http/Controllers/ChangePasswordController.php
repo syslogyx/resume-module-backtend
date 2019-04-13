@@ -1,16 +1,16 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Hash;
-use App\User;
-use App\ChangePassword;
 
-use Illuminate\Http\Request;
+use App\ChangePassword;
+use App\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 
 class ChangePasswordController extends BaseController
 {
-    function index() {
+    public function index()
+    {
         $changePassword = ChangePassword::paginate(200);
         if ($changePassword->first()) {
             return $this->dispatchResponse(200, "", $changePassword);
@@ -20,59 +20,62 @@ class ChangePasswordController extends BaseController
     }
 
     /*
-    *   Function used to change pasword
-    */
-    function create() {
+     *   Function used to change pasword
+     */
+    public function create()
+    {
         $posted_data = Input::all();
         DB::beginTransaction();
         try {
-            
+
             $objectChangePassword = new ChangePassword();
 
-                $newPassword = trim($posted_data["new_password"]);
-                $posted_data["new_password"] = Hash::make($newPassword);
-                 
-                $userid = $posted_data["user_id"];
-                $user_data = User::find((int) $userid);
+            $newPassword = trim($posted_data["new_password"]);
+            $posted_data["new_password"] = Hash::make($newPassword);
+
+            $userid = $posted_data["user_id"];
+            $user_data = User::find((int) $userid);
 
             if ($objectChangePassword->validate($posted_data)) {
 
-             //    $newPassword = trim($posted_data["new_password"]);
-            	// $posted_data["new_password"] = Hash::make($newPassword);
-                 
-            	// $userid = $posted_data["user_id"];
-				
-             //    $user_data = User::find((int) $userid);
+                //    $newPassword = trim($posted_data["new_password"]);
+                // $posted_data["new_password"] = Hash::make($newPassword);
 
-                if($posted_data["old_password"] != NULL){
-                    if(Hash::check($posted_data["old_password"], $user_data->password)){
+                // $userid = $posted_data["user_id"];
+
+                //    $user_data = User::find((int) $userid);
+
+                if ($posted_data["old_password"] != null) {
+                    if (Hash::check($posted_data["old_password"], $user_data->password)) {
 
                         $user_data->password = $posted_data["new_password"];
 
                         $user_data->update();
-                        
+
                         $model = ChangePassword::create($posted_data);
 
                         DB::commit();
-                        if($model)
+                        if ($model) {
                             return $this->dispatchResponse(200, "Password changed successfully...!!", $model);
-                    }
-                    else{
+                        }
+
+                    } else {
                         DB::rollback();
                         return $this->dispatchResponse(400, "Old password is not matched.", $objectChangePassword->errors());
                     }
-                }
-                else{
-                	 
-                	$user_data->password = $posted_data["new_password"];
+                } else {
 
-    				$user_data->update();
-                	
-     				$model = ChangePassword::create($posted_data);
+                    $user_data->password = $posted_data["new_password"];
+
+                    $user_data->update();
+
+                    $model = ChangePassword::create($posted_data);
 
                     DB::commit();
-                    if($model)
+                    if ($model) {
                         return $this->dispatchResponse(200, "Password changed successfully...!!", $model);
+                    }
+
                 }
             } else {
                 DB::rollback();
@@ -81,13 +84,14 @@ class ChangePasswordController extends BaseController
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
-        }        
+        }
     }
 
     /*
-    *  function used to change update password (not in use)
-    */
-    function update($id) {
+     *  function used to change update password (not in use)
+     */
+    public function update($id)
+    {
         $posted_data = Input::all();
 
         try {
@@ -97,8 +101,10 @@ class ChangePasswordController extends BaseController
             if ($model->validate($posted_data)) {
 
                 DB::commit();
-                if ($model->update($posted_data))
+                if ($model->update($posted_data)) {
                     return $this->dispatchResponse(200, "Password changed successfully...!!", $model);
+                }
+
             } else {
                 DB::rollback();
                 return $this->dispatchResponse(400, "Something went wrong.", $model->errors());

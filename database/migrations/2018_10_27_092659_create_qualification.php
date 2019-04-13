@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\Qualification;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateQualification extends Migration
 {
@@ -26,33 +26,33 @@ class CreateQualification extends Migration
             array(
                 "name" => "SSC - 10th",
                 "alias" => "ssc_-_10th",
-                "status" => "0"
+                "status" => "0",
             ),
             array(
                 "name" => "HSC - 12th",
                 "alias" => "hsc_-_12th",
-                "status" => "0"
+                "status" => "0",
             ),
             array(
                 "name" => "Diploma",
                 "alias" => "diploma",
-                "status" => "0"
+                "status" => "0",
             ),
             array(
                 "name" => "Graduate",
                 "alias" => "graduate",
-                "status" => "0"
+                "status" => "0",
             ),
             array(
                 "name" => "Post Graduate",
                 "alias" => "pg",
-                "status" => "0"
+                "status" => "0",
             ),
             array(
                 "name" => "PHD",
                 "alias" => "phd",
-                "status" => "0"
-            )
+                "status" => "0",
+            ),
         );
 
         Qualification::insert($data);

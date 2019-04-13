@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCandidateIndustrialExperience extends Migration
 {
@@ -17,12 +17,12 @@ class CreateCandidateIndustrialExperience extends Migration
             $table->increments('id');
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
-            $table->string('company_name')->nullable();  
-            $table->string('project_name')->nullable();  
-            $table->string('role_in_project')->nullable();  
-            $table->string('language_or_tools')->nullable();  
-            $table->text('project_description')->nullable(); 
-            $table->string('timestamp')->nullable(); 
+            $table->string('company_name')->nullable();
+            $table->string('project_name')->nullable();
+            $table->string('role_in_project')->nullable();
+            $table->string('language_or_tools')->nullable();
+            $table->text('project_description')->nullable();
+            $table->string('timestamp')->nullable();
             $table->timestamps();
         });
     }

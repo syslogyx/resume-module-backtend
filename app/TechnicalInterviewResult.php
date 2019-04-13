@@ -7,18 +7,18 @@ use Validator;
 
 class TechnicalInterviewResult extends Model
 {
-   /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'candidate_id','job_description_id','user_id','technical_round','feedback','status','duration_of_interview','observation'
+        'candidate_id', 'job_description_id', 'user_id', 'technical_round', 'feedback', 'status', 'duration_of_interview', 'observation',
     ];
-    
+
     protected $table = 'technical_interview_result';
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    
+
     private $rules = array(
         'candidate_id' => 'required',
         'job_description_id' => 'required',
@@ -28,11 +28,12 @@ class TechnicalInterviewResult extends Model
         'status' => 'required',
         'duration_of_interview' => 'required',
         'observation' => 'required',
-        'timestamp' => 'nullable'
+        'timestamp' => 'nullable',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
@@ -42,15 +43,18 @@ class TechnicalInterviewResult extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function users() {
-        return $this->belongsTo('App\User','user_id');    
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'user_id');
     }
-    
-    public function job_description() {
-        return $this->belongsTo('App\JobDescription','job_description_id');    
+
+    public function job_description()
+    {
+        return $this->belongsTo('App\JobDescription', 'job_description_id');
     }
 }

@@ -15,7 +15,7 @@ class CandidateIndustrialExperiance extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id','company_name', 'project_name', 'role_in_project', 'language_or_tools','project_description','timestamp'
+        'candidate_id', 'company_name', 'project_name', 'role_in_project', 'language_or_tools', 'project_description', 'timestamp',
     ];
 
     /**
@@ -38,11 +38,12 @@ class CandidateIndustrialExperiance extends Model
         'role_in_project' => 'required',
         'language_or_tools' => 'required',
         'project_description' => 'required',
-        'timestamp' => 'required'
+        'timestamp' => 'required',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -51,11 +52,13 @@ class CandidateIndustrialExperiance extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidates() {
+    public function candidates()
+    {
         return $this->belongsTo('App\Candidate');
     }
 }

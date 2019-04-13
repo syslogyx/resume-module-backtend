@@ -2,21 +2,23 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Validator;
 
-class Permission extends \Zizaco\Entrust\EntrustPermission {
+class Permission extends \Zizaco\Entrust\EntrustPermission
+{
 
     protected $table = 'permission';
     protected $guarded = ['id', 'created_at', 'updated_at'];
     private $rules = array(
-        'name' => 'required|unique:permission,name,'
+        'name' => 'required|unique:permission,name,',
     );
     private $errors;
 
-    public function validate($data) {
-        if ($this->id)
+    public function validate($data)
+    {
+        if ($this->id) {
             $this->rules['name'] .= $this->id;
+        }
 
         $validator = Validator::make($data, $this->rules);
 
@@ -27,7 +29,8 @@ class Permission extends \Zizaco\Entrust\EntrustPermission {
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 

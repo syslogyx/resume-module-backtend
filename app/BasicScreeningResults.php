@@ -15,7 +15,7 @@ class BasicScreeningResults extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id','question_id', 'answer','status','refereral_token','remark','duration_of_interview','observation'
+        'candidate_id', 'question_id', 'answer', 'status', 'refereral_token', 'remark', 'duration_of_interview', 'observation',
     ];
 
     /**
@@ -40,12 +40,13 @@ class BasicScreeningResults extends Model
         'duration_of_interview.*' => 'required',
         'observation.*' => 'required',
         'status.*' => 'required',
-        'timestamp' => 'nullable'
+        'timestamp' => 'nullable',
     );
 
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
 
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
@@ -55,15 +56,18 @@ class BasicScreeningResults extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidates() {
+    public function candidates()
+    {
         return $this->belongsTo('App\Candidate');
     }
 
-    public function basic_screening_questions() {
+    public function basic_screening_questions()
+    {
         return $this->belongsTo('App\BasicScreeningQuestions');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCandidateHobbies extends Migration
 {
@@ -17,8 +17,8 @@ class CreateCandidateHobbies extends Migration
             $table->increments('id');
             $table->integer('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_details');
-            $table->string('hobbie_name')->nullable();  
-            $table->string('timestamp')->nullable(); 
+            $table->string('hobbie_name')->nullable();
+            $table->string('timestamp')->nullable();
             $table->timestamps();
         });
     }

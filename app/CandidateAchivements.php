@@ -7,7 +7,7 @@ use Validator;
 
 class CandidateAchivements extends Model
 {
-   //use Notifiable;
+    //use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class CandidateAchivements extends Model
      * @var array
      */
     protected $fillable = [
-        'candidate_id', 'achievement_type','achivement','timestamp'
+        'candidate_id', 'achievement_type', 'achivement', 'timestamp',
     ];
 
     /**
@@ -35,11 +35,12 @@ class CandidateAchivements extends Model
         'candidate_id' => 'required',
         'achievement_type' => 'required',
         'achivement' => 'required',
-        'timestamp' => 'required'
+        'timestamp' => 'required',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -48,11 +49,13 @@ class CandidateAchivements extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidates() {
+    public function candidates()
+    {
         return $this->belongsTo('App\Candidate');
     }
 }

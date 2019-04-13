@@ -15,7 +15,7 @@ class CandidateDocument extends Model
      * @var array
      */
     protected $fillable = [
-        'file_name','candidate_id', 'path','timestamp','type'
+        'file_name', 'candidate_id', 'path', 'timestamp', 'type',
     ];
 
     /**
@@ -32,14 +32,15 @@ class CandidateDocument extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     private $rules = array(
-    	'file_name' => 'required',
+        'file_name' => 'required',
         'candidate_id' => 'required',
         'path' => 'required',
         'timestamp' => 'required',
     );
     private $errors;
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
@@ -48,11 +49,13 @@ class CandidateDocument extends Model
         return true;
     }
 
-    public function errors() {
+    public function errors()
+    {
         return $this->errors;
     }
 
-    public function candidates() {
+    public function candidates()
+    {
         return $this->belongsTo('App\Candidate');
     }
 }

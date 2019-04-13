@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Qualification;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateJobDescription extends Migration
 {
@@ -37,7 +36,7 @@ class CreateJobDescription extends Migration
             $table->timestamps();
         });
 
-        Schema::table('job_description', function($table) {
+        Schema::table('job_description', function ($table) {
             $table->foreign('company_id')->references('id')->on('company_table');
             $table->foreign('technology_id')->references('id')->on('technologies');
         });
