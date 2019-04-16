@@ -18,6 +18,7 @@ class CreateCompany extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('contact_no')->nullable();
+            $table->string('email')->nullable();
             $table->longText('address')->nullable();
             $table->integer('status');
             $table->timestamps();

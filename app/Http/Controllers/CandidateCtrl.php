@@ -238,8 +238,14 @@ class CandidateCtrl extends BaseController
                     $user_data["unique_token"] = $posted_data["unique_token"];
                     $user_data["status"] = "Active";
                     // $user_data["unique_token"] = $posted_data['unique_token'];
-                    User::create($user_data);
 
+                    $objectUser = new User();
+                    if($objectUser->validate($user_data)){
+                        User::create($user_data);
+                    } else {
+                        DB::rollback();
+                        return $this->dispatchResponse(400, "Something went wrong.", $objectUser->errors());
+                    }
                 }
                 DB::commit();
                 if ($model) {
@@ -445,12 +451,29 @@ class CandidateCtrl extends BaseController
                         //to store data in candidate 'hobbies' table
                         CandidateHobbies::insert($posted_data["hobbyDetails"]);
 
-                        $user_name = $posted_data['first_name'] . ' ' . $posted_data['middle_name'] . ' ' . $posted_data['last_name'];
-                        $user_email = $posted_data['email'];
-                        $user_mobile = $posted_data['mobile_no'];
-                        $user_pwd = Hash::make($posted_data['mobile_no']);
+                        // $user_name = $posted_data['first_name'] . ' ' . $posted_data['middle_name'] . ' ' . $posted_data['last_name'];
+                        // $user_email = $posted_data['email'];
+                        // $user_mobile = $posted_data['mobile_no'];
+                        // $user_pwd = Hash::make($posted_data['mobile_no']);
 
-                        User::where('email', '=', $oldEmailId)->where('mobile', '=', $oldMobile)->update(['name' => $user_name, 'email' => $user_email, 'mobile' => $user_mobile, 'password' => $user_pwd]);
+                        $data = [];
+                        $data['name'] = $posted_data['first_name'] . ' ' . $posted_data['middle_name'] . ' ' . $posted_data['last_name'];
+                        $data['email'] = $posted_data['email'];
+                        $data['mobile'] = $posted_data['mobile_no'];
+                        $data['password'] = Hash::make($posted_data['mobile_no']);
+
+                        $objectUser = User::where('email', '=', $oldEmailId)->where('mobile', '=', $oldMobile)->first();
+
+                        $rules = [];
+                        $rules['email'] = 'required|unique:users,email,' . $objectUser->id;
+                        $rules['mobile'] = 'required|unique:users,mobile,' . $objectUser->id;
+                        $validator = Validator::make((array) $data, $rules);
+                        if ($validator->fails()) {
+                            DB::rollback();
+                            return $this->dispatchResponse(400, "Something went wrong.", $validator->errors());
+                        }
+
+                        User::where('email', '=', $oldEmailId)->where('mobile', '=', $oldMobile)->update(['name' => $data['name'], 'email' => $data['email'], 'mobile' => $data['mobile'], 'password' => $data['password']]);
                     }
 
                     DB::commit();
@@ -665,12 +688,19 @@ class CandidateCtrl extends BaseController
     {
         $posted_data = Input::all();
         $rules = [];
+        $rules1 = [];
         if (@$posted_data["candidate_mobile_no"]) {
             $data = json_decode($posted_data["candidate_mobile_no"]);
             $rules['mobile_no'] = 'required|unique:candidate_details,mobile_no,' . $data->id;
             $validator = Validator::make((array) $data, $rules);
             if ($validator->fails()) {
                 $this->errors = $validator->errors();
+                return "false";
+            }
+            $rules1['contact_no'] = 'required|unique:company_table,contact_no,' . $data->id;
+            $validator1 = Validator::make((array) $data, $rules1);
+            if ($validator1->fails()) {
+                $this->errors = $validator1->errors();
                 return "false";
             }
         }
@@ -681,6 +711,12 @@ class CandidateCtrl extends BaseController
             $validator = Validator::make((array) $data, $rules);
             if ($validator->fails()) {
                 $this->errors = $validator->errors();
+                return "false";
+            }
+            $rules1['email'] = 'required|unique:company_table,email,' . $data->id;
+            $validator1 = Validator::make((array) $data, $rules1);
+            if ($validator1->fails()) {
+                $this->errors = $validator1->errors();
                 return "false";
             }
         }
@@ -725,43 +761,42 @@ class CandidateCtrl extends BaseController
     /*
      *  Function used to read csv file data as per format
      */
-    public function readCsvFileData(Request $request)
-    {
+    public function readCsvFileData(Request $request){
         $file = $request->file('file_name');
-
-        if ($file) {
+        if($file){
             $original_ext = $file->getClientOriginalExtension();
-            if ($original_ext === 'csv') {
+            if($original_ext === 'csv'){        
                 $path = $request->file('file_name')->getRealPath();
                 $data = Excel::load($path)->get();
-
                 $dataImported = [];
-                if (!empty($data) && $data->count()) {
+                if(!empty($data) && $data->count()){
                     $data = $data->toArray();
-                    for ($i = 0; $i < count($data); $i++) {
-                        if (isset($data[$i]['email']) && isset($data[$i]['mobile_no']) && isset($data[$i]['pan_no'])) {
-
-                            $data[$i]['email'] = str_replace("+AEA-", "@", $data[$i]['email']);
-
-                            $isEmailPresent = $this->checkEmailPresent($data[$i]['email']);
-                            $isMobilePresent = $this->checkMobilePresent($data[$i]['mobile_no']);
-                            $isPanNumberPresent = $this->checkPanNumberPresent($data[$i]['pan_no']);
-                            if ($isEmailPresent == true || $isMobilePresent == true || $isPanNumberPresent == true) {
-                                $data[$i]['is_record_exist'] = 'true';
-                            } else {
-                                $data[$i]['is_record_exist'] = 'false';
+                    for($i=0;$i<count($data);$i++){
+                        if(isset($data[$i]['email']) && isset($data[$i]['mobile_no']) && isset($data[$i]['pan_no']) && isset($data[$i]['job_code'])){
+                            $data[$i]['job_description_id'] = JobDescription::where('job_code', $data[$i]['job_code'])->pluck('id')->first();
+                            if(isset($data[$i]['job_description_id'])){
+                                $data[$i]['email'] = str_replace("+AEA-","@",$data[$i]['email']);
+                                $isEmailPresent = $this->checkEmailPresent($data[$i]['email']);
+                                $isMobilePresent = $this->checkMobilePresent($data[$i]['mobile_no']);
+                                $isPanNumberPresent = $this->checkPanNumberPresent($data[$i]['pan_no']);
+                                if($isEmailPresent == true || $isMobilePresent == true || $isPanNumberPresent == true){
+                                  $data[$i]['is_record_exist'] = 'true';
+                                }else{
+                                  $data[$i]['is_record_exist'] = 'false';
+                                }
+                                array_push($dataImported, $data[$i]);
+                            }else{
+                                return $this->dispatchResponse(400, "Job code not exist!");
                             }
-                            array_push($dataImported, $data[$i]);
-                        } else {
+                        }else{
                             return $this->dispatchResponse(404, "No Records Found!!", $dataImported);
                         }
-
                     }
                     return $this->dispatchResponse(200, "Candidate List", $dataImported);
-                } else {
+                } else {           
                     return $this->dispatchResponse(404, "No Records Found!!", $dataImported);
                 }
-            } else {
+            }else{
                 return $this->dispatchResponse(400, "Invalid File Type");
             }
         }
@@ -801,8 +836,7 @@ class CandidateCtrl extends BaseController
     /*
      *  Function used to save csv file data as per format
      */
-    public function importCandidateData(Request $request)
-    {
+    public function importCandidateData(Request $request){
         try {
             $posted_data = Input::all();
 
@@ -819,7 +853,14 @@ class CandidateCtrl extends BaseController
                 $posted_data['data'][$key]["timestamp"] = $currentTimestamp;
                 $posted_data['data'][$key]["unique_token"] = $this->checkTokenExit($posted_data['data'][$key]["unique_token"]);
                 $row = Candidate::create($posted_data['data'][$key]);
+                $candidateJdData = [];
                 if ($row->id != null) {
+                    $candidateJdData['job_description_id'] = $posted_data['data'][$key]['job_description_id'];
+                    $candidateJdData['candidate_id'] = $row->id;
+                    $candidate_jd_assoc = new CandidateJdAssoc();
+
+                    CandidateJdAssoc::create($candidateJdData);
+
                     $user_data["name"] = $posted_data['data'][$key]['first_name'] . ' ' . $posted_data['data'][$key]['middle_name'] . ' ' . $posted_data['data'][$key]['last_name'];
                     $user_data["email"] = $posted_data['data'][$key]['email'];
                     $user_data["mobile"] = $posted_data['data'][$key]['mobile_no'];
@@ -833,7 +874,6 @@ class CandidateCtrl extends BaseController
                     User::create($user_data);
                 }
                 array_push($model, $row);
-
             }
             DB::commit();
             if ($model) {

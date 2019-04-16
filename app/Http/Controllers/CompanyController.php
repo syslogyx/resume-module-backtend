@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
+use Validator;
 
 class CompanyController extends BaseController
 {
@@ -54,6 +55,7 @@ class CompanyController extends BaseController
             if ($objectCompany->validate($posted_data)) {
                 $model = Company::create($posted_data);
                 if ($model->id) {
+
                     $user_data["name"] = $posted_data['name'];
                     $user_data["email"] = $posted_data['email'];
                     $user_data["mobile"] = $posted_data['contact_no'];
@@ -62,7 +64,13 @@ class CompanyController extends BaseController
                     $user_data["company_name"] = $posted_data['name'];
                     $user_data["password"] = Hash::make($posted_data['contact_no']);
                     $user_data["status"] = "Active";
-                    User::create($user_data);
+                    $objectUser = new User();
+                    if($objectUser->validate($user_data)){
+                        User::create($user_data);
+                    } else {
+                        DB::rollback();
+                        return $this->dispatchResponse(400, "Something went wrong.", $objectUser->errors());
+                    }
                 }
                 DB::commit();
                 if ($model) {
@@ -102,12 +110,29 @@ class CompanyController extends BaseController
                     //     User::create($user_data);
                     // }
 
-                    $user_name = $posted_data['name'];
-                    $user_email = $posted_data['email'];
-                    $user_mobile = $posted_data['contact_no'];
-                    $user_pwd = Hash::make($posted_data['contact_no']);
+                    $data = [];
+                    $data['name'] = $posted_data['name'];
+                    $data['email'] = $posted_data['email'];
+                    $data['mobile'] = $posted_data['contact_no'];
+                    $data['password'] = Hash::make($posted_data['contact_no']);
 
-                    User::where('email', '=', $oldEmailId)->where('mobile', '=', $oldMobile)->update(['name' => $user_name, 'email' => $user_email, 'mobile' => $user_mobile, 'password' => $user_pwd]);
+                    // $user_name = $posted_data['name'];
+                    // $user_email = $posted_data['email'];
+                    // $user_mobile = $posted_data['contact_no'];
+                    // $user_pwd = Hash::make($posted_data['contact_no']);
+
+                    $objectUser = User::where('email', '=', $oldEmailId)->where('mobile', '=', $oldMobile)->first();
+                    
+                    $rules = [];
+                    $rules['email'] = 'required|unique:users,email,' . $objectUser->id;
+                    $rules['mobile'] = 'required|unique:users,mobile,' . $objectUser->id;
+                    $validator = Validator::make((array) $data, $rules);
+                    if ($validator->fails()) {
+                        DB::rollback();
+                        return $this->dispatchResponse(400, "Something went wrong.", $validator->errors());
+                    }
+
+                    User::where('email', '=', $oldEmailId)->where('mobile', '=', $oldMobile)->update(['name' => $data['name'], 'email' => $data['email'], 'mobile' => $data['mobile'], 'password' => $data['password']]);
                     DB::commit();
                     return $this->dispatchResponse(200, "Client Updated Successfully...!!", $model);
                 }
