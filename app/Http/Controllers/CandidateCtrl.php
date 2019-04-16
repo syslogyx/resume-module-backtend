@@ -131,7 +131,6 @@ class CandidateCtrl extends BaseController
         } else {
             return response()->json(['status_code' => 404, 'message' => 'No Records Found!!']);
         }
-
     }
 
     /*
@@ -697,12 +696,12 @@ class CandidateCtrl extends BaseController
                 $this->errors = $validator->errors();
                 return "false";
             }
-            $rules1['contact_no'] = 'required|unique:company_table,contact_no,' . $data->id;
-            $validator1 = Validator::make((array) $data, $rules1);
-            if ($validator1->fails()) {
-                $this->errors = $validator1->errors();
-                return "false";
-            }
+            // $rules1['contact_no'] = 'required|unique:company_table,contact_no,' . $data->id;
+            // $validator1 = Validator::make((array) $data, $rules1);
+            // if ($validator1->fails()) {
+            //     $this->errors = $validator1->errors();
+            //     return "false";
+            // }
         }
 
         if (@$posted_data["candidate_email"]) {
@@ -713,12 +712,12 @@ class CandidateCtrl extends BaseController
                 $this->errors = $validator->errors();
                 return "false";
             }
-            $rules1['email'] = 'required|unique:company_table,email,' . $data->id;
-            $validator1 = Validator::make((array) $data, $rules1);
-            if ($validator1->fails()) {
-                $this->errors = $validator1->errors();
-                return "false";
-            }
+            // $rules1['email'] = 'required|unique:company_table,email,' . $data->id;
+            // $validator1 = Validator::make((array) $data, $rules1);
+            // if ($validator1->fails()) {
+            //     $this->errors = $validator1->errors();
+            //     return "false";
+            // }
         }
 
         if (@$posted_data["candidate_pan_number"]) {
@@ -761,7 +760,8 @@ class CandidateCtrl extends BaseController
     /*
      *  Function used to read csv file data as per format
      */
-    public function readCsvFileData(Request $request){
+    public function readCsvFileData(Request $request)
+    {
         $file = $request->file('file_name');
         if($file){
             $original_ext = $file->getClientOriginalExtension();
@@ -836,7 +836,8 @@ class CandidateCtrl extends BaseController
     /*
      *  Function used to save csv file data as per format
      */
-    public function importCandidateData(Request $request){
+    public function importCandidateData(Request $request)
+    {
         try {
             $posted_data = Input::all();
 
