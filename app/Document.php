@@ -32,7 +32,6 @@ class Document extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
     private $rules = array(
         'file_name' => 'required',
-
         'candidate_id' => 'required',
     );
     private $errors;

@@ -35,7 +35,7 @@ class CreateUsers extends Migration
                 "name" => "Admin",
                 "mobile" => "9876543210",
                 "email" => "admin@syslogyx.com",
-                "company_name" => "Syslogyx Pvt Ltd.",
+                "company_name" => "Syslogyx Technologies Pvt. Ltd.",
                 "password" => Hash::make('admin123'),
                 "role_id" => 1,
                 "status" => "Active",

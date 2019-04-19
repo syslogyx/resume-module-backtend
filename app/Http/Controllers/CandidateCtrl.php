@@ -73,7 +73,6 @@ class CandidateCtrl extends BaseController
         // }else{
         //     $query = Candidate::with('job_description','candidate_technical_result.users','candidate_user_assocs.users','candidate_bg_documents');
         // }
-
         // if filter is not appiled
         if (Input::get() == "" || Input::get() == null) {
             $query->get();
@@ -111,12 +110,27 @@ class CandidateCtrl extends BaseController
         }
 
         // to filter according to status
-        if (isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] != 'All') {
-            $query->where("status", "Selected")->orwhere("status", "Joined")->where('first_name', 'LIKE', $posted_data['search_alphabet'] . "%");
-        } else if (isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] == 'All') {
-            $query->where("status", "Selected")->orwhere("status", "Joined");
-        } else if (isset($posted_data["status"]) && $posted_data["status"] == 'non-selected') {
-            $query->where("status", "!=", "Selected")->where("status", "!=", "Joined");
+        // if (isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] != 'All') {
+        //     $query->where("status", "Selected")->orwhere("status", "Joined")->where('first_name', 'LIKE', $posted_data['search_alphabet'] . "%");
+        // } else if (isset($posted_data["status"]) && $posted_data["status"] == 'selected' && $posted_data['search_alphabet'] == 'All') {
+        //     $query->where("status", "Selected")->orwhere("status", "Joined");
+        // } else if (isset($posted_data["status"]) && $posted_data["status"] == 'non-selected') {
+        //     $query->where("status", "!=", "Selected")->where("status", "!=", "Joined");
+        // }
+
+        // to filter according to status
+        if (isset($posted_data["status"]) && $posted_data['search_alphabet'] != 'All' && !isset($posted_data['technology_id'])) {
+            $query->where("status", $posted_data["status"])->where('first_name', 'LIKE', $posted_data['search_alphabet'] . "%");
+        } else if (isset($posted_data["status"]) && $posted_data['search_alphabet'] == 'All' && !isset($posted_data['technology_id'])) {
+            $query->where("status", $posted_data["status"]);
+        }
+
+        if (isset($posted_data["status"]) && $posted_data['search_alphabet'] != 'All' && isset($posted_data['technology_id'])) {
+            $jd_data_ids = JobDescription::where('technology_id', $posted_data['technology_id'])->where('company_id', $clientID)->pluck('id');
+            $query->where("status", $posted_data["status"])->whereIN('job_description_id', $jd_data_ids)->where('first_name', 'LIKE', $posted_data['search_alphabet'] . "%");
+        } else if (isset($posted_data["status"]) && $posted_data['search_alphabet'] == 'All' && isset($posted_data['technology_id'])) {
+            $jd_data_ids = JobDescription::where('technology_id', $posted_data['technology_id'])->where('company_id', $clientID)->pluck('id');
+            $query->where("status", $posted_data["status"])->whereIN('job_description_id', $jd_data_ids);
         }
 
         // to filter according to pagination
@@ -301,6 +315,7 @@ class CandidateCtrl extends BaseController
             $ext = 'docx';
         }
         $posted_data['file_name'] = time() . '.' . $ext;
+        $posted_data['original_file_name'] = $image->getClientOriginalName();
         $posted_data['candidate_id'] = $request['candidate_id'];
         $posted_data['timestamp'] = $request['timestamp'];
         $destinationPath = public_path('/doc');
@@ -323,11 +338,13 @@ class CandidateCtrl extends BaseController
     {
         $object = new CandidateDocument();
         $image = $request->file('file_name');
+
         $ext = $image->getClientOriginalExtension();
         // if($ext == 'doc'){
         //   $ext = 'docx';
         // }
         $posted_data['file_name'] = time() . '.' . $ext;
+        $posted_data['original_file_name'] = $image->getClientOriginalName();
         $posted_data['candidate_id'] = $request['candidate_id'];
         $posted_data['timestamp'] = $request['timestamp'];
         $destinationPath = public_path('/imgs');
@@ -607,13 +624,30 @@ class CandidateCtrl extends BaseController
     /*
      *  Function to get initial alphabet list of candidates
      */
-    public function getListOfCandidateOrderByAlphabets($type)
+    // public function getListOfCandidateOrderByAlphabets()
+    public function getListOfCandidateOrderByAlphabets()
     {
-        if ($type == 'selected') {
-            return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->where('status', $type)->orwhere('status', 'joined')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
-        } else {
-            return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
-        }
+        $posted_data = Input::all();
+
+        $type = $posted_data['status'];
+
+        if(!isset($posted_data['technology_id'])){
+            if ($type != 'All') {
+                return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->where('status', $type)->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+            } else {
+                return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+            }
+        }else{
+            $clientID = Company::where('email', $posted_data['email'])->where('contact_no', $posted_data['contact_no'])->pluck('id')->first();
+
+            $jd_data_ids = JobDescription::where('technology_id', $posted_data['technology_id'])->where('company_id', $clientID)->pluck('id');
+
+            if ($type != 'All') {
+                return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->where('status', $type)->whereIN('job_description_id', $jd_data_ids)->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+            } else {
+                return $alphabetsArray = Candidate::selectRaw('substr(upper(first_name),1,1) as letter')->whereIN('job_description_id', $jd_data_ids)->distinct()->orderBy('letter')->get()->pluck('letter')->toArray();
+            }
+        }     
     }
 
     /*

@@ -195,7 +195,7 @@ class TechnologyController extends BaseController
 
                         $data['no_response_from_Candidate'] = Candidate::where('status', 'No Response from Candidate')->whereIN('job_description_id', $jd_data_ids)->count();
 
-                        $data['expecting_high_ctc'] = Candidate::where('status', 'Expecting High CTC')->whereIN('job_description_id', $jd_data_ids)->count();
+                        $data['expecting_high_ctc'] = Candidate::where('status', 'Expecting High CTC(Rejected)')->whereIN('job_description_id', $jd_data_ids)->count();
 
                         $data['bgc_form_shared_not_interested_candidate'] = Candidate::where('status', 'BGC Form shared / candidate not interested')->whereIN('job_description_id', $jd_data_ids)->count();
 

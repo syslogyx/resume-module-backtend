@@ -101,7 +101,8 @@ $api->version("v1", function ($api) {
     $api->get("candidate/getJDListByCandidateId/{id}", "App\Http\Controllers\CandidateCtrl@getJDListByCandidateId");
     $api->post("candidate/getLoggedCandidateDetails", "App\Http\Controllers\CandidateCtrl@getLoggedCandidateInfo");
     $api->post("create_logins", "App\Http\Controllers\CandidateCtrl@createAllCandidatesLogin");
-    $api->get("get_alphabets/{type}", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
+    $api->post("get_alphabets", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
+     // $api->get("get_alphabets/{type}", "App\Http\Controllers\CandidateCtrl@getListOfCandidateOrderByAlphabets");
     $api->get("list/all_candidates", "App\Http\Controllers\CandidateCtrl@getAllCandidateList");
     // Get login client candidate list api
     $api->post("candidate/get_login_client_candidatelist", "App\Http\Controllers\CandidateCtrl@getLoginClientsCandidateList");
