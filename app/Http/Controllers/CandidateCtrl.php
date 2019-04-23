@@ -191,14 +191,19 @@ class CandidateCtrl extends BaseController
                     //to store data in candidate 'educationl_details' table
                     CandidateQualification::insert($posted_data["educationalDetails"]);
 
-                    $candidate_achivements = new CandidateAchivements();
-                    foreach ($posted_data["achivementDetails"] as &$row1) {
-                        $row1["candidate_id"] = $model->id;
-                        $row1["timestamp"] = $currentTimestamp;
+                    if(@isset($posted_data["achivementDetails"])){
+                        if(count($posted_data["achivementDetails"]) > 0){
+                            $candidate_achivements = new CandidateAchivements();
+                            foreach ($posted_data["achivementDetails"] as &$row1) {
+                                $row1["candidate_id"] = $model->id;
+                                $row1["timestamp"] = $currentTimestamp;
 
+                            }
+                            //to store data in candidate 'other_achievements' table
+                            CandidateAchivements::insert($posted_data["achivementDetails"]);   
+                        }
                     }
-                    //to store data in candidate 'other_achievements' table
-                    CandidateAchivements::insert($posted_data["achivementDetails"]);
+
 
                     $candidate_industrial_experiance = new CandidateIndustrialExperiance();
                     foreach ($posted_data["industryExperiance"] as &$row2) {
@@ -315,7 +320,7 @@ class CandidateCtrl extends BaseController
             $ext = 'docx';
         }
         $posted_data['file_name'] = time() . '.' . $ext;
-        $posted_data['original_file_name'] = $image->getClientOriginalName();
+        // $posted_data['original_file_name'] = $image->getClientOriginalName();
         $posted_data['candidate_id'] = $request['candidate_id'];
         $posted_data['timestamp'] = $request['timestamp'];
         $destinationPath = public_path('/doc');
@@ -344,7 +349,7 @@ class CandidateCtrl extends BaseController
         //   $ext = 'docx';
         // }
         $posted_data['file_name'] = time() . '.' . $ext;
-        $posted_data['original_file_name'] = $image->getClientOriginalName();
+        // $posted_data['original_file_name'] = $image->getClientOriginalName();
         $posted_data['candidate_id'] = $request['candidate_id'];
         $posted_data['timestamp'] = $request['timestamp'];
         $destinationPath = public_path('/imgs');
@@ -414,14 +419,17 @@ class CandidateCtrl extends BaseController
                         $candidate_achivements = new CandidateAchivements();
                         //to delete previous data and store new data in candidate 'other_achievements' table
                         CandidateAchivements::where('timestamp', '=', $currentTimestamp)->delete();
+                        if(@isset($posted_data["achivementDetails"])){
+                            if(count($posted_data["achivementDetails"]) > 0){
+                                foreach ($posted_data["achivementDetails"] as &$row1) {
+                                    $row1["candidate_id"] = $model->id;
+                                    $row1["timestamp"] = $currentTimestamp;
 
-                        foreach ($posted_data["achivementDetails"] as &$row1) {
-                            $row1["candidate_id"] = $model->id;
-                            $row1["timestamp"] = $currentTimestamp;
-
+                                }
+                                //to store data in candidate 'other_achievements' table
+                                CandidateAchivements::insert($posted_data["achivementDetails"]);
+                            }
                         }
-                        //to store data in candidate 'other_achievements' table
-                        CandidateAchivements::insert($posted_data["achivementDetails"]);
 
                         $candidate_industrial_experiance = new CandidateIndustrialExperiance();
                         //to delete previous data and store new data in candidate 'industrial_experience' table

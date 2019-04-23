@@ -15,7 +15,7 @@ class AlterCandidateDocTable extends Migration
     {
         Schema::table('candidate_document', function (Blueprint $table) {
             $table->string('type')->nullable();
-            $table->longText('original_file_name')->nullable();
+            // $table->longText('original_file_name')->nullable();
         });
     }
 
