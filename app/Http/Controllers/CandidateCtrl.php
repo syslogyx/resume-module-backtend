@@ -575,7 +575,7 @@ class CandidateCtrl extends BaseController
                         CandidateJdAssoc::create($candidateJdData);
                     }
                     DB::commit();
-                    return $this->dispatchResponse(200, "Job Descrption Updated Successfully...!!", $model);
+                    return $this->dispatchResponse(200, "Job Description Updated Successfully...!!", $model);
                 } else {
                     DB::rollback();
                     return $this->dispatchResponse(400, "Something went wrong.", $model->errors());
